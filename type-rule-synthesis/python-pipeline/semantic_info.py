@@ -1,150 +1,126 @@
-"""
-Semantic anchor extraction using CodeBERT.
-
-This module extracts a variety of expressions from a Java AST, embeds them
-using CodeBERT and ranks them by "centrality" (approximated by the
-embedding norm).  The highest‑ranked expressions form semantic anchors
-that help guide the language model towards relevant constraints and
-dependencies.  We also attempt to extract variable names from annotation
-arguments so that parameters like ``arg0``, ``n``, ``m`` and ``k`` are
-considered for ranking.
-"""
+"""Semantic anchor extraction with source-grounded spans."""
 
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import re
+
 import torch
-from transformers import RobertaTokenizer, RobertaModel
+from transformers import RobertaModel, RobertaTokenizer
 
 from config import CODEBERT_MODEL_NAME
 
+_MODEL_CACHE: Tuple[RobertaTokenizer, RobertaModel] | None = None
 
-def extract_semantic_expressions(ast: Dict) -> Dict[str, List[str]]:
-    """
-    Extract semantically interesting expressions from an AST.
 
-    We collect assignments in their entirety (e.g. ``l = f + 1``), right‑hand
-    sides of assignments, binary expressions, and the conditions of
-    ``if``/``while`` statements.  Additionally, we parse annotation
-    expressions (e.g. ``@EqualTo(other="arg0")``) to extract the
-    parameter values (like ``arg0``).  These parameter names are
-    included in the ``rhs_expressions`` list so that CodeBERT can
-    evaluate their relevance.
+def _load_codebert() -> Tuple[RobertaTokenizer, RobertaModel]:
+    global _MODEL_CACHE
+    if _MODEL_CACHE is None:
+        tokenizer = RobertaTokenizer.from_pretrained(CODEBERT_MODEL_NAME)
+        model = RobertaModel.from_pretrained(CODEBERT_MODEL_NAME)
+        model.eval()
+        _MODEL_CACHE = (tokenizer, model)
+    return _MODEL_CACHE
 
-    Returns a dictionary of lists keyed by category.
-    """
-    assignments: List[str] = []
-    rhs_expressions: List[str] = []
-    binary_ops: List[str] = []
-    conditions: List[str] = []
-    for node in ast.get("nodes", []):
-        t = node.get("type")
-        label = node.get("label", "")
-        if not isinstance(label, str):
-            continue
-        # Normalize whitespace
-        label = label.replace("\n", " ").strip()
-        # Assignment: capture entire assignment and RHS
-        if t == "VariableDeclarator" and "=" in label:
-            cleaned = " ".join(label.split())
-            assignments.append(cleaned)
-            rhs = cleaned.split("=", 1)[1].strip()
-            rhs_expressions.append(rhs)
-        # Binary expressions
-        if t == "BinaryExpr":
-            cleaned = " ".join(label.split())
-            binary_ops.append(cleaned)
-        # Conditions in if/while
-        if t in ("IfStmt", "WhileStmt") and "(" in label and ")" in label:
-            start = label.find("(") + 1
-            end = label.rfind(")")
-            if 0 < start < end:
-                cond = label[start:end].strip()
-                if cond:
-                    conditions.append(cond)
-        # Extract annotation argument values
-        if t == "NormalAnnotationExpr":
-            # Find quoted strings in annotation parameters.  We match names
-            # like arg0, arg1, n, m, k and ignore numeric literals.
-            for val in re.findall(r'"([A-Za-z_][A-Za-z0-9_]*)"', label):
-                rhs_expressions.append(val)
-    return {
-        "assignments": assignments,
-        "rhs_expressions": rhs_expressions,
-        "binary_ops": binary_ops,
-        "conditions": conditions,
-    }
+
+def _clean(text: str) -> str:
+    return re.sub(r"\s+", " ", str(text)).strip()
 
 
 class CodeBERTSpanRanker:
-    """
-    Thin wrapper around CodeBERT for ranking small code fragments.
-
-    Expressions are embedded using mean‑pooling and scored by the norm
-    of their embeddings.  The highest‑scoring expressions are returned.
-    """
     def __init__(self) -> None:
-        self.tokenizer = RobertaTokenizer.from_pretrained(CODEBERT_MODEL_NAME)
-        self.model = RobertaModel.from_pretrained(CODEBERT_MODEL_NAME)
-        self.model.eval()
+        self.tokenizer, self.model = _load_codebert()
+
     def embed_span(self, text: str) -> torch.Tensor:
         inputs = self.tokenizer(
             text,
             return_tensors="pt",
             truncation=True,
-            max_length=64,
+            max_length=96,
         )
         with torch.no_grad():
             outputs = self.model(**inputs)
         token_embs = outputs.last_hidden_state[0]
         return token_embs.mean(dim=0)
-    def rank_expressions(self, expressions: List[str], top_k: int = 5) -> List[str]:
-        if not expressions:
-            return []
-        embs: List[torch.Tensor | None] = []
-        for expr in expressions:
+
+    def rank_expressions(self, expressions: List[Dict[str, object]], top_k: int = 5) -> List[Dict[str, object]]:
+        valid: List[Tuple[Dict[str, object], float]] = []
+        for item in expressions:
+            text = str(item.get("text", "")).strip()
+            if not text:
+                continue
             try:
-                embs.append(self.embed_span(expr))
+                emb = self.embed_span(text)
+                score = torch.norm(emb).item()
+                valid.append((item, score))
             except Exception:
-                embs.append(None)
-        valid_pairs = [(expr, emb) for expr, emb in zip(expressions, embs) if emb is not None]
-        if not valid_pairs:
-            return []
-        scores = [torch.norm(emb).item() for _, emb in valid_pairs]
-        sorted_pairs = sorted(zip(valid_pairs, scores), key=lambda x: -x[1])
-        top: List[str] = []
-        for (expr, _emb), _score in sorted_pairs[:top_k]:
-            top.append(expr)
-        return top
+                continue
+        valid.sort(key=lambda x: -x[1])
+        return [item for item, _score in valid[:top_k]]
+
+
+def extract_semantic_expressions(ast: Dict) -> List[Dict[str, object]]:
+    candidates: List[Dict[str, object]] = []
+    seen: set[tuple[str, str, int | None]] = set()
+
+    for node in ast.get("nodes", []):
+        ntype = str(node.get("type", ""))
+        label = _clean(str(node.get("label", "")))
+        line = node.get("line")
+        if not label:
+            continue
+
+        role = None
+        text = None
+        if ntype == "VariableDeclarator" and "=" in label:
+            role = "variable declaration"
+            text = label
+            rhs = label.split("=", 1)[1].strip()
+            key_rhs = ("rhs expression", rhs, line)
+            if rhs and key_rhs not in seen:
+                seen.add(key_rhs)
+                candidates.append({"role": "rhs expression", "text": rhs, "line": line})
+        elif ntype == "AssignExpr":
+            role = "assignment"
+            text = label
+        elif ntype == "NormalAnnotationExpr":
+            role = "annotation"
+            text = label
+        elif ntype == "BinaryExpr":
+            role = "binary expression"
+            text = label
+        elif ntype == "Parameter" and "@" in label:
+            role = "annotated declaration"
+            text = label
+        elif ntype == "MethodDeclaration":
+            role = "method context"
+            text = label
+
+        if role and text:
+            key = (role, text, line)
+            if key not in seen:
+                seen.add(key)
+                candidates.append({"role": role, "text": text, "line": line})
+
+    return candidates
 
 
 def build_semantic_cues(ast: Dict, max_items: int = 5) -> str:
-    """
-    Construct a textual block of semantic anchors using CodeBERT.
-
-    The function extracts a list of candidate expressions from the AST,
-    removes duplicates, ranks them via CodeBERT and returns a summary
-    of the top ``max_items`` items.  If no expressions are found, a
-    fallback message is returned.
-    """
-    sx = extract_semantic_expressions(ast)
-    expressions: List[str] = (
-        sx["rhs_expressions"] + sx["binary_ops"] + sx["conditions"]
-    )
-    seen: set[str] = set()
-    unique_exprs: List[str] = []
-    for e in expressions:
-        if e and e not in seen:
-            seen.add(e)
-            unique_exprs.append(e)
-    if not unique_exprs:
+    expressions = extract_semantic_expressions(ast)
+    if not expressions:
         return "No semantic anchors extracted from the code."
     ranker = CodeBERTSpanRanker()
-    top = ranker.rank_expressions(unique_exprs, top_k=max_items)
+    top = ranker.rank_expressions(expressions, top_k=max_items)
     if not top:
         return "No semantic anchors extracted from the code."
+
     lines = ["CodeBERT-based semantic anchors (most central expressions):"]
-    for expr in top:
-        lines.append(f"- {expr}")
+    for item in top:
+        role = item.get("role", "expression")
+        text = _clean(str(item.get("text", "")))
+        line = item.get("line")
+        if isinstance(line, int):
+            lines.append(f"- {role}: {text} (line {line})")
+        else:
+            lines.append(f"- {role}: {text}")
     return "\n".join(lines)
