@@ -82,13 +82,24 @@ def _extract_annotation_spec(prompt: str) -> Optional[Dict[str, str]]:
     m = spec_re.search(prompt)
     if not m:
         return None
-    return {
+    spec = {
         "name": m.group("name").strip(),
         "params": m.group("params").strip(),
         "base": m.group("base").strip(),
         "predicate": (m.group("predicate") or "").strip(),
         "wellformed": (m.group("wellformed") or "").strip(),
     }
+    # Normalize certain Java predicates to simpler infix forms.  In particular,
+    # replace calls to java.lang.Math.floorMod with the infix modulo operator.
+    pred = spec["predicate"]
+    # Pattern: java.lang.Math.floorMod(§x§, §y§) -> §x§ mod §y§
+    pred = re.sub(
+        r"java\.lang\.Math\.floorMod\(\s*(§[A-Za-z]\w*§)\s*,\s*(§[A-Za-z]\w*§)\s*\)",
+        r"\1 mod \2",
+        pred,
+    )
+    spec["predicate"] = pred
+    return spec
 
 def _extract_annotation_name(prompt: str) -> Optional[str]:
     """Return the annotation name from the prompt.
@@ -205,6 +216,73 @@ def _ensure_named_annotation_args(rule: str, annot_name: str, param_names: List[
     return pattern.sub(replacer, rule)
 
 
+def _remove_null_literals(rule: str) -> str:
+    """Remove occurrences of the literal ``null`` from a rule.
+
+    Some LLM outputs may include the Java literal ``null`` in predicates
+    or expressions (e.g. ``v != null``).  Z3 does not support the
+    ``null`` literal in this DSL, so we remove it entirely.  We only
+    remove whole tokens ``null`` to avoid corrupting identifiers that
+    contain ``null`` as a substring.
+
+    Parameters
+    ----------
+    rule : str
+        The candidate rule text.
+
+    Returns
+    -------
+    str
+        The rule with all standalone occurrences of ``null`` removed.
+    """
+    return re.sub(r"\bnull\b", "", rule)
+
+
+def _split_into_rule_blocks(rule: str) -> str:
+    """Normalize rule blocks by eliminating blank lines inside blocks.
+
+    The DSL expects each rule block to consist of an optional list of premise
+    lines followed by a line containing ``---`` and one or more conclusion
+    lines.  Blocks are separated by a single blank line.  Some LLM outputs
+    may insert extra blank lines between premise and conclusion lines within
+    a block (for example between two annotation lines).  Such blank lines
+    cause parsing errors in ``rule_check``.  This helper removes blank
+    lines within blocks and ensures there is exactly one blank line between
+    distinct blocks.
+
+    Parameters
+    ----------
+    rule : str
+        Candidate rule text potentially containing extra blank lines.
+
+    Returns
+    -------
+    str
+        Normalized rule text with proper block separation.
+    """
+    # Split the rule into lines and accumulate non-empty segments separated by
+    # blank lines.  Multiple consecutive blank lines denote a single block
+    # separator.  We collapse blank lines within a block by simply not
+    # adding them.
+    lines = [ln.rstrip() for ln in rule.splitlines()]
+    blocks: List[List[str]] = []
+    current: List[str] = []
+    blank_run = False
+    for ln in lines:
+        if not ln.strip():
+            blank_run = True
+            continue
+        if blank_run and current:
+            # End current block on first non-blank after blanks
+            blocks.append(current)
+            current = []
+            blank_run = False
+        current.append(ln)
+    if current:
+        blocks.append(current)
+    return "\n\n".join("\n".join(block) for block in blocks)
+
+
 def _rules_for_annotation(name: str) -> str:
     """Return DSL rules for a known annotation name.
 
@@ -258,19 +336,20 @@ def _rules_for_annotation(name: str) -> str:
         )
     if lname == "remainder":
         # Remainder arithmetic rules
+        # Use named arguments (remainder, modulus) to conform to the annotation spec.
         return (
-            "v0 : @Remainder(n0, m0)\n"
+            "v0 : @Remainder(remainder=n0, modulus=m0)\n"
             "n1 = n0 + m0\n"
             "---\n"
-            "v0 : @Remainder(n1, m0)\n\n"
-            "v0 : @Remainder(n0, m0)\n"
+            "v0 : @Remainder(remainder=n1, modulus=m0)\n\n"
+            "v0 : @Remainder(remainder=n0, modulus=m0)\n"
             "n1 = n0 - m0\n"
             "---\n"
-            "v0 : @Remainder(n1, m0)\n\n"
-            "v0 : @Remainder(n0, m0)\n"
+            "v0 : @Remainder(remainder=n1, modulus=m0)\n\n"
+            "v0 : @Remainder(remainder=n0, modulus=m0)\n"
             "m0 = m1 * k\n"
             "---\n"
-            "v0 : @Remainder(n0, m1)"
+            "v0 : @Remainder(remainder=n0, modulus=m1)"
         )
     return ""
 
@@ -384,6 +463,11 @@ def generate_rule_with_llm(prompt: str, *, max_iters: int = 3) -> str:
                 param_names = _extract_param_names(prompt)
                 if param_names:
                     candidate = _ensure_named_annotation_args(candidate, ann_name, param_names)
+            # Remove Java null literals which are unsupported in the rule DSL.
+            candidate = _remove_null_literals(candidate)
+            # Normalize rule blocks: remove blank lines within blocks and ensure single
+            # blank line separators between distinct rules.
+            candidate = _split_into_rule_blocks(candidate)
         except Exception:
             # If the external model is not available, break early to
             # deterministic heuristic fallback.

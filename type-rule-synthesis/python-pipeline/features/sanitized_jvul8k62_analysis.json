@@ -1,0 +1,700 @@
+{
+  "file" : "C:\\Users\\Freily\\AppData\\Local\\Temp\\sanitized_jvul8k62.java",
+  "code" : "/*\r\nannotation EqualTo(int other) int\r\n    :<==> \"§subject§ == §other§\"\r\n    for \"true\";\r\n*/\r\n\r\npublic final class EqualityIdent {\r\n\r\n    public void foo(int arg) {\r\n        // :: error: assignment.type.incompatible\r\n        @EqualTo(other=\"arg\") int l0 = arg;\r\n    }\r\n\r\n    public void bar(@EqualTo(other=\"arg1\") int arg0, int arg1) {\r\n        // :: error: assignment.type.incompatible\r\n        @EqualTo(other=\"arg0\") int l0 = arg1;\r\n    }\r\n}\r\n\r\n\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "/* annotation EqualTo(int other) int :<==> \"§subject§ == §other§\" for \"true\"; */ public final class EqualityIdent { public void foo(int arg) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg; } public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1; } }",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 20,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 1,
+      "type" : "BlockComment",
+      "label" : "/* annotation EqualTo(int other) int :<==> \"§subject§ == §other§\" for \"true\"; */",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 5,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 2,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "/* annotation EqualTo(int other) int :<==> \"§subject§ == §other§\" for \"true\"; */ public final class EqualityIdent { public void foo(int arg) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg; } public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1; } }",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 18,
+      "end_column" : 1,
+      "method" : "<global>"
+    }, {
+      "id" : 3,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 7,
+      "end_column" : 6,
+      "method" : "<global>"
+    }, {
+      "id" : 4,
+      "type" : "Modifier",
+      "label" : "final",
+      "line" : 7,
+      "column" : 8,
+      "end_line" : 7,
+      "end_column" : 12,
+      "method" : "<global>"
+    }, {
+      "id" : 5,
+      "type" : "SimpleName",
+      "label" : "EqualityIdent",
+      "line" : 7,
+      "column" : 20,
+      "end_line" : 7,
+      "end_column" : 32,
+      "method" : "<global>"
+    }, {
+      "id" : 6,
+      "type" : "MethodDeclaration",
+      "label" : "public void foo(int arg) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg; }",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 12,
+      "end_column" : 5,
+      "method" : "foo"
+    }, {
+      "id" : 7,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 9,
+      "end_column" : 10,
+      "method" : "foo"
+    }, {
+      "id" : 8,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 9,
+      "column" : 12,
+      "end_line" : 9,
+      "end_column" : 15,
+      "method" : "foo"
+    }, {
+      "id" : 9,
+      "type" : "SimpleName",
+      "label" : "foo",
+      "line" : 9,
+      "column" : 17,
+      "end_line" : 9,
+      "end_column" : 19,
+      "method" : "foo"
+    }, {
+      "id" : 10,
+      "type" : "Parameter",
+      "label" : "int arg",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 11,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 23,
+      "method" : "foo"
+    }, {
+      "id" : 12,
+      "type" : "SimpleName",
+      "label" : "arg",
+      "line" : 9,
+      "column" : 25,
+      "end_line" : 9,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 13,
+      "type" : "BlockStmt",
+      "label" : "{ // :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg; }",
+      "line" : 9,
+      "column" : 30,
+      "end_line" : 12,
+      "end_column" : 5,
+      "method" : "foo"
+    }, {
+      "id" : 14,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg;",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 43,
+      "method" : "foo"
+    }, {
+      "id" : 15,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@EqualTo(other = \"arg\") int l0 = arg",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 42,
+      "method" : "foo"
+    }, {
+      "id" : 16,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg\")",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 29,
+      "method" : "foo"
+    }, {
+      "id" : 17,
+      "type" : "Name",
+      "label" : "EqualTo",
+      "line" : 11,
+      "column" : 10,
+      "end_line" : 11,
+      "end_column" : 16,
+      "method" : "foo"
+    }, {
+      "id" : 18,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg\"",
+      "line" : 11,
+      "column" : 18,
+      "end_line" : 11,
+      "end_column" : 28,
+      "method" : "foo"
+    }, {
+      "id" : 19,
+      "type" : "SimpleName",
+      "label" : "other",
+      "line" : 11,
+      "column" : 18,
+      "end_line" : 11,
+      "end_column" : 22,
+      "method" : "foo"
+    }, {
+      "id" : 20,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg\"",
+      "line" : 11,
+      "column" : 24,
+      "end_line" : 11,
+      "end_column" : 28,
+      "method" : "foo"
+    }, {
+      "id" : 21,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = arg",
+      "line" : 11,
+      "column" : 35,
+      "end_line" : 11,
+      "end_column" : 42,
+      "method" : "foo"
+    }, {
+      "id" : 22,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 11,
+      "column" : 31,
+      "end_line" : 11,
+      "end_column" : 33,
+      "method" : "foo"
+    }, {
+      "id" : 23,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 11,
+      "column" : 35,
+      "end_line" : 11,
+      "end_column" : 36,
+      "method" : "foo"
+    }, {
+      "id" : 24,
+      "type" : "NameExpr",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 40,
+      "end_line" : 11,
+      "end_column" : 42,
+      "method" : "foo"
+    }, {
+      "id" : 25,
+      "type" : "SimpleName",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 40,
+      "end_line" : 11,
+      "end_column" : 42,
+      "method" : "foo"
+    }, {
+      "id" : 26,
+      "type" : "MethodDeclaration",
+      "label" : "public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) { // :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1; }",
+      "line" : 14,
+      "column" : 5,
+      "end_line" : 17,
+      "end_column" : 5,
+      "method" : "bar"
+    }, {
+      "id" : 27,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 14,
+      "column" : 5,
+      "end_line" : 14,
+      "end_column" : 10,
+      "method" : "bar"
+    }, {
+      "id" : 28,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 14,
+      "column" : 12,
+      "end_line" : 14,
+      "end_column" : 15,
+      "method" : "bar"
+    }, {
+      "id" : 29,
+      "type" : "SimpleName",
+      "label" : "bar",
+      "line" : 14,
+      "column" : 17,
+      "end_line" : 14,
+      "end_column" : 19,
+      "method" : "bar"
+    }, {
+      "id" : 30,
+      "type" : "Parameter",
+      "label" : "@EqualTo(other = \"arg1\") int arg0",
+      "line" : 14,
+      "column" : 21,
+      "end_line" : 14,
+      "end_column" : 51,
+      "method" : "bar"
+    }, {
+      "id" : 31,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg1\")",
+      "line" : 14,
+      "column" : 21,
+      "end_line" : 14,
+      "end_column" : 42,
+      "method" : "bar"
+    }, {
+      "id" : 32,
+      "type" : "Name",
+      "label" : "EqualTo",
+      "line" : 14,
+      "column" : 22,
+      "end_line" : 14,
+      "end_column" : 28,
+      "method" : "bar"
+    }, {
+      "id" : 33,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg1\"",
+      "line" : 14,
+      "column" : 30,
+      "end_line" : 14,
+      "end_column" : 41,
+      "method" : "bar"
+    }, {
+      "id" : 34,
+      "type" : "SimpleName",
+      "label" : "other",
+      "line" : 14,
+      "column" : 30,
+      "end_line" : 14,
+      "end_column" : 34,
+      "method" : "bar"
+    }, {
+      "id" : 35,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg1\"",
+      "line" : 14,
+      "column" : 36,
+      "end_line" : 14,
+      "end_column" : 41,
+      "method" : "bar"
+    }, {
+      "id" : 36,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 14,
+      "column" : 44,
+      "end_line" : 14,
+      "end_column" : 46,
+      "method" : "bar"
+    }, {
+      "id" : 37,
+      "type" : "SimpleName",
+      "label" : "arg0",
+      "line" : 14,
+      "column" : 48,
+      "end_line" : 14,
+      "end_column" : 51,
+      "method" : "bar"
+    }, {
+      "id" : 38,
+      "type" : "Parameter",
+      "label" : "int arg1",
+      "line" : 14,
+      "column" : 54,
+      "end_line" : 14,
+      "end_column" : 61,
+      "method" : "bar"
+    }, {
+      "id" : 39,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 14,
+      "column" : 54,
+      "end_line" : 14,
+      "end_column" : 56,
+      "method" : "bar"
+    }, {
+      "id" : 40,
+      "type" : "SimpleName",
+      "label" : "arg1",
+      "line" : 14,
+      "column" : 58,
+      "end_line" : 14,
+      "end_column" : 61,
+      "method" : "bar"
+    }, {
+      "id" : 41,
+      "type" : "BlockStmt",
+      "label" : "{ // :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1; }",
+      "line" : 14,
+      "column" : 64,
+      "end_line" : 17,
+      "end_column" : 5,
+      "method" : "bar"
+    }, {
+      "id" : 42,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1;",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 45,
+      "method" : "bar"
+    }, {
+      "id" : 43,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@EqualTo(other = \"arg0\") int l0 = arg1",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 44,
+      "method" : "bar"
+    }, {
+      "id" : 44,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg0\")",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 30,
+      "method" : "bar"
+    }, {
+      "id" : 45,
+      "type" : "Name",
+      "label" : "EqualTo",
+      "line" : 16,
+      "column" : 10,
+      "end_line" : 16,
+      "end_column" : 16,
+      "method" : "bar"
+    }, {
+      "id" : 46,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg0\"",
+      "line" : 16,
+      "column" : 18,
+      "end_line" : 16,
+      "end_column" : 29,
+      "method" : "bar"
+    }, {
+      "id" : 47,
+      "type" : "SimpleName",
+      "label" : "other",
+      "line" : 16,
+      "column" : 18,
+      "end_line" : 16,
+      "end_column" : 22,
+      "method" : "bar"
+    }, {
+      "id" : 48,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg0\"",
+      "line" : 16,
+      "column" : 24,
+      "end_line" : 16,
+      "end_column" : 29,
+      "method" : "bar"
+    }, {
+      "id" : 49,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = arg1",
+      "line" : 16,
+      "column" : 36,
+      "end_line" : 16,
+      "end_column" : 44,
+      "method" : "bar"
+    }, {
+      "id" : 50,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 16,
+      "column" : 32,
+      "end_line" : 16,
+      "end_column" : 34,
+      "method" : "bar"
+    }, {
+      "id" : 51,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 16,
+      "column" : 36,
+      "end_line" : 16,
+      "end_column" : 37,
+      "method" : "bar"
+    }, {
+      "id" : 52,
+      "type" : "NameExpr",
+      "label" : "arg1",
+      "line" : 16,
+      "column" : 41,
+      "end_line" : 16,
+      "end_column" : 44,
+      "method" : "bar"
+    }, {
+      "id" : 53,
+      "type" : "SimpleName",
+      "label" : "arg1",
+      "line" : 16,
+      "column" : 41,
+      "end_line" : 16,
+      "end_column" : 44,
+      "method" : "bar"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 0, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 6, 7 ], [ 6, 8 ], [ 6, 9 ], [ 6, 10 ], [ 10, 11 ], [ 10, 12 ], [ 6, 13 ], [ 13, 14 ], [ 14, 15 ], [ 15, 16 ], [ 16, 17 ], [ 16, 18 ], [ 18, 19 ], [ 18, 20 ], [ 15, 21 ], [ 21, 22 ], [ 21, 23 ], [ 21, 24 ], [ 24, 25 ], [ 2, 26 ], [ 26, 27 ], [ 26, 28 ], [ 26, 29 ], [ 26, 30 ], [ 30, 31 ], [ 31, 32 ], [ 31, 33 ], [ 33, 34 ], [ 33, 35 ], [ 30, 36 ], [ 30, 37 ], [ 26, 38 ], [ 38, 39 ], [ 38, 40 ], [ 26, 41 ], [ 41, 42 ], [ 42, 43 ], [ 43, 44 ], [ 44, 45 ], [ 44, 46 ], [ 46, 47 ], [ 46, 48 ], [ 43, 49 ], [ 49, 50 ], [ 49, 51 ], [ 49, 52 ], [ 52, 53 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg;",
+      "method" : "foo",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 43,
+      "ast_id" : 14
+    }, {
+      "id" : 1,
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1;",
+      "method" : "bar",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 45,
+      "ast_id" : 42
+    } ],
+    "edges" : [ ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "param_def",
+      "label" : "int arg",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 27,
+      "ast_id" : 10
+    }, {
+      "id" : 1,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "rhs_use",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 40,
+      "end_line" : 11,
+      "end_column" : 42,
+      "ast_id" : 24
+    }, {
+      "id" : 2,
+      "var" : "l0",
+      "symbol" : "foo:l0@11",
+      "method" : "foo",
+      "role" : "local_def",
+      "label" : "l0 = arg",
+      "line" : 11,
+      "column" : 35,
+      "end_line" : 11,
+      "end_column" : 42,
+      "ast_id" : 21
+    }, {
+      "id" : 3,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "annotation_ref",
+      "label" : "@EqualTo(other = \"arg\")",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 29,
+      "ast_id" : 16,
+      "annotation" : "@EqualTo(other = \"arg\")",
+      "annotation_param" : "other",
+      "owner_var" : "l0",
+      "owner_ast_id" : "15",
+      "owner_type" : "VariableDeclarationExpr"
+    }, {
+      "id" : 4,
+      "var" : "arg0",
+      "symbol" : "bar:arg0@14",
+      "method" : "bar",
+      "role" : "param_def",
+      "label" : "@EqualTo(other = \"arg1\") int arg0",
+      "line" : 14,
+      "column" : 21,
+      "end_line" : 14,
+      "end_column" : 51,
+      "ast_id" : 30
+    }, {
+      "id" : 5,
+      "var" : "arg1",
+      "symbol" : "bar:arg1@14",
+      "method" : "bar",
+      "role" : "param_def",
+      "label" : "int arg1",
+      "line" : 14,
+      "column" : 54,
+      "end_line" : 14,
+      "end_column" : 61,
+      "ast_id" : 38
+    }, {
+      "id" : 6,
+      "var" : "arg1",
+      "symbol" : "bar:arg1@14",
+      "method" : "bar",
+      "role" : "annotation_ref",
+      "label" : "@EqualTo(other = \"arg1\")",
+      "line" : 14,
+      "column" : 21,
+      "end_line" : 14,
+      "end_column" : 42,
+      "ast_id" : 31,
+      "annotation" : "@EqualTo(other = \"arg1\")",
+      "annotation_param" : "other",
+      "owner_var" : "arg0",
+      "owner_ast_id" : "30",
+      "owner_type" : "Parameter"
+    }, {
+      "id" : 7,
+      "var" : "arg1",
+      "symbol" : "bar:arg1@14",
+      "method" : "bar",
+      "role" : "rhs_use",
+      "label" : "arg1",
+      "line" : 16,
+      "column" : 41,
+      "end_line" : 16,
+      "end_column" : 44,
+      "ast_id" : 52
+    }, {
+      "id" : 8,
+      "var" : "l0",
+      "symbol" : "bar:l0@16",
+      "method" : "bar",
+      "role" : "local_def",
+      "label" : "l0 = arg1",
+      "line" : 16,
+      "column" : 36,
+      "end_line" : 16,
+      "end_column" : 44,
+      "ast_id" : 49
+    }, {
+      "id" : 9,
+      "var" : "arg0",
+      "symbol" : "bar:arg0@14",
+      "method" : "bar",
+      "role" : "annotation_ref",
+      "label" : "@EqualTo(other = \"arg0\")",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 30,
+      "ast_id" : 44,
+      "annotation" : "@EqualTo(other = \"arg0\")",
+      "annotation_param" : "other",
+      "owner_var" : "l0",
+      "owner_ast_id" : "43",
+      "owner_type" : "VariableDeclarationExpr"
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "data_flow",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 11
+    }, {
+      "src" : 0,
+      "dst" : 3,
+      "type" : "annotation_ref",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 11
+    }, {
+      "src" : 5,
+      "dst" : 6,
+      "type" : "annotation_ref",
+      "var" : "arg1",
+      "symbol" : "bar:arg1@14",
+      "method" : "bar",
+      "src_line" : 14,
+      "dst_line" : 14
+    }, {
+      "src" : 5,
+      "dst" : 7,
+      "type" : "data_flow",
+      "var" : "arg1",
+      "symbol" : "bar:arg1@14",
+      "method" : "bar",
+      "src_line" : 14,
+      "dst_line" : 16
+    }, {
+      "src" : 4,
+      "dst" : 9,
+      "type" : "annotation_ref",
+      "var" : "arg0",
+      "symbol" : "bar:arg0@14",
+      "method" : "bar",
+      "src_line" : 14,
+      "dst_line" : 16
+    } ]
+  }
+}
