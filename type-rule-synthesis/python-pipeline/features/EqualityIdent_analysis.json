@@ -1,0 +1,490 @@
+{
+  "file" : "C:\\MySpace\\Study\\Praxis_der_Forschung\\type-rule-synthesis\\python-pipeline\\..\\testcases\\EqualityIdent.java",
+  "code" : "/*\nannotation EqualTo(int other) int\n    :<==> \"§subject§ == §other§\"\n    for \"true\";\n*/\n\npublic final class EqualityIdent {\n\n    public void foo(int arg) {\n        // :: error: assignment.type.incompatible\n        @EqualTo(other=\"arg\") int l0 = arg;\n    }\n\n    public void bar(@EqualTo(other=\"arg1\") int arg0, int arg1) {\n        // :: error: assignment.type.incompatible\n        @EqualTo(other=\"arg0\") int l0 = arg1;\n    }\n}\n\n/*\nExpected result:\n\n---\nv : @EqualTo(other=\"v\")\n\nv1 : @EqualTo(other=\"v2\")\n---\nv2 : @EqualTo(other=\"v1\")\n*/\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "/* annotation EqualTo(int other) int     :<==> \"§subject§ == §other§\"     for \"true\"; */ public final class EqualityIdent {      public void foo(int arg) {         // :: error: assignment.type.incompatible         @EqualTo(other = \"arg\")         int l0 = arg;     }      public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) {         // :: error: assignment.type.incompatible         @EqualTo(other = \"arg0\")         int l0 = arg1;     } } /* Expected result:  --- v : @EqualTo(other=\"v\")  v1 : @EqualTo(other=\"v2\") --- v2 : @EqualTo(other=\"v1\") */"
+    }, {
+      "id" : 3,
+      "type" : "BlockComment",
+      "label" : "/* Expected result:  --- v : @EqualTo(other=\"v\")  v1 : @EqualTo(other=\"v2\") --- v2 : @EqualTo(other=\"v1\") */"
+    }, {
+      "id" : 2,
+      "type" : "BlockComment",
+      "label" : "/* annotation EqualTo(int other) int     :<==> \"§subject§ == §other§\"     for \"true\"; */"
+    }, {
+      "id" : 1,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "/* annotation EqualTo(int other) int     :<==> \"§subject§ == §other§\"     for \"true\"; */ public final class EqualityIdent {      public void foo(int arg) {         // :: error: assignment.type.incompatible         @EqualTo(other = \"arg\")         int l0 = arg;     }      public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) {         // :: error: assignment.type.incompatible         @EqualTo(other = \"arg0\")         int l0 = arg1;     } }"
+    }, {
+      "id" : 8,
+      "type" : "MethodDeclaration",
+      "label" : "public void bar(@EqualTo(other = \"arg1\") int arg0, int arg1) {     // :: error: assignment.type.incompatible     @EqualTo(other = \"arg0\")     int l0 = arg1; }"
+    }, {
+      "id" : 14,
+      "type" : "BlockStmt",
+      "label" : "{     // :: error: assignment.type.incompatible     @EqualTo(other = \"arg0\")     int l0 = arg1; }"
+    }, {
+      "id" : 15,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1;"
+    }, {
+      "id" : 16,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@EqualTo(other = \"arg0\") int l0 = arg1"
+    }, {
+      "id" : 18,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = arg1"
+    }, {
+      "id" : 21,
+      "type" : "NameExpr",
+      "label" : "arg1"
+    }, {
+      "id" : 22,
+      "type" : "SimpleName",
+      "label" : "arg1"
+    }, {
+      "id" : 20,
+      "type" : "SimpleName",
+      "label" : "l0"
+    }, {
+      "id" : 19,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 17,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg0\")"
+    }, {
+      "id" : 24,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg0\""
+    }, {
+      "id" : 26,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg0\""
+    }, {
+      "id" : 25,
+      "type" : "SimpleName",
+      "label" : "other"
+    }, {
+      "id" : 23,
+      "type" : "Name",
+      "label" : "EqualTo"
+    }, {
+      "id" : 13,
+      "type" : "VoidType",
+      "label" : "void"
+    }, {
+      "id" : 12,
+      "type" : "Parameter",
+      "label" : "int arg1"
+    }, {
+      "id" : 28,
+      "type" : "SimpleName",
+      "label" : "arg1"
+    }, {
+      "id" : 27,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 11,
+      "type" : "Parameter",
+      "label" : "@EqualTo(other = \"arg1\") int arg0"
+    }, {
+      "id" : 31,
+      "type" : "SimpleName",
+      "label" : "arg0"
+    }, {
+      "id" : 30,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 29,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg1\")"
+    }, {
+      "id" : 33,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg1\""
+    }, {
+      "id" : 35,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg1\""
+    }, {
+      "id" : 34,
+      "type" : "SimpleName",
+      "label" : "other"
+    }, {
+      "id" : 32,
+      "type" : "Name",
+      "label" : "EqualTo"
+    }, {
+      "id" : 10,
+      "type" : "SimpleName",
+      "label" : "bar"
+    }, {
+      "id" : 9,
+      "type" : "Modifier",
+      "label" : "public"
+    }, {
+      "id" : 7,
+      "type" : "MethodDeclaration",
+      "label" : "public void foo(int arg) {     // :: error: assignment.type.incompatible     @EqualTo(other = \"arg\")     int l0 = arg; }"
+    }, {
+      "id" : 40,
+      "type" : "BlockStmt",
+      "label" : "{     // :: error: assignment.type.incompatible     @EqualTo(other = \"arg\")     int l0 = arg; }"
+    }, {
+      "id" : 41,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg;"
+    }, {
+      "id" : 42,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@EqualTo(other = \"arg\") int l0 = arg"
+    }, {
+      "id" : 44,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = arg"
+    }, {
+      "id" : 47,
+      "type" : "NameExpr",
+      "label" : "arg"
+    }, {
+      "id" : 48,
+      "type" : "SimpleName",
+      "label" : "arg"
+    }, {
+      "id" : 46,
+      "type" : "SimpleName",
+      "label" : "l0"
+    }, {
+      "id" : 45,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 43,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@EqualTo(other = \"arg\")"
+    }, {
+      "id" : 50,
+      "type" : "MemberValuePair",
+      "label" : "other = \"arg\""
+    }, {
+      "id" : 52,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg\""
+    }, {
+      "id" : 51,
+      "type" : "SimpleName",
+      "label" : "other"
+    }, {
+      "id" : 49,
+      "type" : "Name",
+      "label" : "EqualTo"
+    }, {
+      "id" : 39,
+      "type" : "VoidType",
+      "label" : "void"
+    }, {
+      "id" : 38,
+      "type" : "Parameter",
+      "label" : "int arg"
+    }, {
+      "id" : 54,
+      "type" : "SimpleName",
+      "label" : "arg"
+    }, {
+      "id" : 53,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 37,
+      "type" : "SimpleName",
+      "label" : "foo"
+    }, {
+      "id" : 36,
+      "type" : "Modifier",
+      "label" : "public"
+    }, {
+      "id" : 6,
+      "type" : "SimpleName",
+      "label" : "EqualityIdent"
+    }, {
+      "id" : 5,
+      "type" : "Modifier",
+      "label" : "final"
+    }, {
+      "id" : 4,
+      "type" : "Modifier",
+      "label" : "public"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 0, 2 ], [ 0, 3 ], [ 1, 4 ], [ 1, 5 ], [ 1, 6 ], [ 1, 7 ], [ 1, 8 ], [ 8, 9 ], [ 8, 10 ], [ 8, 11 ], [ 8, 12 ], [ 8, 13 ], [ 8, 14 ], [ 14, 15 ], [ 15, 16 ], [ 16, 17 ], [ 16, 18 ], [ 18, 19 ], [ 18, 20 ], [ 18, 21 ], [ 21, 22 ], [ 17, 23 ], [ 17, 24 ], [ 24, 25 ], [ 24, 26 ], [ 12, 27 ], [ 12, 28 ], [ 11, 29 ], [ 11, 30 ], [ 11, 31 ], [ 29, 32 ], [ 29, 33 ], [ 33, 34 ], [ 33, 35 ], [ 7, 36 ], [ 7, 37 ], [ 7, 38 ], [ 7, 39 ], [ 7, 40 ], [ 40, 41 ], [ 41, 42 ], [ 42, 43 ], [ 42, 44 ], [ 44, 45 ], [ 44, 46 ], [ 44, 47 ], [ 47, 48 ], [ 43, 49 ], [ 43, 50 ], [ 50, 51 ], [ 50, 52 ], [ 38, 53 ], [ 38, 54 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg\") int l0 = arg;"
+    }, {
+      "id" : 1,
+      "label" : "// :: error: assignment.type.incompatible @EqualTo(other = \"arg0\") int l0 = arg1;"
+    } ],
+    "edges" : [ [ 0, 1 ] ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "annotation",
+      "line" : 1
+    }, {
+      "id" : 1,
+      "var" : "EqualTo",
+      "line" : 1
+    }, {
+      "id" : 2,
+      "var" : "int",
+      "line" : 1
+    }, {
+      "id" : 3,
+      "var" : "other",
+      "line" : 1
+    }, {
+      "id" : 4,
+      "var" : "int",
+      "line" : 1
+    }, {
+      "id" : 5,
+      "var" : "subject",
+      "line" : 2
+    }, {
+      "id" : 6,
+      "var" : "other",
+      "line" : 2
+    }, {
+      "id" : 7,
+      "var" : "for",
+      "line" : 3
+    }, {
+      "id" : 8,
+      "var" : "true",
+      "line" : 3
+    }, {
+      "id" : 9,
+      "var" : "public",
+      "line" : 5
+    }, {
+      "id" : 10,
+      "var" : "final",
+      "line" : 5
+    }, {
+      "id" : 11,
+      "var" : "class",
+      "line" : 5
+    }, {
+      "id" : 12,
+      "var" : "EqualityIdent",
+      "line" : 5
+    }, {
+      "id" : 13,
+      "var" : "public",
+      "line" : 7
+    }, {
+      "id" : 14,
+      "var" : "void",
+      "line" : 7
+    }, {
+      "id" : 15,
+      "var" : "foo",
+      "line" : 7
+    }, {
+      "id" : 16,
+      "var" : "int",
+      "line" : 7
+    }, {
+      "id" : 17,
+      "var" : "arg",
+      "line" : 7
+    }, {
+      "id" : 18,
+      "var" : "error",
+      "line" : 8
+    }, {
+      "id" : 19,
+      "var" : "assignment",
+      "line" : 8
+    }, {
+      "id" : 20,
+      "var" : "type",
+      "line" : 8
+    }, {
+      "id" : 21,
+      "var" : "incompatible",
+      "line" : 8
+    }, {
+      "id" : 22,
+      "var" : "EqualTo",
+      "line" : 9
+    }, {
+      "id" : 23,
+      "var" : "other",
+      "line" : 9
+    }, {
+      "id" : 24,
+      "var" : "arg",
+      "line" : 9
+    }, {
+      "id" : 25,
+      "var" : "int",
+      "line" : 10
+    }, {
+      "id" : 26,
+      "var" : "l0",
+      "line" : 10
+    }, {
+      "id" : 27,
+      "var" : "arg",
+      "line" : 10
+    }, {
+      "id" : 28,
+      "var" : "public",
+      "line" : 13
+    }, {
+      "id" : 29,
+      "var" : "void",
+      "line" : 13
+    }, {
+      "id" : 30,
+      "var" : "bar",
+      "line" : 13
+    }, {
+      "id" : 31,
+      "var" : "EqualTo",
+      "line" : 13
+    }, {
+      "id" : 32,
+      "var" : "other",
+      "line" : 13
+    }, {
+      "id" : 33,
+      "var" : "arg1",
+      "line" : 13
+    }, {
+      "id" : 34,
+      "var" : "int",
+      "line" : 13
+    }, {
+      "id" : 35,
+      "var" : "arg0",
+      "line" : 13
+    }, {
+      "id" : 36,
+      "var" : "int",
+      "line" : 13
+    }, {
+      "id" : 37,
+      "var" : "arg1",
+      "line" : 13
+    }, {
+      "id" : 38,
+      "var" : "error",
+      "line" : 14
+    }, {
+      "id" : 39,
+      "var" : "assignment",
+      "line" : 14
+    }, {
+      "id" : 40,
+      "var" : "type",
+      "line" : 14
+    }, {
+      "id" : 41,
+      "var" : "incompatible",
+      "line" : 14
+    }, {
+      "id" : 42,
+      "var" : "EqualTo",
+      "line" : 15
+    }, {
+      "id" : 43,
+      "var" : "other",
+      "line" : 15
+    }, {
+      "id" : 44,
+      "var" : "arg0",
+      "line" : 15
+    }, {
+      "id" : 45,
+      "var" : "int",
+      "line" : 16
+    }, {
+      "id" : 46,
+      "var" : "l0",
+      "line" : 16
+    }, {
+      "id" : 47,
+      "var" : "arg1",
+      "line" : 16
+    }, {
+      "id" : 48,
+      "var" : "Expected",
+      "line" : 20
+    }, {
+      "id" : 49,
+      "var" : "result",
+      "line" : 20
+    }, {
+      "id" : 50,
+      "var" : "v",
+      "line" : 23
+    }, {
+      "id" : 51,
+      "var" : "EqualTo",
+      "line" : 23
+    }, {
+      "id" : 52,
+      "var" : "other",
+      "line" : 23
+    }, {
+      "id" : 53,
+      "var" : "v",
+      "line" : 23
+    }, {
+      "id" : 54,
+      "var" : "v1",
+      "line" : 25
+    }, {
+      "id" : 55,
+      "var" : "EqualTo",
+      "line" : 25
+    }, {
+      "id" : 56,
+      "var" : "other",
+      "line" : 25
+    }, {
+      "id" : 57,
+      "var" : "v2",
+      "line" : 25
+    }, {
+      "id" : 58,
+      "var" : "v2",
+      "line" : 27
+    }, {
+      "id" : 59,
+      "var" : "EqualTo",
+      "line" : 27
+    }, {
+      "id" : 60,
+      "var" : "other",
+      "line" : 27
+    }, {
+      "id" : 61,
+      "var" : "v1",
+      "line" : 27
+    } ],
+    "edges" : [ [ 3, 6 ], [ 6, 23 ], [ 23, 32 ], [ 32, 43 ], [ 43, 52 ], [ 52, 56 ], [ 56, 60 ], [ 26, 46 ], [ 20, 40 ], [ 18, 38 ], [ 21, 41 ], [ 9, 13 ], [ 13, 28 ], [ 17, 24 ], [ 24, 27 ], [ 14, 29 ], [ 19, 39 ], [ 2, 4 ], [ 4, 16 ], [ 16, 25 ], [ 25, 34 ], [ 34, 36 ], [ 36, 45 ], [ 1, 22 ], [ 22, 31 ], [ 31, 42 ], [ 42, 51 ], [ 51, 55 ], [ 55, 59 ], [ 50, 53 ], [ 33, 37 ], [ 37, 47 ], [ 35, 44 ], [ 54, 61 ], [ 57, 58 ] ]
+  }
+}

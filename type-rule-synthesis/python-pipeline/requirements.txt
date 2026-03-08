@@ -1,0 +1,7 @@
+torch
+torch-geometric
+transformers
+networkx
+numpy
+z3-solver
+tqdm

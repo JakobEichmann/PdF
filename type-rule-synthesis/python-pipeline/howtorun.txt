@@ -1,0 +1,15 @@
+cd C:\MySpace\Study\Praxis_der_Forschung\type-rule-synthesis\python-pipeline
+python run_java_analyzer.py
+python feature_extraction.py
+python run_pipeline.py --all
+
+
+
+
+
+
+
+
+python run_pipeline.py --file ..\testcases\EqualityIdent.java
+
+

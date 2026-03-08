@@ -1,0 +1,314 @@
+{
+  "file" : "C:\\MySpace\\Study\\Praxis_der_Forschung\\type-rule-synthesis\\testcases\\E09_MulNegConst_OK.java",
+  "code" : "public class E09_MulNegConst_OK {\r\n    @Interval(min = 1, max = 3)\r\n    int f;\r\n\r\n    public void foo() {\r\n        f = 2;\r\n        // f * (-2) in [-6,-2]\r\n        @Interval(min = -6, max = -2)\r\n        int l = f * (-2); // EXPECT: OK (needs sign-aware scaling)\r\n    }\r\n}\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "public class E09_MulNegConst_OK {\r \r     @Interval(min = 1, max = 3)\r     int f;\r \r     public void foo() {\r         f = 2;\r         // f * (-2) in [-6,-2]\r         @Interval(min = -6, max = -2)\r         int // EXPECT: OK (needs sign-aware scaling)\r         l = f * (-2);\r     }\r }"
+    }, {
+      "id" : 1,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "public class E09_MulNegConst_OK {\r \r     @Interval(min = 1, max = 3)\r     int f;\r \r     public void foo() {\r         f = 2;\r         // f * (-2) in [-6,-2]\r         @Interval(min = -6, max = -2)\r         int // EXPECT: OK (needs sign-aware scaling)\r         l = f * (-2);\r     }\r }"
+    }, {
+      "id" : 5,
+      "type" : "MethodDeclaration",
+      "label" : "public void foo() {\r     f = 2;\r     // f * (-2) in [-6,-2]\r     @Interval(min = -6, max = -2)\r     int // EXPECT: OK (needs sign-aware scaling)\r     l = f * (-2);\r }"
+    }, {
+      "id" : 9,
+      "type" : "BlockStmt",
+      "label" : "{\r     f = 2;\r     // f * (-2) in [-6,-2]\r     @Interval(min = -6, max = -2)\r     int // EXPECT: OK (needs sign-aware scaling)\r     l = f * (-2);\r }"
+    }, {
+      "id" : 11,
+      "type" : "ExpressionStmt",
+      "label" : "// f * (-2) in [-6,-2]\r @Interval(min = -6, max = -2)\r int // EXPECT: OK (needs sign-aware scaling)\r l = f * (-2);"
+    }, {
+      "id" : 12,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@Interval(min = -6, max = -2)\r int // EXPECT: OK (needs sign-aware scaling)\r l = f * (-2)"
+    }, {
+      "id" : 14,
+      "type" : "VariableDeclarator",
+      "label" : "// EXPECT: OK (needs sign-aware scaling)\r l = f * (-2)"
+    }, {
+      "id" : 17,
+      "type" : "BinaryExpr",
+      "label" : "f * (-2)"
+    }, {
+      "id" : 19,
+      "type" : "EnclosedExpr",
+      "label" : "(-2)"
+    }, {
+      "id" : 20,
+      "type" : "UnaryExpr",
+      "label" : "-2"
+    }, {
+      "id" : 21,
+      "type" : "IntegerLiteralExpr",
+      "label" : "2"
+    }, {
+      "id" : 18,
+      "type" : "NameExpr",
+      "label" : "f"
+    }, {
+      "id" : 22,
+      "type" : "SimpleName",
+      "label" : "f"
+    }, {
+      "id" : 16,
+      "type" : "SimpleName",
+      "label" : "l"
+    }, {
+      "id" : 15,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 13,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Interval(min = -6, max = -2)"
+    }, {
+      "id" : 25,
+      "type" : "MemberValuePair",
+      "label" : "max = -2"
+    }, {
+      "id" : 27,
+      "type" : "UnaryExpr",
+      "label" : "-2"
+    }, {
+      "id" : 28,
+      "type" : "IntegerLiteralExpr",
+      "label" : "2"
+    }, {
+      "id" : 26,
+      "type" : "SimpleName",
+      "label" : "max"
+    }, {
+      "id" : 24,
+      "type" : "MemberValuePair",
+      "label" : "min = -6"
+    }, {
+      "id" : 30,
+      "type" : "UnaryExpr",
+      "label" : "-6"
+    }, {
+      "id" : 31,
+      "type" : "IntegerLiteralExpr",
+      "label" : "6"
+    }, {
+      "id" : 29,
+      "type" : "SimpleName",
+      "label" : "min"
+    }, {
+      "id" : 23,
+      "type" : "Name",
+      "label" : "Interval"
+    }, {
+      "id" : 10,
+      "type" : "ExpressionStmt",
+      "label" : "f = 2;"
+    }, {
+      "id" : 32,
+      "type" : "AssignExpr",
+      "label" : "f = 2"
+    }, {
+      "id" : 34,
+      "type" : "IntegerLiteralExpr",
+      "label" : "2"
+    }, {
+      "id" : 33,
+      "type" : "NameExpr",
+      "label" : "f"
+    }, {
+      "id" : 35,
+      "type" : "SimpleName",
+      "label" : "f"
+    }, {
+      "id" : 8,
+      "type" : "VoidType",
+      "label" : "void"
+    }, {
+      "id" : 7,
+      "type" : "SimpleName",
+      "label" : "foo"
+    }, {
+      "id" : 6,
+      "type" : "Modifier",
+      "label" : "public"
+    }, {
+      "id" : 4,
+      "type" : "FieldDeclaration",
+      "label" : "@Interval(min = 1, max = 3)\r int f;"
+    }, {
+      "id" : 37,
+      "type" : "VariableDeclarator",
+      "label" : "f"
+    }, {
+      "id" : 39,
+      "type" : "SimpleName",
+      "label" : "f"
+    }, {
+      "id" : 38,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 36,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Interval(min = 1, max = 3)"
+    }, {
+      "id" : 42,
+      "type" : "MemberValuePair",
+      "label" : "max = 3"
+    }, {
+      "id" : 44,
+      "type" : "IntegerLiteralExpr",
+      "label" : "3"
+    }, {
+      "id" : 43,
+      "type" : "SimpleName",
+      "label" : "max"
+    }, {
+      "id" : 41,
+      "type" : "MemberValuePair",
+      "label" : "min = 1"
+    }, {
+      "id" : 46,
+      "type" : "IntegerLiteralExpr",
+      "label" : "1"
+    }, {
+      "id" : 45,
+      "type" : "SimpleName",
+      "label" : "min"
+    }, {
+      "id" : 40,
+      "type" : "Name",
+      "label" : "Interval"
+    }, {
+      "id" : 3,
+      "type" : "SimpleName",
+      "label" : "E09_MulNegConst_OK"
+    }, {
+      "id" : 2,
+      "type" : "Modifier",
+      "label" : "public"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 5, 6 ], [ 5, 7 ], [ 5, 8 ], [ 5, 9 ], [ 9, 10 ], [ 9, 11 ], [ 11, 12 ], [ 12, 13 ], [ 12, 14 ], [ 14, 15 ], [ 14, 16 ], [ 14, 17 ], [ 17, 18 ], [ 17, 19 ], [ 19, 20 ], [ 20, 21 ], [ 18, 22 ], [ 13, 23 ], [ 13, 24 ], [ 13, 25 ], [ 25, 26 ], [ 25, 27 ], [ 27, 28 ], [ 24, 29 ], [ 24, 30 ], [ 30, 31 ], [ 10, 32 ], [ 32, 33 ], [ 32, 34 ], [ 33, 35 ], [ 4, 36 ], [ 4, 37 ], [ 37, 38 ], [ 37, 39 ], [ 36, 40 ], [ 36, 41 ], [ 36, 42 ], [ 42, 43 ], [ 42, 44 ], [ 41, 45 ], [ 41, 46 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "f = 2;"
+    }, {
+      "id" : 1,
+      "label" : "// f * (-2) in [-6,-2]\r @Interval(min = -6, max = -2)\r int // EXPECT: OK (needs sign-aware scaling)\r l = f * (-2);"
+    } ],
+    "edges" : [ [ 0, 1 ] ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "public",
+      "line" : 0
+    }, {
+      "id" : 1,
+      "var" : "class",
+      "line" : 0
+    }, {
+      "id" : 2,
+      "var" : "E09_MulNegConst_OK",
+      "line" : 0
+    }, {
+      "id" : 3,
+      "var" : "Interval",
+      "line" : 2
+    }, {
+      "id" : 4,
+      "var" : "min",
+      "line" : 2
+    }, {
+      "id" : 5,
+      "var" : "max",
+      "line" : 2
+    }, {
+      "id" : 6,
+      "var" : "int",
+      "line" : 3
+    }, {
+      "id" : 7,
+      "var" : "f",
+      "line" : 3
+    }, {
+      "id" : 8,
+      "var" : "public",
+      "line" : 5
+    }, {
+      "id" : 9,
+      "var" : "void",
+      "line" : 5
+    }, {
+      "id" : 10,
+      "var" : "foo",
+      "line" : 5
+    }, {
+      "id" : 11,
+      "var" : "f",
+      "line" : 6
+    }, {
+      "id" : 12,
+      "var" : "f",
+      "line" : 7
+    }, {
+      "id" : 13,
+      "var" : "in",
+      "line" : 7
+    }, {
+      "id" : 14,
+      "var" : "Interval",
+      "line" : 8
+    }, {
+      "id" : 15,
+      "var" : "min",
+      "line" : 8
+    }, {
+      "id" : 16,
+      "var" : "max",
+      "line" : 8
+    }, {
+      "id" : 17,
+      "var" : "int",
+      "line" : 9
+    }, {
+      "id" : 18,
+      "var" : "EXPECT",
+      "line" : 9
+    }, {
+      "id" : 19,
+      "var" : "OK",
+      "line" : 9
+    }, {
+      "id" : 20,
+      "var" : "needs",
+      "line" : 9
+    }, {
+      "id" : 21,
+      "var" : "sign",
+      "line" : 9
+    }, {
+      "id" : 22,
+      "var" : "aware",
+      "line" : 9
+    }, {
+      "id" : 23,
+      "var" : "scaling",
+      "line" : 9
+    }, {
+      "id" : 24,
+      "var" : "l",
+      "line" : 10
+    }, {
+      "id" : 25,
+      "var" : "f",
+      "line" : 10
+    } ],
+    "edges" : [ [ 5, 16 ], [ 7, 11 ], [ 11, 12 ], [ 12, 25 ], [ 6, 17 ], [ 4, 15 ], [ 0, 8 ], [ 3, 14 ] ]
+  }
+}

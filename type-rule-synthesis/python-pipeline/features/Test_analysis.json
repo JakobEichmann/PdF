@@ -1,0 +1,139 @@
+{
+  "file" : "C:\\MySpace\\Study\\Praxis_der_Forschung\\type-rule-synthesis\\testcases\\Test.java",
+  "code" : "public class Test {\r\n    int x = 0;\r\n    void foo() {\r\n        x = x + 1;\r\n    }\r\n}\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "public class Test {\r \r     int x = 0;\r \r     void foo() {\r         x = x + 1;\r     }\r }"
+    }, {
+      "id" : 1,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "public class Test {\r \r     int x = 0;\r \r     void foo() {\r         x = x + 1;\r     }\r }"
+    }, {
+      "id" : 5,
+      "type" : "MethodDeclaration",
+      "label" : "void foo() {\r     x = x + 1;\r }"
+    }, {
+      "id" : 8,
+      "type" : "BlockStmt",
+      "label" : "{\r     x = x + 1;\r }"
+    }, {
+      "id" : 9,
+      "type" : "ExpressionStmt",
+      "label" : "x = x + 1;"
+    }, {
+      "id" : 10,
+      "type" : "AssignExpr",
+      "label" : "x = x + 1"
+    }, {
+      "id" : 12,
+      "type" : "BinaryExpr",
+      "label" : "x + 1"
+    }, {
+      "id" : 14,
+      "type" : "IntegerLiteralExpr",
+      "label" : "1"
+    }, {
+      "id" : 13,
+      "type" : "NameExpr",
+      "label" : "x"
+    }, {
+      "id" : 15,
+      "type" : "SimpleName",
+      "label" : "x"
+    }, {
+      "id" : 11,
+      "type" : "NameExpr",
+      "label" : "x"
+    }, {
+      "id" : 16,
+      "type" : "SimpleName",
+      "label" : "x"
+    }, {
+      "id" : 7,
+      "type" : "VoidType",
+      "label" : "void"
+    }, {
+      "id" : 6,
+      "type" : "SimpleName",
+      "label" : "foo"
+    }, {
+      "id" : 4,
+      "type" : "FieldDeclaration",
+      "label" : "int x = 0;"
+    }, {
+      "id" : 17,
+      "type" : "VariableDeclarator",
+      "label" : "x = 0"
+    }, {
+      "id" : 20,
+      "type" : "IntegerLiteralExpr",
+      "label" : "0"
+    }, {
+      "id" : 19,
+      "type" : "SimpleName",
+      "label" : "x"
+    }, {
+      "id" : 18,
+      "type" : "PrimitiveType",
+      "label" : "int"
+    }, {
+      "id" : 3,
+      "type" : "SimpleName",
+      "label" : "Test"
+    }, {
+      "id" : 2,
+      "type" : "Modifier",
+      "label" : "public"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 1, 2 ], [ 1, 3 ], [ 1, 4 ], [ 1, 5 ], [ 5, 6 ], [ 5, 7 ], [ 5, 8 ], [ 8, 9 ], [ 9, 10 ], [ 10, 11 ], [ 10, 12 ], [ 12, 13 ], [ 12, 14 ], [ 13, 15 ], [ 11, 16 ], [ 4, 17 ], [ 17, 18 ], [ 17, 19 ], [ 17, 20 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "x = x + 1;"
+    } ],
+    "edges" : [ ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "public",
+      "line" : 0
+    }, {
+      "id" : 1,
+      "var" : "class",
+      "line" : 0
+    }, {
+      "id" : 2,
+      "var" : "Test",
+      "line" : 0
+    }, {
+      "id" : 3,
+      "var" : "int",
+      "line" : 2
+    }, {
+      "id" : 4,
+      "var" : "x",
+      "line" : 2
+    }, {
+      "id" : 5,
+      "var" : "void",
+      "line" : 4
+    }, {
+      "id" : 6,
+      "var" : "foo",
+      "line" : 4
+    }, {
+      "id" : 7,
+      "var" : "x",
+      "line" : 5
+    }, {
+      "id" : 8,
+      "var" : "x",
+      "line" : 5
+    } ],
+    "edges" : [ [ 4, 7 ], [ 7, 8 ] ]
+  }
+}

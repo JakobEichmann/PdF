@@ -1,0 +1,2244 @@
+{
+  "file": "C:\\Users\\Freily\\AppData\\Local\\Temp\\sanitized_z_9kh3ct.java",
+  "code": "/*\r\nannotation NonEmpty() ImmutableList\r\n    :<==> \"\u00a7subject\u00a7 != null && \u00a7subject\u00a7.length > 0\"\r\n    for \"true\";\r\n*/\r\n\r\npublic final class NonEmptyInsert {\r\n\r\n    public void insert(@NonEmpty ImmutableList l) {\r\n        // False positive: the result of insert() should be NonEmpty\r\n        // :: error: assignment.type.incompatible\r\n        @NonEmpty ImmutableList l0 = l.insert(new Object());\r\n    }\r\n\r\n    public void remove(@PossiblyEmpty ImmutableList l) {\r\n        // False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r\n        // Is your pipeline able to handle something like this too, or only false positives as above?\r\n        l.remove(0);\r\n    }\r\n\r\n    public void removeTruePositive(@NonEmpty ImmutableList l) {\r\n        // True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r\n        // :: error: assignment.type.incompatible\r\n        @NonEmpty ImmutableList l0 = l.remove(0);\r\n    }\r\n}\r\n\r\n\r\n",
+  "ast": {
+    "nodes": [
+      {
+        "id": 0,
+        "type": "CompilationUnit",
+        "label": "/*\r annotation NonEmpty() ImmutableList\r     :<==> \"\u00a7subject\u00a7 != null && \u00a7subject\u00a7.length > 0\"\r     for \"true\";\r */\r public final class NonEmptyInsert {\r \r     public void insert(@NonEmpty ImmutableList l) {\r         // False positive: the result of insert() should be NonEmpty\r         // :: error: assignment.type.incompatible\r         @NonEmpty\r         ImmutableList l0 = l.insert(new Object());\r     }\r \r     public void remove(@PossiblyEmpty ImmutableList l) {\r         // False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r         // Is your pipeline able to handle something like this too, or only false positives as above?\r         l.remove(0);\r     }\r \r     public void removeTruePositive(@NonEmpty ImmutableList l) {\r         // True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r         // :: error: assignment.type.incompatible\r         @NonEmpty\r         ImmutableList l0 = l.remove(0);\r     }\r }"
+      },
+      {
+        "id": 2,
+        "type": "BlockComment",
+        "label": "/*\r annotation NonEmpty() ImmutableList\r     :<==> \"\u00a7subject\u00a7 != null && \u00a7subject\u00a7.length > 0\"\r     for \"true\";\r */"
+      },
+      {
+        "id": 1,
+        "type": "ClassOrInterfaceDeclaration",
+        "label": "/*\r annotation NonEmpty() ImmutableList\r     :<==> \"\u00a7subject\u00a7 != null && \u00a7subject\u00a7.length > 0\"\r     for \"true\";\r */\r public final class NonEmptyInsert {\r \r     public void insert(@NonEmpty ImmutableList l) {\r         // False positive: the result of insert() should be NonEmpty\r         // :: error: assignment.type.incompatible\r         @NonEmpty\r         ImmutableList l0 = l.insert(new Object());\r     }\r \r     public void remove(@PossiblyEmpty ImmutableList l) {\r         // False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r         // Is your pipeline able to handle something like this too, or only false positives as above?\r         l.remove(0);\r     }\r \r     public void removeTruePositive(@NonEmpty ImmutableList l) {\r         // True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r         // :: error: assignment.type.incompatible\r         @NonEmpty\r         ImmutableList l0 = l.remove(0);\r     }\r }"
+      },
+      {
+        "id": 8,
+        "type": "MethodDeclaration",
+        "label": "public void removeTruePositive(@NonEmpty ImmutableList l) {\r     // True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r     // :: error: assignment.type.incompatible\r     @NonEmpty\r     ImmutableList l0 = l.remove(0);\r }"
+      },
+      {
+        "id": 13,
+        "type": "BlockStmt",
+        "label": "{\r     // True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r     // :: error: assignment.type.incompatible\r     @NonEmpty\r     ImmutableList l0 = l.remove(0);\r }"
+      },
+      {
+        "id": 15,
+        "type": "LineComment",
+        "label": "// True positive: the result of remove() is PossiblyEmpty, so the error below should stay."
+      },
+      {
+        "id": 14,
+        "type": "ExpressionStmt",
+        "label": "// True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r // :: error: assignment.type.incompatible\r @NonEmpty\r ImmutableList l0 = l.remove(0);"
+      },
+      {
+        "id": 16,
+        "type": "VariableDeclarationExpr",
+        "label": "@NonEmpty\r ImmutableList l0 = l.remove(0)"
+      },
+      {
+        "id": 18,
+        "type": "VariableDeclarator",
+        "label": "l0 = l.remove(0)"
+      },
+      {
+        "id": 21,
+        "type": "MethodCallExpr",
+        "label": "l.remove(0)"
+      },
+      {
+        "id": 24,
+        "type": "IntegerLiteralExpr",
+        "label": "0"
+      },
+      {
+        "id": 23,
+        "type": "SimpleName",
+        "label": "remove"
+      },
+      {
+        "id": 22,
+        "type": "NameExpr",
+        "label": "l"
+      },
+      {
+        "id": 25,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 20,
+        "type": "SimpleName",
+        "label": "l0"
+      },
+      {
+        "id": 19,
+        "type": "ClassOrInterfaceType",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 26,
+        "type": "SimpleName",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 17,
+        "type": "MarkerAnnotationExpr",
+        "label": "@NonEmpty"
+      },
+      {
+        "id": 27,
+        "type": "Name",
+        "label": "NonEmpty"
+      },
+      {
+        "id": 12,
+        "type": "VoidType",
+        "label": "void"
+      },
+      {
+        "id": 11,
+        "type": "Parameter",
+        "label": "@NonEmpty ImmutableList l"
+      },
+      {
+        "id": 30,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 29,
+        "type": "ClassOrInterfaceType",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 31,
+        "type": "SimpleName",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 28,
+        "type": "MarkerAnnotationExpr",
+        "label": "@NonEmpty"
+      },
+      {
+        "id": 32,
+        "type": "Name",
+        "label": "NonEmpty"
+      },
+      {
+        "id": 10,
+        "type": "SimpleName",
+        "label": "removeTruePositive"
+      },
+      {
+        "id": 9,
+        "type": "Modifier",
+        "label": "public"
+      },
+      {
+        "id": 7,
+        "type": "MethodDeclaration",
+        "label": "public void remove(@PossiblyEmpty ImmutableList l) {\r     // False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r     // Is your pipeline able to handle something like this too, or only false positives as above?\r     l.remove(0);\r }"
+      },
+      {
+        "id": 37,
+        "type": "BlockStmt",
+        "label": "{\r     // False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r     // Is your pipeline able to handle something like this too, or only false positives as above?\r     l.remove(0);\r }"
+      },
+      {
+        "id": 39,
+        "type": "LineComment",
+        "label": "// False negative: the argument of remove() should be NonEmpty, so there should be an error here."
+      },
+      {
+        "id": 38,
+        "type": "ExpressionStmt",
+        "label": "// False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r // Is your pipeline able to handle something like this too, or only false positives as above?\r l.remove(0);"
+      },
+      {
+        "id": 40,
+        "type": "MethodCallExpr",
+        "label": "l.remove(0)"
+      },
+      {
+        "id": 43,
+        "type": "IntegerLiteralExpr",
+        "label": "0"
+      },
+      {
+        "id": 42,
+        "type": "SimpleName",
+        "label": "remove"
+      },
+      {
+        "id": 41,
+        "type": "NameExpr",
+        "label": "l"
+      },
+      {
+        "id": 44,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 36,
+        "type": "VoidType",
+        "label": "void"
+      },
+      {
+        "id": 35,
+        "type": "Parameter",
+        "label": "@PossiblyEmpty ImmutableList l"
+      },
+      {
+        "id": 47,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 46,
+        "type": "ClassOrInterfaceType",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 48,
+        "type": "SimpleName",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 45,
+        "type": "MarkerAnnotationExpr",
+        "label": "@PossiblyEmpty"
+      },
+      {
+        "id": 49,
+        "type": "Name",
+        "label": "PossiblyEmpty"
+      },
+      {
+        "id": 34,
+        "type": "SimpleName",
+        "label": "remove"
+      },
+      {
+        "id": 33,
+        "type": "Modifier",
+        "label": "public"
+      },
+      {
+        "id": 6,
+        "type": "MethodDeclaration",
+        "label": "public void insert(@NonEmpty ImmutableList l) {\r     // False positive: the result of insert() should be NonEmpty\r     // :: error: assignment.type.incompatible\r     @NonEmpty\r     ImmutableList l0 = l.insert(new Object());\r }"
+      },
+      {
+        "id": 54,
+        "type": "BlockStmt",
+        "label": "{\r     // False positive: the result of insert() should be NonEmpty\r     // :: error: assignment.type.incompatible\r     @NonEmpty\r     ImmutableList l0 = l.insert(new Object());\r }"
+      },
+      {
+        "id": 56,
+        "type": "LineComment",
+        "label": "// False positive: the result of insert() should be NonEmpty"
+      },
+      {
+        "id": 55,
+        "type": "ExpressionStmt",
+        "label": "// False positive: the result of insert() should be NonEmpty\r // :: error: assignment.type.incompatible\r @NonEmpty\r ImmutableList l0 = l.insert(new Object());"
+      },
+      {
+        "id": 57,
+        "type": "VariableDeclarationExpr",
+        "label": "@NonEmpty\r ImmutableList l0 = l.insert(new Object())"
+      },
+      {
+        "id": 59,
+        "type": "VariableDeclarator",
+        "label": "l0 = l.insert(new Object())"
+      },
+      {
+        "id": 62,
+        "type": "MethodCallExpr",
+        "label": "l.insert(new Object())"
+      },
+      {
+        "id": 65,
+        "type": "ObjectCreationExpr",
+        "label": "new Object()"
+      },
+      {
+        "id": 66,
+        "type": "ClassOrInterfaceType",
+        "label": "Object"
+      },
+      {
+        "id": 67,
+        "type": "SimpleName",
+        "label": "Object"
+      },
+      {
+        "id": 64,
+        "type": "SimpleName",
+        "label": "insert"
+      },
+      {
+        "id": 63,
+        "type": "NameExpr",
+        "label": "l"
+      },
+      {
+        "id": 68,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 61,
+        "type": "SimpleName",
+        "label": "l0"
+      },
+      {
+        "id": 60,
+        "type": "ClassOrInterfaceType",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 69,
+        "type": "SimpleName",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 58,
+        "type": "MarkerAnnotationExpr",
+        "label": "@NonEmpty"
+      },
+      {
+        "id": 70,
+        "type": "Name",
+        "label": "NonEmpty"
+      },
+      {
+        "id": 53,
+        "type": "VoidType",
+        "label": "void"
+      },
+      {
+        "id": 52,
+        "type": "Parameter",
+        "label": "@NonEmpty ImmutableList l"
+      },
+      {
+        "id": 73,
+        "type": "SimpleName",
+        "label": "l"
+      },
+      {
+        "id": 72,
+        "type": "ClassOrInterfaceType",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 74,
+        "type": "SimpleName",
+        "label": "ImmutableList"
+      },
+      {
+        "id": 71,
+        "type": "MarkerAnnotationExpr",
+        "label": "@NonEmpty"
+      },
+      {
+        "id": 75,
+        "type": "Name",
+        "label": "NonEmpty"
+      },
+      {
+        "id": 51,
+        "type": "SimpleName",
+        "label": "insert"
+      },
+      {
+        "id": 50,
+        "type": "Modifier",
+        "label": "public"
+      },
+      {
+        "id": 5,
+        "type": "SimpleName",
+        "label": "NonEmptyInsert"
+      },
+      {
+        "id": 4,
+        "type": "Modifier",
+        "label": "final"
+      },
+      {
+        "id": 3,
+        "type": "Modifier",
+        "label": "public"
+      }
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        7
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        8,
+        9
+      ],
+      [
+        8,
+        10
+      ],
+      [
+        8,
+        11
+      ],
+      [
+        8,
+        12
+      ],
+      [
+        8,
+        13
+      ],
+      [
+        13,
+        14
+      ],
+      [
+        13,
+        15
+      ],
+      [
+        14,
+        16
+      ],
+      [
+        16,
+        17
+      ],
+      [
+        16,
+        18
+      ],
+      [
+        18,
+        19
+      ],
+      [
+        18,
+        20
+      ],
+      [
+        18,
+        21
+      ],
+      [
+        21,
+        22
+      ],
+      [
+        21,
+        23
+      ],
+      [
+        21,
+        24
+      ],
+      [
+        22,
+        25
+      ],
+      [
+        19,
+        26
+      ],
+      [
+        17,
+        27
+      ],
+      [
+        11,
+        28
+      ],
+      [
+        11,
+        29
+      ],
+      [
+        11,
+        30
+      ],
+      [
+        29,
+        31
+      ],
+      [
+        28,
+        32
+      ],
+      [
+        7,
+        33
+      ],
+      [
+        7,
+        34
+      ],
+      [
+        7,
+        35
+      ],
+      [
+        7,
+        36
+      ],
+      [
+        7,
+        37
+      ],
+      [
+        37,
+        38
+      ],
+      [
+        37,
+        39
+      ],
+      [
+        38,
+        40
+      ],
+      [
+        40,
+        41
+      ],
+      [
+        40,
+        42
+      ],
+      [
+        40,
+        43
+      ],
+      [
+        41,
+        44
+      ],
+      [
+        35,
+        45
+      ],
+      [
+        35,
+        46
+      ],
+      [
+        35,
+        47
+      ],
+      [
+        46,
+        48
+      ],
+      [
+        45,
+        49
+      ],
+      [
+        6,
+        50
+      ],
+      [
+        6,
+        51
+      ],
+      [
+        6,
+        52
+      ],
+      [
+        6,
+        53
+      ],
+      [
+        6,
+        54
+      ],
+      [
+        54,
+        55
+      ],
+      [
+        54,
+        56
+      ],
+      [
+        55,
+        57
+      ],
+      [
+        57,
+        58
+      ],
+      [
+        57,
+        59
+      ],
+      [
+        59,
+        60
+      ],
+      [
+        59,
+        61
+      ],
+      [
+        59,
+        62
+      ],
+      [
+        62,
+        63
+      ],
+      [
+        62,
+        64
+      ],
+      [
+        62,
+        65
+      ],
+      [
+        65,
+        66
+      ],
+      [
+        66,
+        67
+      ],
+      [
+        63,
+        68
+      ],
+      [
+        60,
+        69
+      ],
+      [
+        58,
+        70
+      ],
+      [
+        52,
+        71
+      ],
+      [
+        52,
+        72
+      ],
+      [
+        52,
+        73
+      ],
+      [
+        72,
+        74
+      ],
+      [
+        71,
+        75
+      ]
+    ]
+  },
+  "cfg": {
+    "nodes": [
+      {
+        "id": 0,
+        "label": "// False positive: the result of insert() should be NonEmpty\r // :: error: assignment.type.incompatible\r @NonEmpty\r ImmutableList l0 = l.insert(new Object());"
+      },
+      {
+        "id": 1,
+        "label": "// False negative: the argument of remove() should be NonEmpty, so there should be an error here.\r // Is your pipeline able to handle something like this too, or only false positives as above?\r l.remove(0);"
+      },
+      {
+        "id": 2,
+        "label": "// True positive: the result of remove() is PossiblyEmpty, so the error below should stay.\r // :: error: assignment.type.incompatible\r @NonEmpty\r ImmutableList l0 = l.remove(0);"
+      }
+    ],
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ]
+  },
+  "dfg": {
+    "nodes": [
+      {
+        "id": 0,
+        "var": "annotation",
+        "line": 1
+      },
+      {
+        "id": 1,
+        "var": "NonEmpty",
+        "line": 1
+      },
+      {
+        "id": 2,
+        "var": "ImmutableList",
+        "line": 1
+      },
+      {
+        "id": 3,
+        "var": "subject",
+        "line": 2
+      },
+      {
+        "id": 4,
+        "var": "null",
+        "line": 2
+      },
+      {
+        "id": 5,
+        "var": "subject",
+        "line": 2
+      },
+      {
+        "id": 6,
+        "var": "length",
+        "line": 2
+      },
+      {
+        "id": 7,
+        "var": "for",
+        "line": 3
+      },
+      {
+        "id": 8,
+        "var": "true",
+        "line": 3
+      },
+      {
+        "id": 9,
+        "var": "public",
+        "line": 5
+      },
+      {
+        "id": 10,
+        "var": "final",
+        "line": 5
+      },
+      {
+        "id": 11,
+        "var": "class",
+        "line": 5
+      },
+      {
+        "id": 12,
+        "var": "NonEmptyInsert",
+        "line": 5
+      },
+      {
+        "id": 13,
+        "var": "public",
+        "line": 7
+      },
+      {
+        "id": 14,
+        "var": "void",
+        "line": 7
+      },
+      {
+        "id": 15,
+        "var": "insert",
+        "line": 7
+      },
+      {
+        "id": 16,
+        "var": "NonEmpty",
+        "line": 7
+      },
+      {
+        "id": 17,
+        "var": "ImmutableList",
+        "line": 7
+      },
+      {
+        "id": 18,
+        "var": "l",
+        "line": 7
+      },
+      {
+        "id": 19,
+        "var": "False",
+        "line": 8
+      },
+      {
+        "id": 20,
+        "var": "positive",
+        "line": 8
+      },
+      {
+        "id": 21,
+        "var": "the",
+        "line": 8
+      },
+      {
+        "id": 22,
+        "var": "result",
+        "line": 8
+      },
+      {
+        "id": 23,
+        "var": "of",
+        "line": 8
+      },
+      {
+        "id": 24,
+        "var": "insert",
+        "line": 8
+      },
+      {
+        "id": 25,
+        "var": "should",
+        "line": 8
+      },
+      {
+        "id": 26,
+        "var": "be",
+        "line": 8
+      },
+      {
+        "id": 27,
+        "var": "NonEmpty",
+        "line": 8
+      },
+      {
+        "id": 28,
+        "var": "error",
+        "line": 9
+      },
+      {
+        "id": 29,
+        "var": "assignment",
+        "line": 9
+      },
+      {
+        "id": 30,
+        "var": "type",
+        "line": 9
+      },
+      {
+        "id": 31,
+        "var": "incompatible",
+        "line": 9
+      },
+      {
+        "id": 32,
+        "var": "NonEmpty",
+        "line": 10
+      },
+      {
+        "id": 33,
+        "var": "ImmutableList",
+        "line": 11
+      },
+      {
+        "id": 34,
+        "var": "l0",
+        "line": 11
+      },
+      {
+        "id": 35,
+        "var": "l",
+        "line": 11
+      },
+      {
+        "id": 36,
+        "var": "insert",
+        "line": 11
+      },
+      {
+        "id": 37,
+        "var": "new",
+        "line": 11
+      },
+      {
+        "id": 38,
+        "var": "Object",
+        "line": 11
+      },
+      {
+        "id": 39,
+        "var": "public",
+        "line": 14
+      },
+      {
+        "id": 40,
+        "var": "void",
+        "line": 14
+      },
+      {
+        "id": 41,
+        "var": "remove",
+        "line": 14
+      },
+      {
+        "id": 42,
+        "var": "PossiblyEmpty",
+        "line": 14
+      },
+      {
+        "id": 43,
+        "var": "ImmutableList",
+        "line": 14
+      },
+      {
+        "id": 44,
+        "var": "l",
+        "line": 14
+      },
+      {
+        "id": 45,
+        "var": "False",
+        "line": 15
+      },
+      {
+        "id": 46,
+        "var": "negative",
+        "line": 15
+      },
+      {
+        "id": 47,
+        "var": "the",
+        "line": 15
+      },
+      {
+        "id": 48,
+        "var": "argument",
+        "line": 15
+      },
+      {
+        "id": 49,
+        "var": "of",
+        "line": 15
+      },
+      {
+        "id": 50,
+        "var": "remove",
+        "line": 15
+      },
+      {
+        "id": 51,
+        "var": "should",
+        "line": 15
+      },
+      {
+        "id": 52,
+        "var": "be",
+        "line": 15
+      },
+      {
+        "id": 53,
+        "var": "NonEmpty",
+        "line": 15
+      },
+      {
+        "id": 54,
+        "var": "so",
+        "line": 15
+      },
+      {
+        "id": 55,
+        "var": "there",
+        "line": 15
+      },
+      {
+        "id": 56,
+        "var": "should",
+        "line": 15
+      },
+      {
+        "id": 57,
+        "var": "be",
+        "line": 15
+      },
+      {
+        "id": 58,
+        "var": "an",
+        "line": 15
+      },
+      {
+        "id": 59,
+        "var": "error",
+        "line": 15
+      },
+      {
+        "id": 60,
+        "var": "here",
+        "line": 15
+      },
+      {
+        "id": 61,
+        "var": "Is",
+        "line": 16
+      },
+      {
+        "id": 62,
+        "var": "your",
+        "line": 16
+      },
+      {
+        "id": 63,
+        "var": "pipeline",
+        "line": 16
+      },
+      {
+        "id": 64,
+        "var": "able",
+        "line": 16
+      },
+      {
+        "id": 65,
+        "var": "to",
+        "line": 16
+      },
+      {
+        "id": 66,
+        "var": "handle",
+        "line": 16
+      },
+      {
+        "id": 67,
+        "var": "something",
+        "line": 16
+      },
+      {
+        "id": 68,
+        "var": "like",
+        "line": 16
+      },
+      {
+        "id": 69,
+        "var": "this",
+        "line": 16
+      },
+      {
+        "id": 70,
+        "var": "too",
+        "line": 16
+      },
+      {
+        "id": 71,
+        "var": "or",
+        "line": 16
+      },
+      {
+        "id": 72,
+        "var": "only",
+        "line": 16
+      },
+      {
+        "id": 73,
+        "var": "false",
+        "line": 16
+      },
+      {
+        "id": 74,
+        "var": "positives",
+        "line": 16
+      },
+      {
+        "id": 75,
+        "var": "as",
+        "line": 16
+      },
+      {
+        "id": 76,
+        "var": "above",
+        "line": 16
+      },
+      {
+        "id": 77,
+        "var": "l",
+        "line": 17
+      },
+      {
+        "id": 78,
+        "var": "remove",
+        "line": 17
+      },
+      {
+        "id": 79,
+        "var": "public",
+        "line": 20
+      },
+      {
+        "id": 80,
+        "var": "void",
+        "line": 20
+      },
+      {
+        "id": 81,
+        "var": "removeTruePositive",
+        "line": 20
+      },
+      {
+        "id": 82,
+        "var": "NonEmpty",
+        "line": 20
+      },
+      {
+        "id": 83,
+        "var": "ImmutableList",
+        "line": 20
+      },
+      {
+        "id": 84,
+        "var": "l",
+        "line": 20
+      },
+      {
+        "id": 85,
+        "var": "True",
+        "line": 21
+      },
+      {
+        "id": 86,
+        "var": "positive",
+        "line": 21
+      },
+      {
+        "id": 87,
+        "var": "the",
+        "line": 21
+      },
+      {
+        "id": 88,
+        "var": "result",
+        "line": 21
+      },
+      {
+        "id": 89,
+        "var": "of",
+        "line": 21
+      },
+      {
+        "id": 90,
+        "var": "remove",
+        "line": 21
+      },
+      {
+        "id": 91,
+        "var": "is",
+        "line": 21
+      },
+      {
+        "id": 92,
+        "var": "PossiblyEmpty",
+        "line": 21
+      },
+      {
+        "id": 93,
+        "var": "so",
+        "line": 21
+      },
+      {
+        "id": 94,
+        "var": "the",
+        "line": 21
+      },
+      {
+        "id": 95,
+        "var": "error",
+        "line": 21
+      },
+      {
+        "id": 96,
+        "var": "below",
+        "line": 21
+      },
+      {
+        "id": 97,
+        "var": "should",
+        "line": 21
+      },
+      {
+        "id": 98,
+        "var": "stay",
+        "line": 21
+      },
+      {
+        "id": 99,
+        "var": "error",
+        "line": 22
+      },
+      {
+        "id": 100,
+        "var": "assignment",
+        "line": 22
+      },
+      {
+        "id": 101,
+        "var": "type",
+        "line": 22
+      },
+      {
+        "id": 102,
+        "var": "incompatible",
+        "line": 22
+      },
+      {
+        "id": 103,
+        "var": "NonEmpty",
+        "line": 23
+      },
+      {
+        "id": 104,
+        "var": "ImmutableList",
+        "line": 24
+      },
+      {
+        "id": 105,
+        "var": "l0",
+        "line": 24
+      },
+      {
+        "id": 106,
+        "var": "l",
+        "line": 24
+      },
+      {
+        "id": 107,
+        "var": "remove",
+        "line": 24
+      }
+    ],
+    "edges": [
+      [
+        1,
+        16
+      ],
+      [
+        16,
+        27
+      ],
+      [
+        27,
+        32
+      ],
+      [
+        32,
+        53
+      ],
+      [
+        53,
+        82
+      ],
+      [
+        82,
+        103
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        19,
+        45
+      ],
+      [
+        30,
+        101
+      ],
+      [
+        25,
+        51
+      ],
+      [
+        51,
+        56
+      ],
+      [
+        56,
+        97
+      ],
+      [
+        14,
+        40
+      ],
+      [
+        40,
+        80
+      ],
+      [
+        42,
+        92
+      ],
+      [
+        26,
+        52
+      ],
+      [
+        52,
+        57
+      ],
+      [
+        34,
+        105
+      ],
+      [
+        2,
+        17
+      ],
+      [
+        17,
+        33
+      ],
+      [
+        33,
+        43
+      ],
+      [
+        43,
+        83
+      ],
+      [
+        83,
+        104
+      ],
+      [
+        15,
+        24
+      ],
+      [
+        24,
+        36
+      ],
+      [
+        28,
+        59
+      ],
+      [
+        59,
+        95
+      ],
+      [
+        95,
+        99
+      ],
+      [
+        41,
+        50
+      ],
+      [
+        50,
+        78
+      ],
+      [
+        78,
+        90
+      ],
+      [
+        90,
+        107
+      ],
+      [
+        22,
+        88
+      ],
+      [
+        31,
+        102
+      ],
+      [
+        9,
+        13
+      ],
+      [
+        13,
+        39
+      ],
+      [
+        39,
+        79
+      ],
+      [
+        23,
+        49
+      ],
+      [
+        49,
+        89
+      ],
+      [
+        54,
+        93
+      ],
+      [
+        29,
+        100
+      ],
+      [
+        20,
+        86
+      ],
+      [
+        18,
+        35
+      ],
+      [
+        35,
+        44
+      ],
+      [
+        44,
+        77
+      ],
+      [
+        77,
+        84
+      ],
+      [
+        84,
+        106
+      ],
+      [
+        21,
+        47
+      ],
+      [
+        47,
+        87
+      ],
+      [
+        87,
+        94
+      ]
+    ]
+  },
+  "codebert_embedding": [
+    -0.26938870549201965,
+    0.04850916191935539,
+    0.21900956332683563,
+    0.2541964650154114,
+    -0.14462801814079285,
+    -0.153924822807312,
+    0.04247761145234108,
+    0.17099414765834808,
+    0.27188271284103394,
+    0.3108711242675781,
+    -0.19220636785030365,
+    0.9776527285575867,
+    -0.1753697693347931,
+    -0.23752206563949585,
+    0.7643563747406006,
+    -0.220855250954628,
+    0.17630738019943237,
+    0.033142317086458206,
+    0.10242338478565216,
+    -0.09238032251596451,
+    -0.10654670000076294,
+    -0.1749241054058075,
+    0.5371551513671875,
+    -0.46499767899513245,
+    0.4283476769924164,
+    0.31229367852211,
+    0.17995119094848633,
+    0.6958132982254028,
+    -0.3211779296398163,
+    0.8349446058273315,
+    0.05556606873869896,
+    0.04654749482870102,
+    1.7126562595367432,
+    -0.048960112035274506,
+    0.08798220008611679,
+    -0.307024210691452,
+    -0.306701123714447,
+    0.28877460956573486,
+    0.07237150520086288,
+    -0.335841566324234,
+    -0.06481217592954636,
+    0.6943824291229248,
+    -1.2141244411468506,
+    0.005913668777793646,
+    0.5849297642707825,
+    0.2433759570121765,
+    0.34054282307624817,
+    0.35095101594924927,
+    0.087724469602108,
+    0.4080018699169159,
+    0.4002341628074646,
+    0.09003545343875885,
+    -0.6561087369918823,
+    -0.29114723205566406,
+    0.28602567315101624,
+    0.591719388961792,
+    -1.1153225898742676,
+    -0.3459605574607849,
+    -0.09257258474826813,
+    -0.23561863601207733,
+    -0.07460341602563858,
+    -0.5227155685424805,
+    -0.06019141525030136,
+    -0.11312752962112427,
+    1.5928722620010376,
+    0.3816228210926056,
+    0.6943930387496948,
+    0.7252945303916931,
+    -0.19420072436332703,
+    0.08291122317314148,
+    -0.2157192975282669,
+    -0.3705473244190216,
+    -0.15217870473861694,
+    -0.5969540476799011,
+    -0.6271683573722839,
+    0.590652346611023,
+    -0.23220081627368927,
+    -5.352876663208008,
+    0.04907120391726494,
+    0.3401646018028259,
+    0.3204294741153717,
+    -0.5115994811058044,
+    0.9340825080871582,
+    0.539810836315155,
+    -0.41948452591896057,
+    0.2747674286365509,
+    -0.0004082172818016261,
+    0.26240211725234985,
+    -0.7809481024742126,
+    -0.050041403621435165,
+    0.2829950451850891,
+    0.06798264384269714,
+    0.7978028059005737,
+    0.40780115127563477,
+    -0.0770265981554985,
+    0.8682611584663391,
+    0.6247290968894958,
+    -0.8787464499473572,
+    0.10872576385736465,
+    -0.40475696325302124,
+    0.05813058838248253,
+    -0.733377993106842,
+    0.3403041660785675,
+    0.06254485994577408,
+    0.38556039333343506,
+    -0.6846812963485718,
+    0.6730306148529053,
+    -0.5257077813148499,
+    0.42426973581314087,
+    -0.2510416507720947,
+    0.15843117237091064,
+    -0.33811843395233154,
+    0.47938302159309387,
+    0.2777058482170105,
+    0.16593728959560394,
+    -0.3366047739982605,
+    0.2004249095916748,
+    0.11816606670618057,
+    0.14871786534786224,
+    0.11164969205856323,
+    -0.9246617555618286,
+    0.40419110655784607,
+    -0.4173259437084198,
+    0.7040042281150818,
+    -0.22018606960773468,
+    0.13308697938919067,
+    -0.12436985969543457,
+    -0.214966282248497,
+    0.1020369902253151,
+    0.2697857618331909,
+    -1.2594788074493408,
+    -1.0157856941223145,
+    -0.3152901828289032,
+    0.27982795238494873,
+    0.5322698354721069,
+    -0.1854846477508545,
+    0.23571765422821045,
+    -0.042682576924562454,
+    -0.22127759456634521,
+    0.4387945532798767,
+    -0.6049485802650452,
+    -0.4952874183654785,
+    0.004002472385764122,
+    0.3308638334274292,
+    0.613895833492279,
+    -0.003327650483697653,
+    0.03939198702573776,
+    0.2853454351425171,
+    0.1741718202829361,
+    -0.37697634100914,
+    -0.7289196848869324,
+    -0.12658575177192688,
+    1.4793012142181396,
+    -0.12313275039196014,
+    -0.08430185914039612,
+    -2.2865824699401855,
+    0.22663980722427368,
+    -0.009282301180064678,
+    -0.036165133118629456,
+    -0.5567299127578735,
+    0.24566641449928284,
+    -0.03102654032409191,
+    0.060501307249069214,
+    0.5125007033348083,
+    0.565392255783081,
+    0.2872212827205658,
+    -0.1972396820783615,
+    -0.36542314291000366,
+    -0.0058063543401658535,
+    1.0176911354064941,
+    -0.4643939733505249,
+    -0.5671047568321228,
+    -0.6606186628341675,
+    0.1553896814584732,
+    0.1817554384469986,
+    0.8122868537902832,
+    0.42927446961402893,
+    -0.1771537810564041,
+    -0.4120577573776245,
+    1.3223929405212402,
+    0.22916601598262787,
+    -0.23526257276535034,
+    0.3356577455997467,
+    -0.33118772506713867,
+    -0.23019282519817352,
+    0.3221988379955292,
+    -0.4307589828968048,
+    0.6970795392990112,
+    -0.06945624202489853,
+    -0.14898626506328583,
+    -0.36554887890815735,
+    -0.20679119229316711,
+    0.28280356526374817,
+    0.5030654668807983,
+    0.08825042843818665,
+    -0.05384036526083946,
+    0.06990660727024078,
+    0.30651623010635376,
+    1.1007517576217651,
+    -0.0848652794957161,
+    -0.22698989510536194,
+    0.5366463661193848,
+    0.1580270677804947,
+    0.18455839157104492,
+    -0.0736943781375885,
+    0.2713378071784973,
+    -0.4202060401439667,
+    0.5022034049034119,
+    0.4555721580982208,
+    1.4506139755249023,
+    2.0721230506896973,
+    0.44438016414642334,
+    0.1598195731639862,
+    -0.4046197831630707,
+    -1.2320586442947388,
+    0.23261845111846924,
+    -0.6188178658485413,
+    -1.088712215423584,
+    -0.5371726155281067,
+    -0.6788286566734314,
+    -1.5533558130264282,
+    0.16667135059833527,
+    -0.21297873556613922,
+    -0.25234875082969666,
+    -0.07673969864845276,
+    0.20628701150417328,
+    0.30184394121170044,
+    -0.06573407351970673,
+    -0.2292056679725647,
+    0.26332542300224304,
+    -0.4600425362586975,
+    -0.07018133997917175,
+    -0.6365935206413269,
+    -0.2197190821170807,
+    -0.20068864524364471,
+    -0.2575552463531494,
+    -0.46258947253227234,
+    0.37313568592071533,
+    0.33152177929878235,
+    -1.0957229137420654,
+    -0.33754682540893555,
+    0.10192358493804932,
+    0.41269180178642273,
+    0.8170258402824402,
+    0.13614995777606964,
+    -0.9308103322982788,
+    0.1776149719953537,
+    0.6349784731864929,
+    0.4556499719619751,
+    0.736675500869751,
+    0.09051527082920074,
+    0.16887818276882172,
+    0.26288363337516785,
+    -0.15162716805934906,
+    0.15287204086780548,
+    -0.3829938769340515,
+    -0.014145346358418465,
+    -0.2867452800273895,
+    0.3788263499736786,
+    2.2586798667907715,
+    0.32331621646881104,
+    0.02200324274599552,
+    0.49030831456184387,
+    -0.7209915518760681,
+    0.409734845161438,
+    -0.3264792561531067,
+    0.1586551070213318,
+    0.2718782126903534,
+    0.728228747844696,
+    0.5199866890907288,
+    1.5902013778686523,
+    0.30013659596443176,
+    -0.20988668501377106,
+    0.10873822122812271,
+    0.1642722189426422,
+    0.23561237752437592,
+    0.5040977597236633,
+    0.19039875268936157,
+    -1.0259534120559692,
+    -0.3927292823791504,
+    -0.2005612701177597,
+    -0.2384301871061325,
+    0.22694499790668488,
+    -0.0719132050871849,
+    -0.09743800014257431,
+    -0.11203066259622574,
+    -0.17189209163188934,
+    0.36903804540634155,
+    -0.1155436709523201,
+    -0.09466199576854706,
+    0.4493638873100281,
+    -0.6473064422607422,
+    1.232167363166809,
+    0.06658991426229477,
+    -0.23394973576068878,
+    0.20772922039031982,
+    0.15980468690395355,
+    0.3539685904979706,
+    0.07515744119882584,
+    -0.32116690278053284,
+    0.13956239819526672,
+    0.5044636130332947,
+    -0.0851578339934349,
+    0.11680139601230621,
+    -0.4615970849990845,
+    -0.24294286966323853,
+    -0.41094970703125,
+    0.45851367712020874,
+    0.23994256556034088,
+    -0.11715387552976608,
+    0.2329806536436081,
+    -1.0324444770812988,
+    -0.013349657878279686,
+    -0.19227518141269684,
+    0.3020494878292084,
+    0.06781041622161865,
+    -0.020110510289669037,
+    0.5652897357940674,
+    -0.3345605432987213,
+    0.24985826015472412,
+    0.27666905522346497,
+    -0.016892021521925926,
+    1.0913949012756348,
+    -1.1905733346939087,
+    0.577618420124054,
+    0.837250828742981,
+    -0.7826676964759827,
+    -0.5389164686203003,
+    -1.6757586002349854,
+    -0.16223758459091187,
+    -0.9842224717140198,
+    0.8063075542449951,
+    0.46809080243110657,
+    2.036313056945801,
+    -0.897318422794342,
+    -0.48167335987091064,
+    0.5070418119430542,
+    -0.5300118923187256,
+    0.29362231492996216,
+    -0.44587573409080505,
+    -1.3414796590805054,
+    0.48871639370918274,
+    0.1457003951072693,
+    -0.2672341763973236,
+    0.2153140753507614,
+    1.161405086517334,
+    -0.1965593546628952,
+    -0.2686230540275574,
+    1.5916541814804077,
+    0.33681541681289673,
+    -0.5019861459732056,
+    -0.9634014368057251,
+    -0.45436331629753113,
+    -0.25478047132492065,
+    0.36764854192733765,
+    1.996554970741272,
+    0.5539000630378723,
+    0.12938475608825684,
+    -0.021178854629397392,
+    0.0030444106087088585,
+    0.11375952512025833,
+    -0.17660833895206451,
+    0.292502224445343,
+    2.1237192153930664,
+    0.7057484984397888,
+    -0.23252080380916595,
+    -0.9022116661071777,
+    0.09447070211172104,
+    -0.010409475304186344,
+    0.35952427983283997,
+    0.13368405401706696,
+    -0.22515080869197845,
+    0.07873639464378357,
+    0.37834784388542175,
+    0.3790391683578491,
+    -0.117208331823349,
+    0.456838995218277,
+    -0.16867686808109283,
+    0.07190945744514465,
+    0.04857993870973587,
+    -0.8784801959991455,
+    0.2766357958316803,
+    0.10584498941898346,
+    0.07489317655563354,
+    0.19776500761508942,
+    -2.034071922302246,
+    0.5108915567398071,
+    -0.3249998390674591,
+    1.5174967050552368,
+    0.029790334403514862,
+    0.04187095910310745,
+    0.21332626044750214,
+    0.22967566549777985,
+    -0.30026933550834656,
+    -0.1591416448354721,
+    0.14006206393241882,
+    0.05712796747684479,
+    0.19194382429122925,
+    -0.2759663760662079,
+    -0.3677891194820404,
+    -0.2779829502105713,
+    -0.009527004323899746,
+    0.020946241915225983,
+    0.38211333751678467,
+    -0.014788643456995487,
+    0.12203500419855118,
+    -0.6618015766143799,
+    -0.059266503900289536,
+    -0.21858768165111542,
+    0.8364378809928894,
+    -0.4767951965332031,
+    1.9831657409667969,
+    -0.20126548409461975,
+    -0.021972542628645897,
+    -0.08622592687606812,
+    0.23155498504638672,
+    0.5386771559715271,
+    -0.8395991921424866,
+    0.16265346109867096,
+    0.34951186180114746,
+    0.10754048824310303,
+    0.2588765025138855,
+    0.7055702805519104,
+    -0.48753419518470764,
+    0.7473205327987671,
+    -0.12624132633209229,
+    0.1533435881137848,
+    -0.05429733917117119,
+    -0.5010576248168945,
+    -0.46493101119995117,
+    -0.37460461258888245,
+    0.3792264461517334,
+    0.05948479846119881,
+    0.24985462427139282,
+    -0.6874231696128845,
+    -0.22495250403881073,
+    -0.4363396465778351,
+    -0.3230760097503662,
+    0.6042773723602295,
+    0.2746221423149109,
+    0.45727628469467163,
+    0.07881473749876022,
+    0.48751315474510193,
+    0.1511136144399643,
+    -0.19160181283950806,
+    0.5640715956687927,
+    -0.25643104314804077,
+    1.6873791217803955,
+    0.5151511430740356,
+    -0.44852137565612793,
+    0.20935802161693573,
+    0.03463849797844887,
+    0.2949354946613312,
+    -1.7571955919265747,
+    0.6503922939300537,
+    -0.37339526414871216,
+    0.16930776834487915,
+    -0.03378843143582344,
+    0.31573837995529175,
+    0.46282345056533813,
+    -0.18655386567115784,
+    0.14051856100559235,
+    0.2515955865383148,
+    -0.21165138483047485,
+    0.17108313739299774,
+    -1.6945445537567139,
+    0.5644594430923462,
+    -0.3003254532814026,
+    0.3587094843387604,
+    -0.05481419339776039,
+    -0.9634848237037659,
+    0.1376429796218872,
+    -0.23912853002548218,
+    -0.37336719036102295,
+    -0.10408975183963776,
+    -0.04566136747598648,
+    -0.4445367455482483,
+    1.931632161140442,
+    0.49217498302459717,
+    1.8623100519180298,
+    0.16168072819709778,
+    -0.4692630469799042,
+    -0.07912912964820862,
+    -0.7457655668258667,
+    0.6089243292808533,
+    0.30904996395111084,
+    -0.07725599408149719,
+    -0.34487229585647583,
+    -0.00032796149025671184,
+    -0.6123950481414795,
+    -0.44285276532173157,
+    0.003041159128770232,
+    -0.42329078912734985,
+    0.5867148041725159,
+    -0.5775452256202698,
+    0.18099498748779297,
+    -0.5985681414604187,
+    0.722186267375946,
+    -0.6655015349388123,
+    0.840047299861908,
+    0.08592091500759125,
+    0.25805383920669556,
+    0.27448052167892456,
+    1.4690338373184204,
+    -0.13668985664844513,
+    0.4122941493988037,
+    -0.4020518660545349,
+    1.2489869594573975,
+    0.2760220468044281,
+    -0.11579177528619766,
+    -0.16916412115097046,
+    0.5851261019706726,
+    1.294630765914917,
+    0.17822347581386566,
+    -0.19316546618938446,
+    0.30429813265800476,
+    -0.3749258518218994,
+    -0.5113261938095093,
+    -0.6079837679862976,
+    2.645206928253174,
+    0.5459334254264832,
+    0.1606443077325821,
+    -0.15655997395515442,
+    0.20702499151229858,
+    1.7352060079574585,
+    -0.1512422114610672,
+    -1.1759918928146362,
+    -1.063916802406311,
+    -0.025701329112052917,
+    -0.7319254279136658,
+    -0.33235159516334534,
+    -0.12092027068138123,
+    0.3828350305557251,
+    0.007983783259987831,
+    0.3051871657371521,
+    -0.2112388014793396,
+    -0.10363376140594482,
+    -0.04120425134897232,
+    -0.3391447961330414,
+    0.17154158651828766,
+    -0.3005741834640503,
+    -0.3198619782924652,
+    1.7248151302337646,
+    0.24531683325767517,
+    0.3176322877407074,
+    -0.16265977919101715,
+    -0.10554409772157669,
+    -1.833038091659546,
+    -0.1530413180589676,
+    -0.39190784096717834,
+    0.3563973605632782,
+    5.364049434661865,
+    -0.4143237769603729,
+    -0.41502925753593445,
+    0.4746106266975403,
+    0.02016470767557621,
+    -0.08022180944681168,
+    0.377052903175354,
+    -0.26132699847221375,
+    0.1817316710948944,
+    -0.6075791120529175,
+    0.7542099952697754,
+    0.1690291464328766,
+    -0.504671037197113,
+    0.016746526584029198,
+    0.15287694334983826,
+    -0.024708103388547897,
+    -0.210948184132576,
+    0.22075223922729492,
+    -0.27875202894210815,
+    -1.9310487508773804,
+    0.42228278517723083,
+    0.20633314549922943,
+    -0.08295079320669174,
+    0.2789328098297119,
+    0.08950060606002808,
+    0.8117544651031494,
+    -0.2613637149333954,
+    0.021670226007699966,
+    0.21262533962726593,
+    0.36273080110549927,
+    1.8073463439941406,
+    0.40282854437828064,
+    0.05132342129945755,
+    -0.008090564981102943,
+    0.9115736484527588,
+    0.19920030236244202,
+    0.5999239087104797,
+    3.616596221923828,
+    -0.3809489607810974,
+    1.359488844871521,
+    0.456853985786438,
+    0.21595755219459534,
+    -0.1097230613231659,
+    -1.3795920610427856,
+    -0.29208868741989136,
+    -0.23952600359916687,
+    -0.13198120892047882,
+    -0.17765673995018005,
+    0.5789203643798828,
+    -0.37759625911712646,
+    -0.07678569108247757,
+    0.47699570655822754,
+    -0.3303324282169342,
+    -0.22407719492912292,
+    0.4536139965057373,
+    0.0454864464700222,
+    -0.05561403930187225,
+    0.13003987073898315,
+    0.10187561064958572,
+    0.517795979976654,
+    -0.22625374794006348,
+    0.3429064452648163,
+    -0.13997359573841095,
+    0.20777185261249542,
+    0.35597360134124756,
+    -0.467816561460495,
+    -0.20505309104919434,
+    -0.16866467893123627,
+    0.44681695103645325,
+    -0.28660744428634644,
+    -0.3552389144897461,
+    -0.4563451111316681,
+    2.1892573833465576,
+    0.33292677998542786,
+    -0.6762101650238037,
+    0.00907709077000618,
+    -1.656898021697998,
+    0.4177314043045044,
+    -0.5416616201400757,
+    0.23267723619937897,
+    -0.287349134683609,
+    0.14052900671958923,
+    -0.06438558548688889,
+    -0.9328556060791016,
+    0.41485270857810974,
+    0.19081556797027588,
+    -0.16311439871788025,
+    0.1958073526620865,
+    0.7896390557289124,
+    -0.47386494278907776,
+    -0.13725410401821136,
+    0.5236625671386719,
+    0.12074876576662064,
+    -1.1481413841247559,
+    -0.6453802585601807,
+    -0.7349578738212585,
+    -0.003527118591591716,
+    0.13950173556804657,
+    0.3872309923171997,
+    0.24691881239414215,
+    -1.3545260429382324,
+    -0.3398641347885132,
+    -0.09086646884679794,
+    -0.3499516546726227,
+    -0.005636128596961498,
+    0.24581170082092285,
+    0.3070432245731354,
+    2.0044775009155273,
+    0.993137001991272,
+    0.22193433344364166,
+    -0.0521780289709568,
+    -0.34422722458839417,
+    -0.28351813554763794,
+    1.0515763759613037,
+    -0.5731433033943176,
+    0.2391192615032196,
+    -0.7669926285743713,
+    -0.2681642174720764,
+    0.3625929653644562,
+    -0.5555068254470825,
+    -0.5062192678451538,
+    0.3007305860519409,
+    0.32208752632141113,
+    1.0625864267349243,
+    0.2751350402832031,
+    1.7362068891525269,
+    -0.26145410537719727,
+    0.27072378993034363,
+    0.01939539983868599,
+    -1.14687979221344,
+    -0.03690396621823311,
+    -0.0013138321228325367,
+    -0.3982306718826294,
+    -1.8323625326156616,
+    0.10893863439559937,
+    0.41051751375198364,
+    0.12485995143651962,
+    0.5333040952682495,
+    -0.5343241691589355,
+    0.18600289523601532,
+    0.09561306238174438,
+    -0.22479021549224854,
+    -0.7914645671844482,
+    0.680221438407898,
+    -0.20182256400585175,
+    0.7211118936538696,
+    -0.0068578110076487064,
+    -0.1995704621076584,
+    -0.38519883155822754,
+    0.046772658824920654,
+    0.2201772779226303,
+    1.7361189126968384,
+    -0.20735159516334534,
+    -0.13290974497795105,
+    0.5970354676246643,
+    0.13092078268527985,
+    -0.12723222374916077,
+    0.36984848976135254,
+    1.2075822353363037,
+    -0.24470213055610657,
+    -0.3282592296600342,
+    0.3109593987464905,
+    -0.15547505021095276,
+    -0.17014670372009277,
+    -0.12112314999103546,
+    0.14967317879199982,
+    0.8488744497299194,
+    -0.05274819955229759,
+    0.297984778881073,
+    0.5879844427108765,
+    1.5088857412338257,
+    0.6439228057861328,
+    -0.24134545028209686,
+    -1.0580250024795532,
+    0.0467737540602684,
+    0.41247275471687317,
+    0.14102217555046082,
+    -0.026822354644536972,
+    -0.33308276534080505,
+    0.19998763501644135,
+    -0.7799407839775085,
+    -1.2576688528060913,
+    -0.5637333393096924,
+    0.5031439065933228,
+    0.030229471623897552,
+    -0.1793016642332077,
+    -0.15979094803333282,
+    -0.47585564851760864,
+    0.5276062488555908,
+    -0.30668607354164124,
+    0.3001634478569031,
+    0.07237862795591354,
+    -0.2971898317337036,
+    0.12755604088306427,
+    1.388257622718811,
+    0.419201135635376,
+    -0.7510400414466858,
+    0.05558628588914871,
+    -1.5737762451171875,
+    0.28328996896743774,
+    -0.3624988794326782,
+    0.3263639807701111,
+    0.1334494948387146,
+    0.5004069209098816,
+    -0.19346970319747925,
+    0.38206788897514343,
+    -0.3159330487251282,
+    0.189524307847023,
+    -0.13466279208660126,
+    -0.4619944393634796,
+    0.7065098285675049,
+    -0.28945192694664,
+    0.20618565380573273,
+    0.845004141330719,
+    -0.4528936445713043,
+    -0.45481589436531067,
+    0.6094475984573364
+  ],
+  "codebert_top_tokens": [
+    "()",
+    "\u010d",
+    "\u010d",
+    "\u0120positive",
+    "\u0120should",
+    "\u0120void",
+    ">",
+    "\u0120insert",
+    "length",
+    "\u0120Object"
+  ]
+}
