@@ -192,15 +192,15 @@ def summarize_graph_facts_compact(ast: Dict, cfg: Dict, dfg: Dict) -> str:
         for ann in annotations:
             parts.append(f"- {ann}")
     # Build def-use chains, filtering out noise
-    var_lines: dict[str, set[int]] = defaultdict(set)
-    # Precompile reserved set and pattern
+    var_lines: Dict[str, set[int]] = defaultdict(set)
     reserved: set[str] = {
         "public", "private", "protected", "void", "int", "float", "double", "char",
         "boolean", "class", "static", "final", "return", "error", "assignment",
         "type", "incompatible", "other",
     }
     ident_re = re.compile(r"^[a-zA-Z_]\w*$")
-    for n in dfg.get("nodes", []):
+    nodes = dfg.get("nodes", [])
+    for n in nodes:
         v = n.get("var")
         line = n.get("line")
         if not v or not isinstance(v, str):
@@ -211,6 +211,7 @@ def summarize_graph_facts_compact(ast: Dict, cfg: Dict, dfg: Dict) -> str:
             var_lines[v].add(line)
     chains: List[str] = []
     for v, lines in var_lines.items():
+        # Emit a chain only if the variable appears on more than one line
         if len(lines) > 1:
             seq = " -> ".join(str(x) for x in sorted(lines))
             chains.append(f"{v}: lines {seq}")

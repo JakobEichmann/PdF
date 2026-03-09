@@ -14,6 +14,9 @@ from rule_check import check_rule
 from structural_info import summarize_gnn_structural_cues_compact
 from semantic_info import build_semantic_cues
 from graph_facts import summarize_graph_facts_compact
+from collections import defaultdict
+
+import re  # For extracting method names from code lines
 
 
 def strip_block_comments_except_annotation_spec(code: str) -> str:
@@ -125,6 +128,51 @@ def run_one(java_file: Path) -> None:
         if not line or line.startswith("Data-flow summary"):
             continue
         print("[DEBUG]" + line)
+    # Def-use chains with method context derived from DFG and code
+    # Build mapping from code line numbers to method names by scanning the sanitized code
+    code_lines = code.splitlines()
+    method_by_line: dict[int, str] = {}
+    current_method = None
+    # Match method declarations such as 'public void insert(' capturing the method name
+    method_pattern = re.compile(r"\b(?:public|private|protected)\s+\w+\s+(\w+)\s*\(")
+    for idx, cl in enumerate(code_lines, start=1):
+        m = method_pattern.search(cl)
+        if m:
+            current_method = m.group(1)
+        method_by_line[idx] = current_method
+    # Collect variable occurrences by method
+    reserved_vars = {
+        "public", "private", "protected", "void", "int", "float", "double", "char",
+        "boolean", "class", "static", "final", "return", "error", "assignment",
+        "type", "incompatible", "other",
+    }
+    ident_re = re.compile(r"^[a-zA-Z_]\w*$")
+    var_lines_by_method: Dict[str, Dict[str, set[int]]] = defaultdict(lambda: defaultdict(set))
+    for n in dfg.get("nodes", []):
+        var_name = n.get("var")
+        line_no = n.get("line")
+        if not var_name or not isinstance(var_name, str):
+            continue
+        if var_name in reserved_vars or not ident_re.match(var_name):
+            continue
+        if not isinstance(line_no, int):
+            continue
+        method = method_by_line.get(line_no)
+        # If no method found, use a placeholder
+        if method is None:
+            method = "<global>"
+        var_lines_by_method[method][var_name].add(line_no)
+    # Print def-use chains with method context
+    if var_lines_by_method:
+        print("[DEBUG] Def-use chains (from DFG):")
+        for method in sorted(var_lines_by_method):
+            for var_name, lines_set in sorted(var_lines_by_method[method].items()):
+                if len(lines_set) <= 1:
+                    continue
+                seq = " -> ".join(str(l) for l in sorted(lines_set))
+                # Include method name if available and not global
+                prefix = f"{method}:" if method != "<global>" else ""
+                print(f"[DEBUG]- {prefix}{var_name}: lines {seq}")
     # Semantic anchors
     semantic_summary = build_semantic_cues(ast)
     print("[DEBUG] Semantic anchors (CodeBERT):")
