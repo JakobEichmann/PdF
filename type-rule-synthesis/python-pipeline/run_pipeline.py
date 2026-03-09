@@ -15,6 +15,7 @@ from structural_info import summarize_gnn_structural_cues_compact
 from semantic_info import build_semantic_cues
 from graph_facts import summarize_graph_facts_compact
 from collections import defaultdict
+from typing import Dict, List
 
 import re  # For extracting method names from code lines
 
@@ -109,38 +110,16 @@ def run_one(java_file: Path) -> None:
         print(f"[DEBUG]- wellformed: {annot['wellformed']}")
     else:
         print("[DEBUG]- (not found)")
-    # Structural signals
-    if node_embs is not None:
-        gnn_summary = summarize_gnn_structural_cues_compact(ast, node_embs, code)
-    else:
-        gnn_summary = "No high-salience structural signals from GNN."
-    print("[DEBUG] Structural signals (GNN):")
-    for line in gnn_summary.strip().split("\n"):
-        line = line.strip()
-        if line:
-            print("[DEBUG]" + line)
-    # Data-flow summary
-    graph_facts_summary = summarize_graph_facts_compact(ast, cfg, dfg)
-    print("[DEBUG] Data-flow summary:")
-    for line in graph_facts_summary.strip().split("\n"):
-        line = line.strip()
-        # Skip duplicate heading emitted by summarize_graph_facts_compact
-        if not line or line.startswith("Data-flow summary"):
-            continue
-        print("[DEBUG]" + line)
-    # Def-use chains with method context derived from DFG and code
-    # Build mapping from code line numbers to method names by scanning the sanitized code
+    # Compute method mapping and variable occurrences for debug output
     code_lines = code.splitlines()
-    method_by_line: dict[int, str] = {}
+    method_by_line: Dict[int, str] = {}
     current_method = None
-    # Match method declarations such as 'public void insert(' capturing the method name
     method_pattern = re.compile(r"\b(?:public|private|protected)\s+\w+\s+(\w+)\s*\(")
     for idx, cl in enumerate(code_lines, start=1):
         m = method_pattern.search(cl)
         if m:
             current_method = m.group(1)
         method_by_line[idx] = current_method
-    # Collect variable occurrences by method
     reserved_vars = {
         "public", "private", "protected", "void", "int", "float", "double", "char",
         "boolean", "class", "static", "final", "return", "error", "assignment",
@@ -158,10 +137,60 @@ def run_one(java_file: Path) -> None:
         if not isinstance(line_no, int):
             continue
         method = method_by_line.get(line_no)
-        # If no method found, use a placeholder
         if method is None:
             method = "<global>"
         var_lines_by_method[method][var_name].add(line_no)
+    # Collect structural signals (variable declarations) from code lines
+    structural_map: Dict[str, List[str]] = defaultdict(list)
+    for idx, cl in enumerate(code_lines, start=1):
+        stripped = cl.strip()
+        if '=' in stripped and ('.insert(' in stripped or '.remove(' in stripped):
+            method = method_by_line.get(idx)
+            if method is None:
+                method = "<global>"
+            structural_map[method].append(stripped)
+    # Print structural signals with method context
+    print("[DEBUG] Structural signals (GNN):")
+    if node_embs is not None:
+        gnn_summary = summarize_gnn_structural_cues_compact(ast, node_embs, code)
+    else:
+        gnn_summary = "No high-salience structural signals from GNN."
+    for line in gnn_summary.strip().split("\n"):
+        l = line.strip()
+        if not l:
+            continue
+        if l.startswith("Variable declaration"):
+            continue
+        print("[DEBUG]" + l)
+    for method in sorted(structural_map):
+        for decl in structural_map[method]:
+            prefix = f"{method}:" if method != "<global>" else ""
+            print(f"[DEBUG]- {prefix}Variable declaration: {decl}")
+    # Print data-flow summary with method context
+    print("[DEBUG] Data-flow summary:")
+    graph_facts_summary = summarize_graph_facts_compact(ast, cfg, dfg)
+    skip_defuse = False
+    for line in graph_facts_summary.strip().split("\n"):
+        l = line.strip()
+        if not l:
+            continue
+        if l.startswith("Def-use chains"):
+            skip_defuse = True
+            continue
+        if skip_defuse:
+            if l.startswith("-"):
+                continue
+            else:
+                skip_defuse = False
+        if l.startswith("- ") and '=' in l and '@' not in l:
+            continue
+        if l.startswith("Data-flow summary"):
+            continue
+        print("[DEBUG]" + l)
+    for method in sorted(structural_map):
+        for decl in structural_map[method]:
+            prefix = f"{method}:" if method != "<global>" else ""
+            print(f"[DEBUG]- {prefix}{decl}")
     # Print def-use chains with method context
     if var_lines_by_method:
         print("[DEBUG] Def-use chains (from DFG):")
@@ -170,7 +199,6 @@ def run_one(java_file: Path) -> None:
                 if len(lines_set) <= 1:
                     continue
                 seq = " -> ".join(str(l) for l in sorted(lines_set))
-                # Include method name if available and not global
                 prefix = f"{method}:" if method != "<global>" else ""
                 print(f"[DEBUG]- {prefix}{var_name}: lines {seq}")
     # Semantic anchors

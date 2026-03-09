@@ -1,0 +1,564 @@
+{
+  "file" : "C:\\Users\\Freily\\AppData\\Local\\Temp\\sanitized__vgvjgvb.java",
+  "code" : "/*\r\nannotation Interval(int min, int max) int\r\n    :<==> \"§subject§ >= §min§ && §subject§ <= §max§\"\r\n    for \"§min§ >= 0 && §min§ <= §max§\";\r\n*/\r\n\r\npublic final class IntervalIdent {\r\n\r\n    public void foo(int arg) {\r\n        // :: error: assignment.type.incompatible\r\n        @Interval(min=\"arg\",max=\"0x7fffffff\") int l0 = arg;\r\n        // :: error: assignment.type.incompatible\r\n        @Interval(min=\"0xffffffff\",max=\"arg\") int l1 = arg;\r\n    }\r\n}\r\n\r\n\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "/* annotation Interval(int min, int max) int :<==> \"§subject§ >= §min§ && §subject§ <= §max§\" for \"§min§ >= 0 && §min§ <= §max§\"; */ public final class IntervalIdent { public void foo(int arg) { // :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg; // :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg; } }",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 17,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 1,
+      "type" : "BlockComment",
+      "label" : "/* annotation Interval(int min, int max) int :<==> \"§subject§ >= §min§ && §subject§ <= §max§\" for \"§min§ >= 0 && §min§ <= §max§\"; */",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 5,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 2,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "/* annotation Interval(int min, int max) int :<==> \"§subject§ >= §min§ && §subject§ <= §max§\" for \"§min§ >= 0 && §min§ <= §max§\"; */ public final class IntervalIdent { public void foo(int arg) { // :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg; // :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg; } }",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 15,
+      "end_column" : 1,
+      "method" : "<global>"
+    }, {
+      "id" : 3,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 7,
+      "end_column" : 6,
+      "method" : "<global>"
+    }, {
+      "id" : 4,
+      "type" : "Modifier",
+      "label" : "final",
+      "line" : 7,
+      "column" : 8,
+      "end_line" : 7,
+      "end_column" : 12,
+      "method" : "<global>"
+    }, {
+      "id" : 5,
+      "type" : "SimpleName",
+      "label" : "IntervalIdent",
+      "line" : 7,
+      "column" : 20,
+      "end_line" : 7,
+      "end_column" : 32,
+      "method" : "<global>"
+    }, {
+      "id" : 6,
+      "type" : "MethodDeclaration",
+      "label" : "public void foo(int arg) { // :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg; // :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg; }",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 14,
+      "end_column" : 5,
+      "method" : "foo"
+    }, {
+      "id" : 7,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 9,
+      "end_column" : 10,
+      "method" : "foo"
+    }, {
+      "id" : 8,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 9,
+      "column" : 12,
+      "end_line" : 9,
+      "end_column" : 15,
+      "method" : "foo"
+    }, {
+      "id" : 9,
+      "type" : "SimpleName",
+      "label" : "foo",
+      "line" : 9,
+      "column" : 17,
+      "end_line" : 9,
+      "end_column" : 19,
+      "method" : "foo"
+    }, {
+      "id" : 10,
+      "type" : "Parameter",
+      "label" : "int arg",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 11,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 23,
+      "method" : "foo"
+    }, {
+      "id" : 12,
+      "type" : "SimpleName",
+      "label" : "arg",
+      "line" : 9,
+      "column" : 25,
+      "end_line" : 9,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 13,
+      "type" : "BlockStmt",
+      "label" : "{ // :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg; // :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg; }",
+      "line" : 9,
+      "column" : 30,
+      "end_line" : 14,
+      "end_column" : 5,
+      "method" : "foo"
+    }, {
+      "id" : 14,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg;",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 59,
+      "method" : "foo"
+    }, {
+      "id" : 15,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 16,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Interval(min = \"arg\", max = \"0x7fffffff\")",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 45,
+      "method" : "foo"
+    }, {
+      "id" : 17,
+      "type" : "Name",
+      "label" : "Interval",
+      "line" : 11,
+      "column" : 10,
+      "end_line" : 11,
+      "end_column" : 17,
+      "method" : "foo"
+    }, {
+      "id" : 18,
+      "type" : "MemberValuePair",
+      "label" : "min = \"arg\"",
+      "line" : 11,
+      "column" : 19,
+      "end_line" : 11,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 19,
+      "type" : "SimpleName",
+      "label" : "min",
+      "line" : 11,
+      "column" : 19,
+      "end_line" : 11,
+      "end_column" : 21,
+      "method" : "foo"
+    }, {
+      "id" : 20,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg\"",
+      "line" : 11,
+      "column" : 23,
+      "end_line" : 11,
+      "end_column" : 27,
+      "method" : "foo"
+    }, {
+      "id" : 21,
+      "type" : "MemberValuePair",
+      "label" : "max = \"0x7fffffff\"",
+      "line" : 11,
+      "column" : 29,
+      "end_line" : 11,
+      "end_column" : 44,
+      "method" : "foo"
+    }, {
+      "id" : 22,
+      "type" : "SimpleName",
+      "label" : "max",
+      "line" : 11,
+      "column" : 29,
+      "end_line" : 11,
+      "end_column" : 31,
+      "method" : "foo"
+    }, {
+      "id" : 23,
+      "type" : "StringLiteralExpr",
+      "label" : "\"0x7fffffff\"",
+      "line" : 11,
+      "column" : 33,
+      "end_line" : 11,
+      "end_column" : 44,
+      "method" : "foo"
+    }, {
+      "id" : 24,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = arg",
+      "line" : 11,
+      "column" : 51,
+      "end_line" : 11,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 25,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 11,
+      "column" : 47,
+      "end_line" : 11,
+      "end_column" : 49,
+      "method" : "foo"
+    }, {
+      "id" : 26,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 11,
+      "column" : 51,
+      "end_line" : 11,
+      "end_column" : 52,
+      "method" : "foo"
+    }, {
+      "id" : 27,
+      "type" : "NameExpr",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 56,
+      "end_line" : 11,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 28,
+      "type" : "SimpleName",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 56,
+      "end_line" : 11,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 29,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg;",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 59,
+      "method" : "foo"
+    }, {
+      "id" : 30,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 31,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Interval(min = \"0xffffffff\", max = \"arg\")",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 45,
+      "method" : "foo"
+    }, {
+      "id" : 32,
+      "type" : "Name",
+      "label" : "Interval",
+      "line" : 13,
+      "column" : 10,
+      "end_line" : 13,
+      "end_column" : 17,
+      "method" : "foo"
+    }, {
+      "id" : 33,
+      "type" : "MemberValuePair",
+      "label" : "min = \"0xffffffff\"",
+      "line" : 13,
+      "column" : 19,
+      "end_line" : 13,
+      "end_column" : 34,
+      "method" : "foo"
+    }, {
+      "id" : 34,
+      "type" : "SimpleName",
+      "label" : "min",
+      "line" : 13,
+      "column" : 19,
+      "end_line" : 13,
+      "end_column" : 21,
+      "method" : "foo"
+    }, {
+      "id" : 35,
+      "type" : "StringLiteralExpr",
+      "label" : "\"0xffffffff\"",
+      "line" : 13,
+      "column" : 23,
+      "end_line" : 13,
+      "end_column" : 34,
+      "method" : "foo"
+    }, {
+      "id" : 36,
+      "type" : "MemberValuePair",
+      "label" : "max = \"arg\"",
+      "line" : 13,
+      "column" : 36,
+      "end_line" : 13,
+      "end_column" : 44,
+      "method" : "foo"
+    }, {
+      "id" : 37,
+      "type" : "SimpleName",
+      "label" : "max",
+      "line" : 13,
+      "column" : 36,
+      "end_line" : 13,
+      "end_column" : 38,
+      "method" : "foo"
+    }, {
+      "id" : 38,
+      "type" : "StringLiteralExpr",
+      "label" : "\"arg\"",
+      "line" : 13,
+      "column" : 40,
+      "end_line" : 13,
+      "end_column" : 44,
+      "method" : "foo"
+    }, {
+      "id" : 39,
+      "type" : "VariableDeclarator",
+      "label" : "l1 = arg",
+      "line" : 13,
+      "column" : 51,
+      "end_line" : 13,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 40,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 13,
+      "column" : 47,
+      "end_line" : 13,
+      "end_column" : 49,
+      "method" : "foo"
+    }, {
+      "id" : 41,
+      "type" : "SimpleName",
+      "label" : "l1",
+      "line" : 13,
+      "column" : 51,
+      "end_line" : 13,
+      "end_column" : 52,
+      "method" : "foo"
+    }, {
+      "id" : 42,
+      "type" : "NameExpr",
+      "label" : "arg",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 58,
+      "method" : "foo"
+    }, {
+      "id" : 43,
+      "type" : "SimpleName",
+      "label" : "arg",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 58,
+      "method" : "foo"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 0, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 6, 7 ], [ 6, 8 ], [ 6, 9 ], [ 6, 10 ], [ 10, 11 ], [ 10, 12 ], [ 6, 13 ], [ 13, 14 ], [ 14, 15 ], [ 15, 16 ], [ 16, 17 ], [ 16, 18 ], [ 18, 19 ], [ 18, 20 ], [ 16, 21 ], [ 21, 22 ], [ 21, 23 ], [ 15, 24 ], [ 24, 25 ], [ 24, 26 ], [ 24, 27 ], [ 27, 28 ], [ 13, 29 ], [ 29, 30 ], [ 30, 31 ], [ 31, 32 ], [ 31, 33 ], [ 33, 34 ], [ 33, 35 ], [ 31, 36 ], [ 36, 37 ], [ 36, 38 ], [ 30, 39 ], [ 39, 40 ], [ 39, 41 ], [ 39, 42 ], [ 42, 43 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "// :: error: assignment.type.incompatible @Interval(min = \"arg\", max = \"0x7fffffff\") int l0 = arg;",
+      "method" : "foo",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 59,
+      "ast_id" : 14
+    }, {
+      "id" : 1,
+      "label" : "// :: error: assignment.type.incompatible @Interval(min = \"0xffffffff\", max = \"arg\") int l1 = arg;",
+      "method" : "foo",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 59,
+      "ast_id" : 29
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "next_stmt"
+    } ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "param_def",
+      "label" : "int arg",
+      "line" : 9,
+      "column" : 21,
+      "end_line" : 9,
+      "end_column" : 27,
+      "ast_id" : 10
+    }, {
+      "id" : 1,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "rhs_use",
+      "label" : "arg",
+      "line" : 11,
+      "column" : 56,
+      "end_line" : 11,
+      "end_column" : 58,
+      "ast_id" : 27
+    }, {
+      "id" : 2,
+      "var" : "l0",
+      "symbol" : "foo:l0@11",
+      "method" : "foo",
+      "role" : "local_def",
+      "label" : "l0 = arg",
+      "line" : 11,
+      "column" : 51,
+      "end_line" : 11,
+      "end_column" : 58,
+      "ast_id" : 24
+    }, {
+      "id" : 3,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "annotation_ref",
+      "label" : "@Interval(min = \"arg\", max = \"0x7fffffff\")",
+      "line" : 11,
+      "column" : 9,
+      "end_line" : 11,
+      "end_column" : 45,
+      "ast_id" : 16,
+      "annotation" : "@Interval(min = \"arg\", max = \"0x7fffffff\")",
+      "annotation_param" : "min",
+      "owner_var" : "l0",
+      "owner_ast_id" : "15",
+      "owner_type" : "VariableDeclarationExpr"
+    }, {
+      "id" : 4,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "rhs_use",
+      "label" : "arg",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 58,
+      "ast_id" : 42
+    }, {
+      "id" : 5,
+      "var" : "l1",
+      "symbol" : "foo:l1@13",
+      "method" : "foo",
+      "role" : "local_def",
+      "label" : "l1 = arg",
+      "line" : 13,
+      "column" : 51,
+      "end_line" : 13,
+      "end_column" : 58,
+      "ast_id" : 39
+    }, {
+      "id" : 6,
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "role" : "annotation_ref",
+      "label" : "@Interval(min = \"0xffffffff\", max = \"arg\")",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 45,
+      "ast_id" : 31,
+      "annotation" : "@Interval(min = \"0xffffffff\", max = \"arg\")",
+      "annotation_param" : "max",
+      "owner_var" : "l1",
+      "owner_ast_id" : "30",
+      "owner_type" : "VariableDeclarationExpr"
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "data_flow",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 11
+    }, {
+      "src" : 0,
+      "dst" : 3,
+      "type" : "annotation_ref",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 11
+    }, {
+      "src" : 0,
+      "dst" : 4,
+      "type" : "data_flow",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 13
+    }, {
+      "src" : 0,
+      "dst" : 6,
+      "type" : "annotation_ref",
+      "var" : "arg",
+      "symbol" : "foo:arg@9",
+      "method" : "foo",
+      "src_line" : 9,
+      "dst_line" : 13
+    } ]
+  }
+}
