@@ -1,0 +1,614 @@
+{
+  "file" : "C:\\Users\\Freily\\AppData\\Local\\Temp\\sanitized_0coe3gbf.java",
+  "code" : "/**\r\n annotation Remainder(int remainder, int modulus) int\r\n    :<==> \"java.lang.Math.floorMod(§subject§, §modulus§) == §remainder§\"\r\n    for \"0 <= §remainder§ && §remainder§ < §modulus§\";\r\n*/\r\n\r\npublic class RemainderProperties {\r\n\r\n    public static void foo1(\r\n            @Remainder(remainder=\"1\", modulus=\"6\") int arg0,\r\n            @Remainder(remainder=\"4\", modulus=\"6\") int arg1) {\r\n        // :: error: assignment.type.incompatible\r\n        @Remainder(remainder=\"1\", modulus=\"3\") int a = arg0;\r\n        // :: error: assignment.type.incompatible\r\n        a = arg1;\r\n    }\r\n}\r\n\r\n\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "/** * annotation Remainder(int remainder, int modulus) int * :<==> \"java.lang.Math.floorMod(§subject§, §modulus§) == §remainder§\" * for \"0 <= §remainder§ && §remainder§ < §modulus§\"; */ public class RemainderProperties { public static void foo1(@Remainder(remainder = \"1\", modulus = \"6\") int arg0, @Remainder(remainder = \"4\", modulus = \"6\") int arg1) { // :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0; // :: error: assignment.type.incompatible a = arg1; } }",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 19,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 1,
+      "type" : "JavadocComment",
+      "label" : "/** * annotation Remainder(int remainder, int modulus) int * :<==> \"java.lang.Math.floorMod(§subject§, §modulus§) == §remainder§\" * for \"0 <= §remainder§ && §remainder§ < §modulus§\"; */",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 5,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 2,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "/** * annotation Remainder(int remainder, int modulus) int * :<==> \"java.lang.Math.floorMod(§subject§, §modulus§) == §remainder§\" * for \"0 <= §remainder§ && §remainder§ < §modulus§\"; */ public class RemainderProperties { public static void foo1(@Remainder(remainder = \"1\", modulus = \"6\") int arg0, @Remainder(remainder = \"4\", modulus = \"6\") int arg1) { // :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0; // :: error: assignment.type.incompatible a = arg1; } }",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 17,
+      "end_column" : 1,
+      "method" : "<global>"
+    }, {
+      "id" : 3,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 7,
+      "end_column" : 6,
+      "method" : "<global>"
+    }, {
+      "id" : 4,
+      "type" : "SimpleName",
+      "label" : "RemainderProperties",
+      "line" : 7,
+      "column" : 14,
+      "end_line" : 7,
+      "end_column" : 32,
+      "method" : "<global>"
+    }, {
+      "id" : 5,
+      "type" : "MethodDeclaration",
+      "label" : "public static void foo1(@Remainder(remainder = \"1\", modulus = \"6\") int arg0, @Remainder(remainder = \"4\", modulus = \"6\") int arg1) { // :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0; // :: error: assignment.type.incompatible a = arg1; }",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 16,
+      "end_column" : 5,
+      "method" : "foo1"
+    }, {
+      "id" : 6,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 9,
+      "end_column" : 10,
+      "method" : "foo1"
+    }, {
+      "id" : 7,
+      "type" : "Modifier",
+      "label" : "static",
+      "line" : 9,
+      "column" : 12,
+      "end_line" : 9,
+      "end_column" : 17,
+      "method" : "foo1"
+    }, {
+      "id" : 8,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 9,
+      "column" : 19,
+      "end_line" : 9,
+      "end_column" : 22,
+      "method" : "foo1"
+    }, {
+      "id" : 9,
+      "type" : "SimpleName",
+      "label" : "foo1",
+      "line" : 9,
+      "column" : 24,
+      "end_line" : 9,
+      "end_column" : 27,
+      "method" : "foo1"
+    }, {
+      "id" : 10,
+      "type" : "Parameter",
+      "label" : "@Remainder(remainder = \"1\", modulus = \"6\") int arg0",
+      "line" : 10,
+      "column" : 13,
+      "end_line" : 10,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 11,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Remainder(remainder = \"1\", modulus = \"6\")",
+      "line" : 10,
+      "column" : 13,
+      "end_line" : 10,
+      "end_column" : 50,
+      "method" : "foo1"
+    }, {
+      "id" : 12,
+      "type" : "Name",
+      "label" : "Remainder",
+      "line" : 10,
+      "column" : 14,
+      "end_line" : 10,
+      "end_column" : 22,
+      "method" : "foo1"
+    }, {
+      "id" : 13,
+      "type" : "MemberValuePair",
+      "label" : "remainder = \"1\"",
+      "line" : 10,
+      "column" : 24,
+      "end_line" : 10,
+      "end_column" : 36,
+      "method" : "foo1"
+    }, {
+      "id" : 14,
+      "type" : "SimpleName",
+      "label" : "remainder",
+      "line" : 10,
+      "column" : 24,
+      "end_line" : 10,
+      "end_column" : 32,
+      "method" : "foo1"
+    }, {
+      "id" : 15,
+      "type" : "StringLiteralExpr",
+      "label" : "\"1\"",
+      "line" : 10,
+      "column" : 34,
+      "end_line" : 10,
+      "end_column" : 36,
+      "method" : "foo1"
+    }, {
+      "id" : 16,
+      "type" : "MemberValuePair",
+      "label" : "modulus = \"6\"",
+      "line" : 10,
+      "column" : 39,
+      "end_line" : 10,
+      "end_column" : 49,
+      "method" : "foo1"
+    }, {
+      "id" : 17,
+      "type" : "SimpleName",
+      "label" : "modulus",
+      "line" : 10,
+      "column" : 39,
+      "end_line" : 10,
+      "end_column" : 45,
+      "method" : "foo1"
+    }, {
+      "id" : 18,
+      "type" : "StringLiteralExpr",
+      "label" : "\"6\"",
+      "line" : 10,
+      "column" : 47,
+      "end_line" : 10,
+      "end_column" : 49,
+      "method" : "foo1"
+    }, {
+      "id" : 19,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 10,
+      "column" : 52,
+      "end_line" : 10,
+      "end_column" : 54,
+      "method" : "foo1"
+    }, {
+      "id" : 20,
+      "type" : "SimpleName",
+      "label" : "arg0",
+      "line" : 10,
+      "column" : 56,
+      "end_line" : 10,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 21,
+      "type" : "Parameter",
+      "label" : "@Remainder(remainder = \"4\", modulus = \"6\") int arg1",
+      "line" : 11,
+      "column" : 13,
+      "end_line" : 11,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 22,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Remainder(remainder = \"4\", modulus = \"6\")",
+      "line" : 11,
+      "column" : 13,
+      "end_line" : 11,
+      "end_column" : 50,
+      "method" : "foo1"
+    }, {
+      "id" : 23,
+      "type" : "Name",
+      "label" : "Remainder",
+      "line" : 11,
+      "column" : 14,
+      "end_line" : 11,
+      "end_column" : 22,
+      "method" : "foo1"
+    }, {
+      "id" : 24,
+      "type" : "MemberValuePair",
+      "label" : "remainder = \"4\"",
+      "line" : 11,
+      "column" : 24,
+      "end_line" : 11,
+      "end_column" : 36,
+      "method" : "foo1"
+    }, {
+      "id" : 25,
+      "type" : "SimpleName",
+      "label" : "remainder",
+      "line" : 11,
+      "column" : 24,
+      "end_line" : 11,
+      "end_column" : 32,
+      "method" : "foo1"
+    }, {
+      "id" : 26,
+      "type" : "StringLiteralExpr",
+      "label" : "\"4\"",
+      "line" : 11,
+      "column" : 34,
+      "end_line" : 11,
+      "end_column" : 36,
+      "method" : "foo1"
+    }, {
+      "id" : 27,
+      "type" : "MemberValuePair",
+      "label" : "modulus = \"6\"",
+      "line" : 11,
+      "column" : 39,
+      "end_line" : 11,
+      "end_column" : 49,
+      "method" : "foo1"
+    }, {
+      "id" : 28,
+      "type" : "SimpleName",
+      "label" : "modulus",
+      "line" : 11,
+      "column" : 39,
+      "end_line" : 11,
+      "end_column" : 45,
+      "method" : "foo1"
+    }, {
+      "id" : 29,
+      "type" : "StringLiteralExpr",
+      "label" : "\"6\"",
+      "line" : 11,
+      "column" : 47,
+      "end_line" : 11,
+      "end_column" : 49,
+      "method" : "foo1"
+    }, {
+      "id" : 30,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 11,
+      "column" : 52,
+      "end_line" : 11,
+      "end_column" : 54,
+      "method" : "foo1"
+    }, {
+      "id" : 31,
+      "type" : "SimpleName",
+      "label" : "arg1",
+      "line" : 11,
+      "column" : 56,
+      "end_line" : 11,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 32,
+      "type" : "BlockStmt",
+      "label" : "{ // :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0; // :: error: assignment.type.incompatible a = arg1; }",
+      "line" : 11,
+      "column" : 62,
+      "end_line" : 16,
+      "end_column" : 5,
+      "method" : "foo1"
+    }, {
+      "id" : 33,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0;",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 60,
+      "method" : "foo1"
+    }, {
+      "id" : 34,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@Remainder(remainder = \"1\", modulus = \"3\") int a = arg0",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 35,
+      "type" : "NormalAnnotationExpr",
+      "label" : "@Remainder(remainder = \"1\", modulus = \"3\")",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 46,
+      "method" : "foo1"
+    }, {
+      "id" : 36,
+      "type" : "Name",
+      "label" : "Remainder",
+      "line" : 13,
+      "column" : 10,
+      "end_line" : 13,
+      "end_column" : 18,
+      "method" : "foo1"
+    }, {
+      "id" : 37,
+      "type" : "MemberValuePair",
+      "label" : "remainder = \"1\"",
+      "line" : 13,
+      "column" : 20,
+      "end_line" : 13,
+      "end_column" : 32,
+      "method" : "foo1"
+    }, {
+      "id" : 38,
+      "type" : "SimpleName",
+      "label" : "remainder",
+      "line" : 13,
+      "column" : 20,
+      "end_line" : 13,
+      "end_column" : 28,
+      "method" : "foo1"
+    }, {
+      "id" : 39,
+      "type" : "StringLiteralExpr",
+      "label" : "\"1\"",
+      "line" : 13,
+      "column" : 30,
+      "end_line" : 13,
+      "end_column" : 32,
+      "method" : "foo1"
+    }, {
+      "id" : 40,
+      "type" : "MemberValuePair",
+      "label" : "modulus = \"3\"",
+      "line" : 13,
+      "column" : 35,
+      "end_line" : 13,
+      "end_column" : 45,
+      "method" : "foo1"
+    }, {
+      "id" : 41,
+      "type" : "SimpleName",
+      "label" : "modulus",
+      "line" : 13,
+      "column" : 35,
+      "end_line" : 13,
+      "end_column" : 41,
+      "method" : "foo1"
+    }, {
+      "id" : 42,
+      "type" : "StringLiteralExpr",
+      "label" : "\"3\"",
+      "line" : 13,
+      "column" : 43,
+      "end_line" : 13,
+      "end_column" : 45,
+      "method" : "foo1"
+    }, {
+      "id" : 43,
+      "type" : "VariableDeclarator",
+      "label" : "a = arg0",
+      "line" : 13,
+      "column" : 52,
+      "end_line" : 13,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 44,
+      "type" : "PrimitiveType",
+      "label" : "int",
+      "line" : 13,
+      "column" : 48,
+      "end_line" : 13,
+      "end_column" : 50,
+      "method" : "foo1"
+    }, {
+      "id" : 45,
+      "type" : "SimpleName",
+      "label" : "a",
+      "line" : 13,
+      "column" : 52,
+      "end_line" : 13,
+      "end_column" : 52,
+      "method" : "foo1"
+    }, {
+      "id" : 46,
+      "type" : "NameExpr",
+      "label" : "arg0",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 47,
+      "type" : "SimpleName",
+      "label" : "arg0",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 59,
+      "method" : "foo1"
+    }, {
+      "id" : 48,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible a = arg1;",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 17,
+      "method" : "foo1"
+    }, {
+      "id" : 49,
+      "type" : "AssignExpr",
+      "label" : "a = arg1",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 16,
+      "method" : "foo1"
+    }, {
+      "id" : 50,
+      "type" : "NameExpr",
+      "label" : "a",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 9,
+      "method" : "foo1"
+    }, {
+      "id" : 51,
+      "type" : "SimpleName",
+      "label" : "a",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 9,
+      "method" : "foo1"
+    }, {
+      "id" : 52,
+      "type" : "NameExpr",
+      "label" : "arg1",
+      "line" : 15,
+      "column" : 13,
+      "end_line" : 15,
+      "end_column" : 16,
+      "method" : "foo1"
+    }, {
+      "id" : 53,
+      "type" : "SimpleName",
+      "label" : "arg1",
+      "line" : 15,
+      "column" : 13,
+      "end_line" : 15,
+      "end_column" : 16,
+      "method" : "foo1"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 0, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 5, 6 ], [ 5, 7 ], [ 5, 8 ], [ 5, 9 ], [ 5, 10 ], [ 10, 11 ], [ 11, 12 ], [ 11, 13 ], [ 13, 14 ], [ 13, 15 ], [ 11, 16 ], [ 16, 17 ], [ 16, 18 ], [ 10, 19 ], [ 10, 20 ], [ 5, 21 ], [ 21, 22 ], [ 22, 23 ], [ 22, 24 ], [ 24, 25 ], [ 24, 26 ], [ 22, 27 ], [ 27, 28 ], [ 27, 29 ], [ 21, 30 ], [ 21, 31 ], [ 5, 32 ], [ 32, 33 ], [ 33, 34 ], [ 34, 35 ], [ 35, 36 ], [ 35, 37 ], [ 37, 38 ], [ 37, 39 ], [ 35, 40 ], [ 40, 41 ], [ 40, 42 ], [ 34, 43 ], [ 43, 44 ], [ 43, 45 ], [ 43, 46 ], [ 46, 47 ], [ 32, 48 ], [ 48, 49 ], [ 49, 50 ], [ 50, 51 ], [ 49, 52 ], [ 52, 53 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "// :: error: assignment.type.incompatible @Remainder(remainder = \"1\", modulus = \"3\") int a = arg0;",
+      "method" : "foo1",
+      "line" : 13,
+      "column" : 9,
+      "end_line" : 13,
+      "end_column" : 60,
+      "ast_id" : 33
+    }, {
+      "id" : 1,
+      "label" : "// :: error: assignment.type.incompatible a = arg1;",
+      "method" : "foo1",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 17,
+      "ast_id" : 48
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "next_stmt"
+    } ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "arg0",
+      "symbol" : "foo1:arg0@10",
+      "method" : "foo1",
+      "role" : "param_def",
+      "label" : "@Remainder(remainder = \"1\", modulus = \"6\") int arg0",
+      "line" : 10,
+      "column" : 13,
+      "end_line" : 10,
+      "end_column" : 59,
+      "ast_id" : 10
+    }, {
+      "id" : 1,
+      "var" : "arg1",
+      "symbol" : "foo1:arg1@11",
+      "method" : "foo1",
+      "role" : "param_def",
+      "label" : "@Remainder(remainder = \"4\", modulus = \"6\") int arg1",
+      "line" : 11,
+      "column" : 13,
+      "end_line" : 11,
+      "end_column" : 59,
+      "ast_id" : 21
+    }, {
+      "id" : 2,
+      "var" : "arg0",
+      "symbol" : "foo1:arg0@10",
+      "method" : "foo1",
+      "role" : "rhs_use",
+      "label" : "arg0",
+      "line" : 13,
+      "column" : 56,
+      "end_line" : 13,
+      "end_column" : 59,
+      "ast_id" : 46
+    }, {
+      "id" : 3,
+      "var" : "a",
+      "symbol" : "foo1:a@13",
+      "method" : "foo1",
+      "role" : "local_def",
+      "label" : "a = arg0",
+      "line" : 13,
+      "column" : 52,
+      "end_line" : 13,
+      "end_column" : 59,
+      "ast_id" : 43
+    }, {
+      "id" : 4,
+      "var" : "arg1",
+      "symbol" : "foo1:arg1@11",
+      "method" : "foo1",
+      "role" : "rhs_use",
+      "label" : "arg1",
+      "line" : 15,
+      "column" : 13,
+      "end_line" : 15,
+      "end_column" : 16,
+      "ast_id" : 52
+    }, {
+      "id" : 5,
+      "var" : "a",
+      "symbol" : "foo1:a@15",
+      "method" : "foo1",
+      "role" : "assign_def",
+      "label" : "a = arg1",
+      "line" : 15,
+      "column" : 9,
+      "end_line" : 15,
+      "end_column" : 16,
+      "ast_id" : 49
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 2,
+      "type" : "data_flow",
+      "var" : "arg0",
+      "symbol" : "foo1:arg0@10",
+      "method" : "foo1",
+      "src_line" : 10,
+      "dst_line" : 13
+    }, {
+      "src" : 1,
+      "dst" : 4,
+      "type" : "data_flow",
+      "var" : "arg1",
+      "symbol" : "foo1:arg1@11",
+      "method" : "foo1",
+      "src_line" : 11,
+      "dst_line" : 15
+    } ]
+  }
+}

@@ -1,163 +1,223 @@
-"""Readable source-grounded summaries for assignments, DFG edges and annotation references."""
+"""
+Utilities for summarising facts derived from abstract syntax trees (AST),
+control‑flow graphs (CFG) and data‑flow graphs (DFG).
+
+The functions in this module generate concise, human‑readable descriptions
+of program structure and def‑use information for inclusion in language
+model prompts.  They attempt to filter out noise such as Java keywords
+and comment artefacts so that the resulting summaries focus on real
+variables and assignments.
+"""
 
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, List
 import re
 
 
-IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+def _clean(label: str, max_len: int = 80) -> str:
+    """Normalise a label by collapsing whitespace and truncating."""
+    s = label.replace("\n", " ").strip()
+    if len(s) > max_len:
+        s = s[: max_len - 3] + "..."
+    return s
 
 
-def _line_text(line: int | None) -> str:
-    return f"line {line}" if isinstance(line, int) else "unknown line"
+def derive_dfg_facts(dfg: Dict) -> List[str]:
+    """
+    Extract simple facts from a data‑flow graph.
 
-
-def _scope(node: Dict) -> str:
-    method = node.get("method")
-    if isinstance(method, str) and method and method != "<global>":
-        return method
-    return "global"
-
-
-def _scoped_var(scope: str, var: str) -> str:
-    return f"{scope}:{var}"
-
-
-def _clean(text: str) -> str:
-    return re.sub(r"\s+", " ", str(text)).strip()
-
-
-def _parse_assignment(label: str) -> Tuple[str, str] | None:
-    cleaned = _clean(label).rstrip(";")
-    if "=" not in cleaned:
-        return None
-    lhs, rhs = cleaned.split("=", 1)
-    lhs = lhs.strip()
-    rhs = rhs.strip()
-    if not lhs or not rhs:
-        return None
-    lhs = lhs.split()[-1]
-    if not IDENT_RE.match(lhs):
-        return None
-    return lhs, rhs
-
-
-def _iter_edge_dicts(edges: Iterable):
-    for e in edges:
-        if isinstance(e, dict):
-            src = e.get("src")
-            dst = e.get("dst")
-            if isinstance(src, int) and isinstance(dst, int):
-                yield e
-        elif isinstance(e, list) and len(e) == 2:
-            src, dst = e
-            if isinstance(src, int) and isinstance(dst, int):
-                yield {"src": src, "dst": dst, "type": None}
-
-
-def _node_lookup(nodes: List[Dict]) -> Dict[int, Dict]:
-    lookup: Dict[int, Dict] = {}
-    for n in nodes:
-        node_id = n.get("id")
-        if isinstance(node_id, int):
-            lookup[node_id] = n
-    return lookup
-
-
-def derive_assignment_facts_from_ast(ast: Dict) -> List[str]:
-    results: List[str] = []
-    for node in ast.get("nodes", []):
-        ntype = node.get("type")
-        if ntype not in {"VariableDeclarator", "AssignExpr"}:
-            continue
-        parsed = _parse_assignment(str(node.get("label", "")))
-        if not parsed:
-            continue
-        lhs, rhs = parsed
-        scope = _scope(node)
-        results.append(f"{_scoped_var(scope, lhs)} <- {rhs} ({_line_text(node.get('line'))})")
-    return results
-
-
-def derive_def_use_facts(dfg: Dict) -> List[str]:
+    For each variable that appears on more than one line, we record
+    the set of lines on which it occurs.  We also derive basic
+    def‑use chains by following edges in the DFG.  Variables whose
+    names look like Java keywords or other noise are filtered out.
+    """
     nodes = dfg.get("nodes", [])
-    lookup = _node_lookup(nodes)
+    edges = dfg.get("edges", [])
+
     facts: List[str] = []
-    seen: set[str] = set()
-    for e in _iter_edge_dicts(dfg.get("edges", [])):
-        if e.get("type") not in {"data_flow", "receiver_use"}:
+
+    # Build mapping var -> lines
+    occ: Dict[str, set] = {}
+    # Simple keyword/reserved set to exclude non‑variable names
+    reserved: set[str] = {
+        "public", "private", "protected", "void", "int", "float", "double", "char",
+        "boolean", "class", "static", "final", "return", "error", "assignment",
+        "type", "incompatible", "other",
+    }
+    for n in nodes:
+        v = n.get("var", "?")
+        line = n.get("line", -1)
+        if not v or not isinstance(v, str):
             continue
-        src = lookup.get(e["src"])
-        dst = lookup.get(e["dst"])
-        if not src or not dst:
+        # Skip obvious keywords and malformed identifiers
+        if v in reserved:
             continue
-        var = str(dst.get("var", src.get("var", "")))
-        if not IDENT_RE.match(var):
+        if not re.match(r"^[a-zA-Z_]\w*$", v):
             continue
-        scope = _scope(dst)
-        role = str(dst.get("role", "use"))
-        src_line = src.get("line")
-        dst_line = dst.get("line")
-        entry = (
-            f"{_scoped_var(scope, var)} defined at {_line_text(src_line)}, "
-            f"used at {_line_text(dst_line)} as {role}"
-        )
-        if entry not in seen:
-            seen.add(entry)
-            facts.append(entry)
+        occ.setdefault(v, set()).add(line)
+
+    for v, lines in occ.items():
+        # Include only variables that occur on multiple distinct lines
+        if v.strip() and len(lines) > 1:
+            ls = ", ".join(str(l) for l in sorted(lines))
+            facts.append(f"Variable {v} occurs on lines {ls}.")
+
+    # Extract data‑flow edges for variables, skipping mismatched vars
+    for src, dst in edges:
+        if src < 0 or src >= len(nodes) or dst < 0 or dst >= len(nodes):
+            continue
+        n1 = nodes[src]
+        n2 = nodes[dst]
+        v1 = n1.get("var")
+        v2 = n2.get("var")
+        if not v1 or not v2 or v1 != v2:
+            continue
+        if v1 in reserved or not re.match(r"^[a-zA-Z_]\w*$", v1):
+            continue
+        l1 = n1.get("line", -1)
+        l2 = n2.get("line", -1)
+        if isinstance(l1, int) and isinstance(l2, int) and l1 != -1 and l2 != -1:
+            facts.append(f"Data-flow: value of {v1} flows from line {l1} to line {l2}.")
+
     return facts
 
 
-def derive_annotation_dependency_facts(dfg: Dict) -> List[str]:
-    nodes = dfg.get("nodes", [])
-    lookup = _node_lookup(nodes)
+def derive_cfg_facts(cfg: Dict) -> List[str]:
+    """
+    Extract simple facts from a control‑flow graph.  For each edge we
+    produce a statement of the form:
+
+        Control-flow: statement '<src>' can be followed by '<dst>'.
+
+    Labels are cleaned and truncated to avoid verbose outputs.
+    """
+    nodes = cfg.get("nodes", [])
+    edges = cfg.get("edges", [])
     facts: List[str] = []
-    seen: set[str] = set()
-    for e in _iter_edge_dicts(dfg.get("edges", [])):
-        if e.get("type") != "annotation_ref":
+    for src, dst in edges:
+        if src < 0 or src >= len(nodes) or dst < 0 or dst >= len(nodes):
             continue
-        src = lookup.get(e["src"])
-        dst = lookup.get(e["dst"])
-        if not src or not dst:
-            continue
-        var = str(dst.get("var", src.get("var", "")))
-        if not IDENT_RE.match(var):
-            continue
-        scope = _scope(dst)
-        ann = _clean(str(dst.get("annotation", dst.get("label", "annotation"))))
-        owner_var = str(dst.get("owner_var", "")).strip()
-        owner_suffix = f" on {_scoped_var(scope, owner_var)}" if owner_var else ""
-        entry = (
-            f"{_scoped_var(scope, var)} referenced by {ann}{owner_suffix} "
-            f"({_line_text(dst.get('line'))})"
-        )
-        if entry not in seen:
-            seen.add(entry)
-            facts.append(entry)
+        s1 = _clean(nodes[src].get("label", ""))
+        s2 = _clean(nodes[dst].get("label", ""))
+        if s1 and s2:
+            facts.append(f"Control-flow: statement '{s1}' can be followed by '{s2}'.")
+    return facts
+
+
+def derive_assignment_facts_from_ast(ast: Dict) -> List[str]:
+    """
+    Extract assignment and annotation facts from an AST.  We look for
+    variable declarators with an initializer as well as Interval
+    annotations on fields.  The resulting descriptions are intended
+    for inclusion in prompts and are kept short.
+    """
+    nodes = ast.get("nodes", [])
+    facts: List[str] = []
+    for n in nodes:
+        t = n.get("type")
+        label = n.get("label", "")
+        if t == "VariableDeclarator" and "=" in str(label):
+            parts = str(label).split("=")
+            lhs = parts[0].replace("int", "").strip()
+            rhs = "=".join(parts[1:]).strip().rstrip(";")
+            facts.append(f"Variable {lhs} is defined as '{_clean(rhs)}'.")
+        if t == "FieldDeclaration" and "@Interval" in str(label):
+            facts.append(f"Field with @Interval annotation: '{_clean(str(label))}'.")
     return facts
 
 
 def summarize_graph_facts(ast: Dict, cfg: Dict, dfg: Dict) -> str:
-    return summarize_graph_facts_compact(ast, cfg, dfg)
+    """
+    Produce a detailed multi‑section summary of assignment/annotation facts,
+    data‑flow facts and control‑flow facts.  The output is organised
+    with headers and bullet points and is suitable for LLM consumption.
+    """
+    dfg_facts = derive_dfg_facts(dfg)
+    cfg_facts = derive_cfg_facts(cfg)
+    assign_facts = derive_assignment_facts_from_ast(ast)
+    lines: List[str] = []
+    if assign_facts:
+        lines.append("Assignment and annotation facts:")
+        lines.extend(f"- {f}" for f in assign_facts)
+    if dfg_facts:
+        lines.append("Data-flow facts (from DFG):")
+        lines.extend(f"- {f}" for f in dfg_facts)
+    if cfg_facts:
+        lines.append("Control-flow facts (from CFG):")
+        lines.extend(f"- {f}" for f in cfg_facts)
+    if not lines:
+        return "No explicit graph-derived facts could be extracted."
+    return "\n".join(lines)
 
 
 def summarize_graph_facts_compact(ast: Dict, cfg: Dict, dfg: Dict) -> str:
-    assignments = derive_assignment_facts_from_ast(ast)
-    def_uses = derive_def_use_facts(dfg)
-    ann_deps = derive_annotation_dependency_facts(dfg)
+    """
+    Produce a compact, high‑level summary of facts for inclusion in prompts.
+    The summary includes:
 
+    - Assignments (only the minimal declaration text)
+    - Interval annotations
+    - Def‑use chains over variables, filtered to exclude Java keywords
+      and other non‑variable identifiers
+    """
+    # Collect data-flow assignments and interval annotations separately
+    assignments: List[str] = []
+    annotations: List[str] = []
+    for node in ast.get("nodes", []):
+        t = node.get("type")
+        raw_label = node.get("label", "")
+        label = str(raw_label).replace("\r", "\n")
+        # Capture assignments either from VariableDeclarator or AssignExpr
+        if t == "VariableDeclarator" and "=" in label:
+            last_line = label.splitlines()[-1].strip()
+            assignments.append(last_line)
+        elif t == "AssignExpr":
+            cleaned = label.replace("\n", " ").strip()
+            assignments.append(cleaned)
+        # Capture Interval annotations
+        if t == "NormalAnnotationExpr" and "Interval" in label:
+            cleaned_ann = label.replace("\n", " ").strip()
+            annotations.append(cleaned_ann)
     parts: List[str] = []
+    # Rename the assignments section to "Data-flow summary" to make clear
+    # that these are source-level definitions, not arbitrary code lines.
     if assignments:
-        parts.append("Assignments:")
-        parts.extend(f"- {item}" for item in assignments)
-    if def_uses:
+        parts.append("Data-flow summary:")
+        for a in assignments:
+            parts.append(f"- {a}")
+    if annotations:
+        parts.append("Interval annotations:")
+        for ann in annotations:
+            parts.append(f"- {ann}")
+    # Build def-use chains, filtering out noise
+    var_lines: dict[str, set[int]] = defaultdict(set)
+    # Precompile reserved set and pattern
+    reserved: set[str] = {
+        "public", "private", "protected", "void", "int", "float", "double", "char",
+        "boolean", "class", "static", "final", "return", "error", "assignment",
+        "type", "incompatible", "other",
+    }
+    ident_re = re.compile(r"^[a-zA-Z_]\w*$")
+    for n in dfg.get("nodes", []):
+        v = n.get("var")
+        line = n.get("line")
+        if not v or not isinstance(v, str):
+            continue
+        if v in reserved or not ident_re.match(v):
+            continue
+        if isinstance(line, int):
+            var_lines[v].add(line)
+    chains: List[str] = []
+    for v, lines in var_lines.items():
+        if len(lines) > 1:
+            seq = " -> ".join(str(x) for x in sorted(lines))
+            chains.append(f"{v}: lines {seq}")
+    if chains:
         parts.append("Def-use chains (from DFG):")
-        parts.extend(f"- {item}" for item in def_uses)
-    if ann_deps:
-        parts.append("Annotation dependencies:")
-        parts.extend(f"- {item}" for item in ann_deps)
+        for c in chains:
+            parts.append(f"- {c}")
     if not parts:
-        return "No source-grounded data-flow facts extracted."
+        return "No high-level data-flow facts extracted."
     return "\n".join(parts)
