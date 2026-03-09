@@ -171,7 +171,8 @@ def run_one(java_file: Path) -> None:
         # regardless of whether they appear in an assignment, and we include simple assignments
         # (e.g., a = arg) that do not involve insert/remove. Exclude lines in the annotation spec.
         if ".insert(" in stripped or ".remove(" in stripped or '=' in stripped:
-            if "annotation" in stripped:
+            # Skip lines that belong to the annotation spec (e.g. ':<==>' or 'for "…"')
+            if "annotation" in stripped or stripped.startswith(":") or stripped.startswith("for "):
                 pass
             else:
                 method = method_by_line.get(idx)
