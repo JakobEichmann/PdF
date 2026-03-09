@@ -203,33 +203,28 @@ def run_one(java_file: Path) -> None:
         for ann in annotation_lines_by_method[method]:
             prefix = f"{method}:" if method != "<global>" else ""
             print(f"[DEBUG]- {prefix}{ann}")
-    # Build data-flow summary lines: annotation dependencies and assignments grouped by method
-    data_flow_lines: List[str] = []
-    graph_facts_summary = summarize_graph_facts_compact(ast, cfg, dfg)
-    for line in graph_facts_summary.strip().split("\n"):
-        l = line.strip()
-        if not l:
-            continue
-        # Skip def-use chain sections and heading lines
-        if l.startswith("Def-use chains") or l.startswith("Data-flow summary"):
-            continue
-        # Skip assignment lines; we'll print them with method context below
-        if l.startswith("- ") and "=" in l:
-            continue
-        # Skip def-use-like lines (e.g., "- l: lines 9 -> 12")
-        if l.startswith("- ") and ":" in l and "->" in l:
-            continue
-        data_flow_lines.append("[DEBUG]" + l)
-    # Add assignments with method context
+    # Build data-flow summary lines. For each assignment or call, construct a flow description
+    flow_lines: List[str] = []
     for method in sorted(assignment_lines_by_method):
         for assign in assignment_lines_by_method[method]:
             prefix = f"{method}:" if method != "<global>" else ""
-            data_flow_lines.append(f"[DEBUG]- {prefix}{assign}")
-    # Print data-flow summary if we have lines to show
-    if data_flow_lines:
+            # If there is an assignment (=) split into lhs and rhs
+            if "=" in assign:
+                parts = assign.split("=", 1)
+                lhs_part = parts[0].strip()
+                rhs_part = parts[1].strip().rstrip(";")
+                # Extract lhs variable name as the last token before '='
+                lhs_tokens = lhs_part.split()
+                lhs_var = lhs_tokens[-1] if lhs_tokens else lhs_part
+                flow_lines.append(f"[DEBUG]- {prefix}{lhs_var} <- {rhs_part}")
+            else:
+                # A call without assignment (e.g., l.remove(0))
+                # Indicate that the call requires a non-empty receiver
+                flow_lines.append(f"[DEBUG]- {prefix}{assign} requires receiver non-empty")
+    if flow_lines:
         print("[DEBUG] Data-flow summary:")
-        for line in data_flow_lines:
-            print(line)
+        for fl in flow_lines:
+            print(fl)
     # Print def-use chains with method context
     if var_lines_by_method:
         print("[DEBUG] Def-use chains (from DFG):")
