@@ -189,9 +189,10 @@ def run_one(java_file: Path) -> None:
             or "->" in stripped
         ):
             skip_line = True
-        # Skip annotation declarations in code
-        if "@" in stripped:
-            skip_line = True
+        # We do not skip lines simply because they contain '@'.
+        # Annotation declarations in code (e.g., @MinLength(...) l0 = ...) should be included in data-flow
+        # because they contain assignments we want to capture. Specification lines from annotation blocks
+        # are filtered by other conditions above.
         # Skip method declarations (containing '(' without assignment)
         if "(" in stripped and "=" not in stripped:
             skip_line = True
