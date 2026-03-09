@@ -1,0 +1,1540 @@
+{
+  "file" : "C:\\Users\\Freily\\AppData\\Local\\Temp\\sanitized_bixp9k3s.java",
+  "code" : "/*\r\nannotation MinLength(int len) ImmutableList\r\n    :<==> \"§subject§ != null && §subject§.length > §len§\"\r\n    for \"§len§ >= 0\";\r\n*/\r\n\r\npublic final class ListLengthInsert {\r\n\r\n    public void insert(@MinLength(\"n\") ImmutableList l) {\r\n        // False positives: the result of insert() should be n+1\r\n        // :: error: assignment.type.incompatible\r\n        @MinLength(\"n\") ImmutableList l0 = l.insert(new Object());\r\n        // :: error: assignment.type.incompatible\r\n        @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object());\r\n\r\n        // True positive\r\n        // :: error: assignment.type.incompatible\r\n        @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object());\r\n    }\r\n\r\n    public void remove(@MinLength(\"1\") ImmutableList l) {\r\n        // False positive: the result of remove() should be length n-1\r\n        @MinLength(\"0\") ImmutableList l0 = l.remove(1);\r\n\r\n        // False negative: the argument of remove() should be non-empty, so there should be an error here.\r\n        // Is your pipeline able to handle something like this too, or only false positives as above?\r\n        l0.remove(1);\r\n    }\r\n\r\n    public void removeTruePositive(@MinLength(\"1\") ImmutableList l) {\r\n        // True positive: the result of remove() is length n-1, the the error below should stay\r\n        // :: error: assignment.type.incompatible\r\n        @MinLength(\"1\") ImmutableList l0 = l.remove(1);\r\n    }\r\n}\r\n\r\n\r\n",
+  "ast" : {
+    "nodes" : [ {
+      "id" : 0,
+      "type" : "CompilationUnit",
+      "label" : "/* annotation MinLength(int len) ImmutableList :<==> \"§subject§ != null && §subject§.length > §len§\" for \"§len§ >= 0\"; */ public final class ListLengthInsert { public void insert(@MinLength(\"n\") ImmutableList l) { // False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object()); // :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object()); // True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object()); } public void remove(@MinLength(\"1\") ImmutableList l) { // False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1); // False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1); } public void removeTruePositive(@MinLength(\"1\") ImmutableList l) { // True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1); } }",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 37,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 1,
+      "type" : "BlockComment",
+      "label" : "/* annotation MinLength(int len) ImmutableList :<==> \"§subject§ != null && §subject§.length > §len§\" for \"§len§ >= 0\"; */",
+      "line" : 1,
+      "column" : 1,
+      "end_line" : 5,
+      "end_column" : 2,
+      "method" : "<global>"
+    }, {
+      "id" : 2,
+      "type" : "ClassOrInterfaceDeclaration",
+      "label" : "/* annotation MinLength(int len) ImmutableList :<==> \"§subject§ != null && §subject§.length > §len§\" for \"§len§ >= 0\"; */ public final class ListLengthInsert { public void insert(@MinLength(\"n\") ImmutableList l) { // False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object()); // :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object()); // True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object()); } public void remove(@MinLength(\"1\") ImmutableList l) { // False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1); // False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1); } public void removeTruePositive(@MinLength(\"1\") ImmutableList l) { // True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1); } }",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 35,
+      "end_column" : 1,
+      "method" : "<global>"
+    }, {
+      "id" : 3,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 7,
+      "column" : 1,
+      "end_line" : 7,
+      "end_column" : 6,
+      "method" : "<global>"
+    }, {
+      "id" : 4,
+      "type" : "Modifier",
+      "label" : "final",
+      "line" : 7,
+      "column" : 8,
+      "end_line" : 7,
+      "end_column" : 12,
+      "method" : "<global>"
+    }, {
+      "id" : 5,
+      "type" : "SimpleName",
+      "label" : "ListLengthInsert",
+      "line" : 7,
+      "column" : 20,
+      "end_line" : 7,
+      "end_column" : 35,
+      "method" : "<global>"
+    }, {
+      "id" : 6,
+      "type" : "MethodDeclaration",
+      "label" : "public void insert(@MinLength(\"n\") ImmutableList l) { // False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object()); // :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object()); // True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object()); }",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 19,
+      "end_column" : 5,
+      "method" : "insert"
+    }, {
+      "id" : 7,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 9,
+      "column" : 5,
+      "end_line" : 9,
+      "end_column" : 10,
+      "method" : "insert"
+    }, {
+      "id" : 8,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 9,
+      "column" : 12,
+      "end_line" : 9,
+      "end_column" : 15,
+      "method" : "insert"
+    }, {
+      "id" : 9,
+      "type" : "SimpleName",
+      "label" : "insert",
+      "line" : 9,
+      "column" : 17,
+      "end_line" : 9,
+      "end_column" : 22,
+      "method" : "insert"
+    }, {
+      "id" : 10,
+      "type" : "Parameter",
+      "label" : "@MinLength(\"n\") ImmutableList l",
+      "line" : 9,
+      "column" : 24,
+      "end_line" : 9,
+      "end_column" : 54,
+      "method" : "insert"
+    }, {
+      "id" : 11,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"n\")",
+      "line" : 9,
+      "column" : 24,
+      "end_line" : 9,
+      "end_column" : 38,
+      "method" : "insert"
+    }, {
+      "id" : 12,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 9,
+      "column" : 25,
+      "end_line" : 9,
+      "end_column" : 33,
+      "method" : "insert"
+    }, {
+      "id" : 13,
+      "type" : "StringLiteralExpr",
+      "label" : "\"n\"",
+      "line" : 9,
+      "column" : 35,
+      "end_line" : 9,
+      "end_column" : 37,
+      "method" : "insert"
+    }, {
+      "id" : 14,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 9,
+      "column" : 40,
+      "end_line" : 9,
+      "end_column" : 52,
+      "method" : "insert"
+    }, {
+      "id" : 15,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 9,
+      "column" : 40,
+      "end_line" : 9,
+      "end_column" : 52,
+      "method" : "insert"
+    }, {
+      "id" : 16,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 9,
+      "column" : 54,
+      "end_line" : 9,
+      "end_column" : 54,
+      "method" : "insert"
+    }, {
+      "id" : 17,
+      "type" : "BlockStmt",
+      "label" : "{ // False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object()); // :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object()); // True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object()); }",
+      "line" : 9,
+      "column" : 57,
+      "end_line" : 19,
+      "end_column" : 5,
+      "method" : "insert"
+    }, {
+      "id" : 18,
+      "type" : "LineComment",
+      "label" : "// False positives: the result of insert() should be n+1",
+      "line" : 10,
+      "column" : 9,
+      "end_line" : 10,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 19,
+      "type" : "ExpressionStmt",
+      "label" : "// False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object());",
+      "line" : 12,
+      "column" : 9,
+      "end_line" : 12,
+      "end_column" : 66,
+      "method" : "insert"
+    }, {
+      "id" : 20,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@MinLength(\"n\") ImmutableList l0 = l.insert(new Object())",
+      "line" : 12,
+      "column" : 9,
+      "end_line" : 12,
+      "end_column" : 65,
+      "method" : "insert"
+    }, {
+      "id" : 21,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"n\")",
+      "line" : 12,
+      "column" : 9,
+      "end_line" : 12,
+      "end_column" : 23,
+      "method" : "insert"
+    }, {
+      "id" : 22,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 12,
+      "column" : 10,
+      "end_line" : 12,
+      "end_column" : 18,
+      "method" : "insert"
+    }, {
+      "id" : 23,
+      "type" : "StringLiteralExpr",
+      "label" : "\"n\"",
+      "line" : 12,
+      "column" : 20,
+      "end_line" : 12,
+      "end_column" : 22,
+      "method" : "insert"
+    }, {
+      "id" : 24,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = l.insert(new Object())",
+      "line" : 12,
+      "column" : 39,
+      "end_line" : 12,
+      "end_column" : 65,
+      "method" : "insert"
+    }, {
+      "id" : 25,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 12,
+      "column" : 25,
+      "end_line" : 12,
+      "end_column" : 37,
+      "method" : "insert"
+    }, {
+      "id" : 26,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 12,
+      "column" : 25,
+      "end_line" : 12,
+      "end_column" : 37,
+      "method" : "insert"
+    }, {
+      "id" : 27,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 12,
+      "column" : 39,
+      "end_line" : 12,
+      "end_column" : 40,
+      "method" : "insert"
+    }, {
+      "id" : 28,
+      "type" : "MethodCallExpr",
+      "label" : "l.insert(new Object())",
+      "line" : 12,
+      "column" : 44,
+      "end_line" : 12,
+      "end_column" : 65,
+      "method" : "insert"
+    }, {
+      "id" : 29,
+      "type" : "NameExpr",
+      "label" : "l",
+      "line" : 12,
+      "column" : 44,
+      "end_line" : 12,
+      "end_column" : 44,
+      "method" : "insert"
+    }, {
+      "id" : 30,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 12,
+      "column" : 44,
+      "end_line" : 12,
+      "end_column" : 44,
+      "method" : "insert"
+    }, {
+      "id" : 31,
+      "type" : "SimpleName",
+      "label" : "insert",
+      "line" : 12,
+      "column" : 46,
+      "end_line" : 12,
+      "end_column" : 51,
+      "method" : "insert"
+    }, {
+      "id" : 32,
+      "type" : "ObjectCreationExpr",
+      "label" : "new Object()",
+      "line" : 12,
+      "column" : 53,
+      "end_line" : 12,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 33,
+      "type" : "ClassOrInterfaceType",
+      "label" : "Object",
+      "line" : 12,
+      "column" : 57,
+      "end_line" : 12,
+      "end_column" : 62,
+      "method" : "insert"
+    }, {
+      "id" : 34,
+      "type" : "SimpleName",
+      "label" : "Object",
+      "line" : 12,
+      "column" : 57,
+      "end_line" : 12,
+      "end_column" : 62,
+      "method" : "insert"
+    }, {
+      "id" : 35,
+      "type" : "ExpressionStmt",
+      "label" : "// :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object());",
+      "line" : 14,
+      "column" : 9,
+      "end_line" : 14,
+      "end_column" : 68,
+      "method" : "insert"
+    }, {
+      "id" : 36,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object())",
+      "line" : 14,
+      "column" : 9,
+      "end_line" : 14,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 37,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"n+1\")",
+      "line" : 14,
+      "column" : 9,
+      "end_line" : 14,
+      "end_column" : 25,
+      "method" : "insert"
+    }, {
+      "id" : 38,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 14,
+      "column" : 10,
+      "end_line" : 14,
+      "end_column" : 18,
+      "method" : "insert"
+    }, {
+      "id" : 39,
+      "type" : "StringLiteralExpr",
+      "label" : "\"n+1\"",
+      "line" : 14,
+      "column" : 20,
+      "end_line" : 14,
+      "end_column" : 24,
+      "method" : "insert"
+    }, {
+      "id" : 40,
+      "type" : "VariableDeclarator",
+      "label" : "l1 = l.insert(new Object())",
+      "line" : 14,
+      "column" : 41,
+      "end_line" : 14,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 41,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 14,
+      "column" : 27,
+      "end_line" : 14,
+      "end_column" : 39,
+      "method" : "insert"
+    }, {
+      "id" : 42,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 14,
+      "column" : 27,
+      "end_line" : 14,
+      "end_column" : 39,
+      "method" : "insert"
+    }, {
+      "id" : 43,
+      "type" : "SimpleName",
+      "label" : "l1",
+      "line" : 14,
+      "column" : 41,
+      "end_line" : 14,
+      "end_column" : 42,
+      "method" : "insert"
+    }, {
+      "id" : 44,
+      "type" : "MethodCallExpr",
+      "label" : "l.insert(new Object())",
+      "line" : 14,
+      "column" : 46,
+      "end_line" : 14,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 45,
+      "type" : "NameExpr",
+      "label" : "l",
+      "line" : 14,
+      "column" : 46,
+      "end_line" : 14,
+      "end_column" : 46,
+      "method" : "insert"
+    }, {
+      "id" : 46,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 14,
+      "column" : 46,
+      "end_line" : 14,
+      "end_column" : 46,
+      "method" : "insert"
+    }, {
+      "id" : 47,
+      "type" : "SimpleName",
+      "label" : "insert",
+      "line" : 14,
+      "column" : 48,
+      "end_line" : 14,
+      "end_column" : 53,
+      "method" : "insert"
+    }, {
+      "id" : 48,
+      "type" : "ObjectCreationExpr",
+      "label" : "new Object()",
+      "line" : 14,
+      "column" : 55,
+      "end_line" : 14,
+      "end_column" : 66,
+      "method" : "insert"
+    }, {
+      "id" : 49,
+      "type" : "ClassOrInterfaceType",
+      "label" : "Object",
+      "line" : 14,
+      "column" : 59,
+      "end_line" : 14,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 50,
+      "type" : "SimpleName",
+      "label" : "Object",
+      "line" : 14,
+      "column" : 59,
+      "end_line" : 14,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 51,
+      "type" : "LineComment",
+      "label" : "// True positive",
+      "line" : 16,
+      "column" : 9,
+      "end_line" : 16,
+      "end_column" : 24,
+      "method" : "insert"
+    }, {
+      "id" : 52,
+      "type" : "ExpressionStmt",
+      "label" : "// True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object());",
+      "line" : 18,
+      "column" : 9,
+      "end_line" : 18,
+      "end_column" : 68,
+      "method" : "insert"
+    }, {
+      "id" : 53,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object())",
+      "line" : 18,
+      "column" : 9,
+      "end_line" : 18,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 54,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"n+2\")",
+      "line" : 18,
+      "column" : 9,
+      "end_line" : 18,
+      "end_column" : 25,
+      "method" : "insert"
+    }, {
+      "id" : 55,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 18,
+      "column" : 10,
+      "end_line" : 18,
+      "end_column" : 18,
+      "method" : "insert"
+    }, {
+      "id" : 56,
+      "type" : "StringLiteralExpr",
+      "label" : "\"n+2\"",
+      "line" : 18,
+      "column" : 20,
+      "end_line" : 18,
+      "end_column" : 24,
+      "method" : "insert"
+    }, {
+      "id" : 57,
+      "type" : "VariableDeclarator",
+      "label" : "l2 = l.insert(new Object())",
+      "line" : 18,
+      "column" : 41,
+      "end_line" : 18,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 58,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 18,
+      "column" : 27,
+      "end_line" : 18,
+      "end_column" : 39,
+      "method" : "insert"
+    }, {
+      "id" : 59,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 18,
+      "column" : 27,
+      "end_line" : 18,
+      "end_column" : 39,
+      "method" : "insert"
+    }, {
+      "id" : 60,
+      "type" : "SimpleName",
+      "label" : "l2",
+      "line" : 18,
+      "column" : 41,
+      "end_line" : 18,
+      "end_column" : 42,
+      "method" : "insert"
+    }, {
+      "id" : 61,
+      "type" : "MethodCallExpr",
+      "label" : "l.insert(new Object())",
+      "line" : 18,
+      "column" : 46,
+      "end_line" : 18,
+      "end_column" : 67,
+      "method" : "insert"
+    }, {
+      "id" : 62,
+      "type" : "NameExpr",
+      "label" : "l",
+      "line" : 18,
+      "column" : 46,
+      "end_line" : 18,
+      "end_column" : 46,
+      "method" : "insert"
+    }, {
+      "id" : 63,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 18,
+      "column" : 46,
+      "end_line" : 18,
+      "end_column" : 46,
+      "method" : "insert"
+    }, {
+      "id" : 64,
+      "type" : "SimpleName",
+      "label" : "insert",
+      "line" : 18,
+      "column" : 48,
+      "end_line" : 18,
+      "end_column" : 53,
+      "method" : "insert"
+    }, {
+      "id" : 65,
+      "type" : "ObjectCreationExpr",
+      "label" : "new Object()",
+      "line" : 18,
+      "column" : 55,
+      "end_line" : 18,
+      "end_column" : 66,
+      "method" : "insert"
+    }, {
+      "id" : 66,
+      "type" : "ClassOrInterfaceType",
+      "label" : "Object",
+      "line" : 18,
+      "column" : 59,
+      "end_line" : 18,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 67,
+      "type" : "SimpleName",
+      "label" : "Object",
+      "line" : 18,
+      "column" : 59,
+      "end_line" : 18,
+      "end_column" : 64,
+      "method" : "insert"
+    }, {
+      "id" : 68,
+      "type" : "MethodDeclaration",
+      "label" : "public void remove(@MinLength(\"1\") ImmutableList l) { // False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1); // False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1); }",
+      "line" : 21,
+      "column" : 5,
+      "end_line" : 28,
+      "end_column" : 5,
+      "method" : "remove"
+    }, {
+      "id" : 69,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 21,
+      "column" : 5,
+      "end_line" : 21,
+      "end_column" : 10,
+      "method" : "remove"
+    }, {
+      "id" : 70,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 21,
+      "column" : 12,
+      "end_line" : 21,
+      "end_column" : 15,
+      "method" : "remove"
+    }, {
+      "id" : 71,
+      "type" : "SimpleName",
+      "label" : "remove",
+      "line" : 21,
+      "column" : 17,
+      "end_line" : 21,
+      "end_column" : 22,
+      "method" : "remove"
+    }, {
+      "id" : 72,
+      "type" : "Parameter",
+      "label" : "@MinLength(\"1\") ImmutableList l",
+      "line" : 21,
+      "column" : 24,
+      "end_line" : 21,
+      "end_column" : 54,
+      "method" : "remove"
+    }, {
+      "id" : 73,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"1\")",
+      "line" : 21,
+      "column" : 24,
+      "end_line" : 21,
+      "end_column" : 38,
+      "method" : "remove"
+    }, {
+      "id" : 74,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 21,
+      "column" : 25,
+      "end_line" : 21,
+      "end_column" : 33,
+      "method" : "remove"
+    }, {
+      "id" : 75,
+      "type" : "StringLiteralExpr",
+      "label" : "\"1\"",
+      "line" : 21,
+      "column" : 35,
+      "end_line" : 21,
+      "end_column" : 37,
+      "method" : "remove"
+    }, {
+      "id" : 76,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 21,
+      "column" : 40,
+      "end_line" : 21,
+      "end_column" : 52,
+      "method" : "remove"
+    }, {
+      "id" : 77,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 21,
+      "column" : 40,
+      "end_line" : 21,
+      "end_column" : 52,
+      "method" : "remove"
+    }, {
+      "id" : 78,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 21,
+      "column" : 54,
+      "end_line" : 21,
+      "end_column" : 54,
+      "method" : "remove"
+    }, {
+      "id" : 79,
+      "type" : "BlockStmt",
+      "label" : "{ // False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1); // False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1); }",
+      "line" : 21,
+      "column" : 57,
+      "end_line" : 28,
+      "end_column" : 5,
+      "method" : "remove"
+    }, {
+      "id" : 80,
+      "type" : "ExpressionStmt",
+      "label" : "// False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1);",
+      "line" : 23,
+      "column" : 9,
+      "end_line" : 23,
+      "end_column" : 55,
+      "method" : "remove"
+    }, {
+      "id" : 81,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@MinLength(\"0\") ImmutableList l0 = l.remove(1)",
+      "line" : 23,
+      "column" : 9,
+      "end_line" : 23,
+      "end_column" : 54,
+      "method" : "remove"
+    }, {
+      "id" : 82,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"0\")",
+      "line" : 23,
+      "column" : 9,
+      "end_line" : 23,
+      "end_column" : 23,
+      "method" : "remove"
+    }, {
+      "id" : 83,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 23,
+      "column" : 10,
+      "end_line" : 23,
+      "end_column" : 18,
+      "method" : "remove"
+    }, {
+      "id" : 84,
+      "type" : "StringLiteralExpr",
+      "label" : "\"0\"",
+      "line" : 23,
+      "column" : 20,
+      "end_line" : 23,
+      "end_column" : 22,
+      "method" : "remove"
+    }, {
+      "id" : 85,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = l.remove(1)",
+      "line" : 23,
+      "column" : 39,
+      "end_line" : 23,
+      "end_column" : 54,
+      "method" : "remove"
+    }, {
+      "id" : 86,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 23,
+      "column" : 25,
+      "end_line" : 23,
+      "end_column" : 37,
+      "method" : "remove"
+    }, {
+      "id" : 87,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 23,
+      "column" : 25,
+      "end_line" : 23,
+      "end_column" : 37,
+      "method" : "remove"
+    }, {
+      "id" : 88,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 23,
+      "column" : 39,
+      "end_line" : 23,
+      "end_column" : 40,
+      "method" : "remove"
+    }, {
+      "id" : 89,
+      "type" : "MethodCallExpr",
+      "label" : "l.remove(1)",
+      "line" : 23,
+      "column" : 44,
+      "end_line" : 23,
+      "end_column" : 54,
+      "method" : "remove"
+    }, {
+      "id" : 90,
+      "type" : "NameExpr",
+      "label" : "l",
+      "line" : 23,
+      "column" : 44,
+      "end_line" : 23,
+      "end_column" : 44,
+      "method" : "remove"
+    }, {
+      "id" : 91,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 23,
+      "column" : 44,
+      "end_line" : 23,
+      "end_column" : 44,
+      "method" : "remove"
+    }, {
+      "id" : 92,
+      "type" : "SimpleName",
+      "label" : "remove",
+      "line" : 23,
+      "column" : 46,
+      "end_line" : 23,
+      "end_column" : 51,
+      "method" : "remove"
+    }, {
+      "id" : 93,
+      "type" : "IntegerLiteralExpr",
+      "label" : "1",
+      "line" : 23,
+      "column" : 53,
+      "end_line" : 23,
+      "end_column" : 53,
+      "method" : "remove"
+    }, {
+      "id" : 94,
+      "type" : "LineComment",
+      "label" : "// False negative: the argument of remove() should be non-empty, so there should be an error here.",
+      "line" : 25,
+      "column" : 9,
+      "end_line" : 25,
+      "end_column" : 106,
+      "method" : "remove"
+    }, {
+      "id" : 95,
+      "type" : "ExpressionStmt",
+      "label" : "// False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1);",
+      "line" : 27,
+      "column" : 9,
+      "end_line" : 27,
+      "end_column" : 21,
+      "method" : "remove"
+    }, {
+      "id" : 96,
+      "type" : "MethodCallExpr",
+      "label" : "l0.remove(1)",
+      "line" : 27,
+      "column" : 9,
+      "end_line" : 27,
+      "end_column" : 20,
+      "method" : "remove"
+    }, {
+      "id" : 97,
+      "type" : "NameExpr",
+      "label" : "l0",
+      "line" : 27,
+      "column" : 9,
+      "end_line" : 27,
+      "end_column" : 10,
+      "method" : "remove"
+    }, {
+      "id" : 98,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 27,
+      "column" : 9,
+      "end_line" : 27,
+      "end_column" : 10,
+      "method" : "remove"
+    }, {
+      "id" : 99,
+      "type" : "SimpleName",
+      "label" : "remove",
+      "line" : 27,
+      "column" : 12,
+      "end_line" : 27,
+      "end_column" : 17,
+      "method" : "remove"
+    }, {
+      "id" : 100,
+      "type" : "IntegerLiteralExpr",
+      "label" : "1",
+      "line" : 27,
+      "column" : 19,
+      "end_line" : 27,
+      "end_column" : 19,
+      "method" : "remove"
+    }, {
+      "id" : 101,
+      "type" : "MethodDeclaration",
+      "label" : "public void removeTruePositive(@MinLength(\"1\") ImmutableList l) { // True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1); }",
+      "line" : 30,
+      "column" : 5,
+      "end_line" : 34,
+      "end_column" : 5,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 102,
+      "type" : "Modifier",
+      "label" : "public",
+      "line" : 30,
+      "column" : 5,
+      "end_line" : 30,
+      "end_column" : 10,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 103,
+      "type" : "VoidType",
+      "label" : "void",
+      "line" : 30,
+      "column" : 12,
+      "end_line" : 30,
+      "end_column" : 15,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 104,
+      "type" : "SimpleName",
+      "label" : "removeTruePositive",
+      "line" : 30,
+      "column" : 17,
+      "end_line" : 30,
+      "end_column" : 34,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 105,
+      "type" : "Parameter",
+      "label" : "@MinLength(\"1\") ImmutableList l",
+      "line" : 30,
+      "column" : 36,
+      "end_line" : 30,
+      "end_column" : 66,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 106,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"1\")",
+      "line" : 30,
+      "column" : 36,
+      "end_line" : 30,
+      "end_column" : 50,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 107,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 30,
+      "column" : 37,
+      "end_line" : 30,
+      "end_column" : 45,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 108,
+      "type" : "StringLiteralExpr",
+      "label" : "\"1\"",
+      "line" : 30,
+      "column" : 47,
+      "end_line" : 30,
+      "end_column" : 49,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 109,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 30,
+      "column" : 52,
+      "end_line" : 30,
+      "end_column" : 64,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 110,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 30,
+      "column" : 52,
+      "end_line" : 30,
+      "end_column" : 64,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 111,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 30,
+      "column" : 66,
+      "end_line" : 30,
+      "end_column" : 66,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 112,
+      "type" : "BlockStmt",
+      "label" : "{ // True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1); }",
+      "line" : 30,
+      "column" : 69,
+      "end_line" : 34,
+      "end_column" : 5,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 113,
+      "type" : "LineComment",
+      "label" : "// True positive: the result of remove() is length n-1, the the error below should stay",
+      "line" : 31,
+      "column" : 9,
+      "end_line" : 31,
+      "end_column" : 95,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 114,
+      "type" : "ExpressionStmt",
+      "label" : "// True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1);",
+      "line" : 33,
+      "column" : 9,
+      "end_line" : 33,
+      "end_column" : 55,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 115,
+      "type" : "VariableDeclarationExpr",
+      "label" : "@MinLength(\"1\") ImmutableList l0 = l.remove(1)",
+      "line" : 33,
+      "column" : 9,
+      "end_line" : 33,
+      "end_column" : 54,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 116,
+      "type" : "SingleMemberAnnotationExpr",
+      "label" : "@MinLength(\"1\")",
+      "line" : 33,
+      "column" : 9,
+      "end_line" : 33,
+      "end_column" : 23,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 117,
+      "type" : "Name",
+      "label" : "MinLength",
+      "line" : 33,
+      "column" : 10,
+      "end_line" : 33,
+      "end_column" : 18,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 118,
+      "type" : "StringLiteralExpr",
+      "label" : "\"1\"",
+      "line" : 33,
+      "column" : 20,
+      "end_line" : 33,
+      "end_column" : 22,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 119,
+      "type" : "VariableDeclarator",
+      "label" : "l0 = l.remove(1)",
+      "line" : 33,
+      "column" : 39,
+      "end_line" : 33,
+      "end_column" : 54,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 120,
+      "type" : "ClassOrInterfaceType",
+      "label" : "ImmutableList",
+      "line" : 33,
+      "column" : 25,
+      "end_line" : 33,
+      "end_column" : 37,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 121,
+      "type" : "SimpleName",
+      "label" : "ImmutableList",
+      "line" : 33,
+      "column" : 25,
+      "end_line" : 33,
+      "end_column" : 37,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 122,
+      "type" : "SimpleName",
+      "label" : "l0",
+      "line" : 33,
+      "column" : 39,
+      "end_line" : 33,
+      "end_column" : 40,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 123,
+      "type" : "MethodCallExpr",
+      "label" : "l.remove(1)",
+      "line" : 33,
+      "column" : 44,
+      "end_line" : 33,
+      "end_column" : 54,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 124,
+      "type" : "NameExpr",
+      "label" : "l",
+      "line" : 33,
+      "column" : 44,
+      "end_line" : 33,
+      "end_column" : 44,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 125,
+      "type" : "SimpleName",
+      "label" : "l",
+      "line" : 33,
+      "column" : 44,
+      "end_line" : 33,
+      "end_column" : 44,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 126,
+      "type" : "SimpleName",
+      "label" : "remove",
+      "line" : 33,
+      "column" : 46,
+      "end_line" : 33,
+      "end_column" : 51,
+      "method" : "removeTruePositive"
+    }, {
+      "id" : 127,
+      "type" : "IntegerLiteralExpr",
+      "label" : "1",
+      "line" : 33,
+      "column" : 53,
+      "end_line" : 33,
+      "end_column" : 53,
+      "method" : "removeTruePositive"
+    } ],
+    "edges" : [ [ 0, 1 ], [ 0, 2 ], [ 2, 3 ], [ 2, 4 ], [ 2, 5 ], [ 2, 6 ], [ 6, 7 ], [ 6, 8 ], [ 6, 9 ], [ 6, 10 ], [ 10, 11 ], [ 11, 12 ], [ 11, 13 ], [ 10, 14 ], [ 14, 15 ], [ 10, 16 ], [ 6, 17 ], [ 17, 18 ], [ 17, 19 ], [ 19, 20 ], [ 20, 21 ], [ 21, 22 ], [ 21, 23 ], [ 20, 24 ], [ 24, 25 ], [ 25, 26 ], [ 24, 27 ], [ 24, 28 ], [ 28, 29 ], [ 29, 30 ], [ 28, 31 ], [ 28, 32 ], [ 32, 33 ], [ 33, 34 ], [ 17, 35 ], [ 35, 36 ], [ 36, 37 ], [ 37, 38 ], [ 37, 39 ], [ 36, 40 ], [ 40, 41 ], [ 41, 42 ], [ 40, 43 ], [ 40, 44 ], [ 44, 45 ], [ 45, 46 ], [ 44, 47 ], [ 44, 48 ], [ 48, 49 ], [ 49, 50 ], [ 17, 51 ], [ 17, 52 ], [ 52, 53 ], [ 53, 54 ], [ 54, 55 ], [ 54, 56 ], [ 53, 57 ], [ 57, 58 ], [ 58, 59 ], [ 57, 60 ], [ 57, 61 ], [ 61, 62 ], [ 62, 63 ], [ 61, 64 ], [ 61, 65 ], [ 65, 66 ], [ 66, 67 ], [ 2, 68 ], [ 68, 69 ], [ 68, 70 ], [ 68, 71 ], [ 68, 72 ], [ 72, 73 ], [ 73, 74 ], [ 73, 75 ], [ 72, 76 ], [ 76, 77 ], [ 72, 78 ], [ 68, 79 ], [ 79, 80 ], [ 80, 81 ], [ 81, 82 ], [ 82, 83 ], [ 82, 84 ], [ 81, 85 ], [ 85, 86 ], [ 86, 87 ], [ 85, 88 ], [ 85, 89 ], [ 89, 90 ], [ 90, 91 ], [ 89, 92 ], [ 89, 93 ], [ 79, 94 ], [ 79, 95 ], [ 95, 96 ], [ 96, 97 ], [ 97, 98 ], [ 96, 99 ], [ 96, 100 ], [ 2, 101 ], [ 101, 102 ], [ 101, 103 ], [ 101, 104 ], [ 101, 105 ], [ 105, 106 ], [ 106, 107 ], [ 106, 108 ], [ 105, 109 ], [ 109, 110 ], [ 105, 111 ], [ 101, 112 ], [ 112, 113 ], [ 112, 114 ], [ 114, 115 ], [ 115, 116 ], [ 116, 117 ], [ 116, 118 ], [ 115, 119 ], [ 119, 120 ], [ 120, 121 ], [ 119, 122 ], [ 119, 123 ], [ 123, 124 ], [ 124, 125 ], [ 123, 126 ], [ 123, 127 ] ]
+  },
+  "cfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "label" : "// False positives: the result of insert() should be n+1 // :: error: assignment.type.incompatible @MinLength(\"n\") ImmutableList l0 = l.insert(new Object());",
+      "method" : "insert",
+      "line" : 12,
+      "column" : 9,
+      "end_line" : 12,
+      "end_column" : 66,
+      "ast_id" : 19
+    }, {
+      "id" : 1,
+      "label" : "// :: error: assignment.type.incompatible @MinLength(\"n+1\") ImmutableList l1 = l.insert(new Object());",
+      "method" : "insert",
+      "line" : 14,
+      "column" : 9,
+      "end_line" : 14,
+      "end_column" : 68,
+      "ast_id" : 35
+    }, {
+      "id" : 2,
+      "label" : "// True positive // :: error: assignment.type.incompatible @MinLength(\"n+2\") ImmutableList l2 = l.insert(new Object());",
+      "method" : "insert",
+      "line" : 18,
+      "column" : 9,
+      "end_line" : 18,
+      "end_column" : 68,
+      "ast_id" : 52
+    }, {
+      "id" : 3,
+      "label" : "// False positive: the result of remove() should be length n-1 @MinLength(\"0\") ImmutableList l0 = l.remove(1);",
+      "method" : "remove",
+      "line" : 23,
+      "column" : 9,
+      "end_line" : 23,
+      "end_column" : 55,
+      "ast_id" : 80
+    }, {
+      "id" : 4,
+      "label" : "// False negative: the argument of remove() should be non-empty, so there should be an error here. // Is your pipeline able to handle something like this too, or only false positives as above? l0.remove(1);",
+      "method" : "remove",
+      "line" : 27,
+      "column" : 9,
+      "end_line" : 27,
+      "end_column" : 21,
+      "ast_id" : 95
+    }, {
+      "id" : 5,
+      "label" : "// True positive: the result of remove() is length n-1, the the error below should stay // :: error: assignment.type.incompatible @MinLength(\"1\") ImmutableList l0 = l.remove(1);",
+      "method" : "removeTruePositive",
+      "line" : 33,
+      "column" : 9,
+      "end_line" : 33,
+      "end_column" : 55,
+      "ast_id" : 114
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "next_stmt"
+    }, {
+      "src" : 1,
+      "dst" : 2,
+      "type" : "next_stmt"
+    }, {
+      "src" : 3,
+      "dst" : 4,
+      "type" : "next_stmt"
+    } ]
+  },
+  "dfg" : {
+    "nodes" : [ {
+      "id" : 0,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "param_def",
+      "label" : "@MinLength(\"n\") ImmutableList l",
+      "line" : 9,
+      "column" : 24,
+      "end_line" : 9,
+      "end_column" : 54,
+      "ast_id" : 10
+    }, {
+      "id" : 1,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l",
+      "line" : 12,
+      "column" : 44,
+      "end_line" : 12,
+      "end_column" : 44,
+      "ast_id" : 29
+    }, {
+      "id" : 2,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l.insert(new Object())",
+      "line" : 12,
+      "column" : 44,
+      "end_line" : 12,
+      "end_column" : 44,
+      "ast_id" : 29
+    }, {
+      "id" : 3,
+      "var" : "l0",
+      "symbol" : "insert:l0@12",
+      "method" : "insert",
+      "role" : "local_def",
+      "label" : "l0 = l.insert(new Object())",
+      "line" : 12,
+      "column" : 39,
+      "end_line" : 12,
+      "end_column" : 65,
+      "ast_id" : 24
+    }, {
+      "id" : 4,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l",
+      "line" : 14,
+      "column" : 46,
+      "end_line" : 14,
+      "end_column" : 46,
+      "ast_id" : 45
+    }, {
+      "id" : 5,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l.insert(new Object())",
+      "line" : 14,
+      "column" : 46,
+      "end_line" : 14,
+      "end_column" : 46,
+      "ast_id" : 45
+    }, {
+      "id" : 6,
+      "var" : "l1",
+      "symbol" : "insert:l1@14",
+      "method" : "insert",
+      "role" : "local_def",
+      "label" : "l1 = l.insert(new Object())",
+      "line" : 14,
+      "column" : 41,
+      "end_line" : 14,
+      "end_column" : 67,
+      "ast_id" : 40
+    }, {
+      "id" : 7,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l",
+      "line" : 18,
+      "column" : 46,
+      "end_line" : 18,
+      "end_column" : 46,
+      "ast_id" : 62
+    }, {
+      "id" : 8,
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "role" : "rhs_use",
+      "label" : "l.insert(new Object())",
+      "line" : 18,
+      "column" : 46,
+      "end_line" : 18,
+      "end_column" : 46,
+      "ast_id" : 62
+    }, {
+      "id" : 9,
+      "var" : "l2",
+      "symbol" : "insert:l2@18",
+      "method" : "insert",
+      "role" : "local_def",
+      "label" : "l2 = l.insert(new Object())",
+      "line" : 18,
+      "column" : 41,
+      "end_line" : 18,
+      "end_column" : 67,
+      "ast_id" : 57
+    }, {
+      "id" : 10,
+      "var" : "l",
+      "symbol" : "remove:l@21",
+      "method" : "remove",
+      "role" : "param_def",
+      "label" : "@MinLength(\"1\") ImmutableList l",
+      "line" : 21,
+      "column" : 24,
+      "end_line" : 21,
+      "end_column" : 54,
+      "ast_id" : 72
+    }, {
+      "id" : 11,
+      "var" : "l",
+      "symbol" : "remove:l@21",
+      "method" : "remove",
+      "role" : "rhs_use",
+      "label" : "l",
+      "line" : 23,
+      "column" : 44,
+      "end_line" : 23,
+      "end_column" : 44,
+      "ast_id" : 90
+    }, {
+      "id" : 12,
+      "var" : "l",
+      "symbol" : "remove:l@21",
+      "method" : "remove",
+      "role" : "rhs_use",
+      "label" : "l.remove(1)",
+      "line" : 23,
+      "column" : 44,
+      "end_line" : 23,
+      "end_column" : 44,
+      "ast_id" : 90
+    }, {
+      "id" : 13,
+      "var" : "l0",
+      "symbol" : "remove:l0@23",
+      "method" : "remove",
+      "role" : "local_def",
+      "label" : "l0 = l.remove(1)",
+      "line" : 23,
+      "column" : 39,
+      "end_line" : 23,
+      "end_column" : 54,
+      "ast_id" : 85
+    }, {
+      "id" : 14,
+      "var" : "l",
+      "symbol" : "removeTruePositive:l@30",
+      "method" : "removeTruePositive",
+      "role" : "param_def",
+      "label" : "@MinLength(\"1\") ImmutableList l",
+      "line" : 30,
+      "column" : 36,
+      "end_line" : 30,
+      "end_column" : 66,
+      "ast_id" : 105
+    }, {
+      "id" : 15,
+      "var" : "l",
+      "symbol" : "removeTruePositive:l@30",
+      "method" : "removeTruePositive",
+      "role" : "rhs_use",
+      "label" : "l",
+      "line" : 33,
+      "column" : 44,
+      "end_line" : 33,
+      "end_column" : 44,
+      "ast_id" : 124
+    }, {
+      "id" : 16,
+      "var" : "l",
+      "symbol" : "removeTruePositive:l@30",
+      "method" : "removeTruePositive",
+      "role" : "rhs_use",
+      "label" : "l.remove(1)",
+      "line" : 33,
+      "column" : 44,
+      "end_line" : 33,
+      "end_column" : 44,
+      "ast_id" : 124
+    }, {
+      "id" : 17,
+      "var" : "l0",
+      "symbol" : "removeTruePositive:l0@33",
+      "method" : "removeTruePositive",
+      "role" : "local_def",
+      "label" : "l0 = l.remove(1)",
+      "line" : 33,
+      "column" : 39,
+      "end_line" : 33,
+      "end_column" : 54,
+      "ast_id" : 119
+    } ],
+    "edges" : [ {
+      "src" : 0,
+      "dst" : 1,
+      "type" : "data_flow",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 12
+    }, {
+      "src" : 0,
+      "dst" : 2,
+      "type" : "receiver_use",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 12
+    }, {
+      "src" : 0,
+      "dst" : 4,
+      "type" : "data_flow",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 14
+    }, {
+      "src" : 0,
+      "dst" : 5,
+      "type" : "receiver_use",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 14
+    }, {
+      "src" : 0,
+      "dst" : 7,
+      "type" : "data_flow",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 18
+    }, {
+      "src" : 0,
+      "dst" : 8,
+      "type" : "receiver_use",
+      "var" : "l",
+      "symbol" : "insert:l@9",
+      "method" : "insert",
+      "src_line" : 9,
+      "dst_line" : 18
+    }, {
+      "src" : 10,
+      "dst" : 11,
+      "type" : "data_flow",
+      "var" : "l",
+      "symbol" : "remove:l@21",
+      "method" : "remove",
+      "src_line" : 21,
+      "dst_line" : 23
+    }, {
+      "src" : 10,
+      "dst" : 12,
+      "type" : "receiver_use",
+      "var" : "l",
+      "symbol" : "remove:l@21",
+      "method" : "remove",
+      "src_line" : 21,
+      "dst_line" : 23
+    }, {
+      "src" : 14,
+      "dst" : 15,
+      "type" : "data_flow",
+      "var" : "l",
+      "symbol" : "removeTruePositive:l@30",
+      "method" : "removeTruePositive",
+      "src_line" : 30,
+      "dst_line" : 33
+    }, {
+      "src" : 14,
+      "dst" : 16,
+      "type" : "receiver_use",
+      "var" : "l",
+      "symbol" : "removeTruePositive:l@30",
+      "method" : "removeTruePositive",
+      "src_line" : 30,
+      "dst_line" : 33
+    } ]
+  }
+}

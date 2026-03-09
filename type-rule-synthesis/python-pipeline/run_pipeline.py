@@ -167,10 +167,10 @@ def run_one(java_file: Path) -> None:
             if method is None:
                 method = "<global>"
             annotation_lines_by_method[method].append(stripped)
-        # Detect assignments. We treat assignments to insert/remove calls specially, but also
-        # include simple assignments (e.g., a = arg) that do not involve insert/remove.
-        if "=" in stripped:
-            # Exclude lines that are part of the annotation spec block
+        # Detect insert/remove calls and assignments. We treat insert/remove calls as data-flow
+        # regardless of whether they appear in an assignment, and we include simple assignments
+        # (e.g., a = arg) that do not involve insert/remove. Exclude lines in the annotation spec.
+        if ".insert(" in stripped or ".remove(" in stripped or '=' in stripped:
             if "annotation" in stripped:
                 pass
             else:
@@ -215,6 +215,9 @@ def run_one(java_file: Path) -> None:
             continue
         # Skip assignment lines; we'll print them with method context below
         if l.startswith("- ") and "=" in l:
+            continue
+        # Skip def-use-like lines (e.g., "- l: lines 9 -> 12")
+        if l.startswith("- ") and ":" in l and "->" in l:
             continue
         data_flow_lines.append("[DEBUG]" + l)
     # Add assignments with method context
