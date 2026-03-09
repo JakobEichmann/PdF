@@ -114,7 +114,9 @@ def run_one(java_file: Path) -> None:
     code_lines = code.splitlines()
     method_by_line: Dict[int, str] = {}
     current_method = None
-    method_pattern = re.compile(r"\b(?:public|private|protected)\s+\w+\s+(\w+)\s*\(")
+    # Regex to capture method names, allowing for optional 'static' and generics in return type.
+    # Example matches: 'public void foo(', 'private static int bar(', 'protected List<String> baz('
+    method_pattern = re.compile(r"\b(?:public|private|protected)\s+(?:static\s+)?[\w<>\[\]]+\s+(\w+)\s*\(")
     for idx, cl in enumerate(code_lines, start=1):
         m = method_pattern.search(cl)
         if m:
@@ -149,48 +151,82 @@ def run_one(java_file: Path) -> None:
             if method is None:
                 method = "<global>"
             structural_map[method].append(stripped)
-    # Print structural signals with method context
+    # Build structural and data-flow information from sanitized code lines.
+    # We parse the sanitized code to find annotation declarations and assignments,
+    # and group them by the method they belong to.
+    annotation_lines_by_method: Dict[str, List[str]] = defaultdict(list)
+    assignment_lines_by_method: Dict[str, List[str]] = defaultdict(list)
+    for idx, cl in enumerate(code_lines, start=1):
+        stripped = cl.strip()
+        if not stripped:
+            continue
+        # Detect annotation declarations in code (e.g., @MinLength(...))
+        # Skip lines that are part of the annotation spec comment block (/* annotation ... */)
+        if stripped.startswith("@") and not stripped.startswith("@interface"):
+            method = method_by_line.get(idx)
+            if method is None:
+                method = "<global>"
+            annotation_lines_by_method[method].append(stripped)
+        # Detect assignments. We treat assignments to insert/remove calls specially, but also
+        # include simple assignments (e.g., a = arg) that do not involve insert/remove.
+        if "=" in stripped:
+            # Exclude lines that are part of the annotation spec block
+            if "annotation" in stripped:
+                pass
+            else:
+                method = method_by_line.get(idx)
+                if method is None:
+                    method = "<global>"
+                assignment_lines_by_method[method].append(stripped)
+    # Print structural signals (annotations and GNN signals) with method context.
     print("[DEBUG] Structural signals (GNN):")
+    # Use the GNN summary to print high-salience structural cues, but skip variable declarations
     if node_embs is not None:
         gnn_summary = summarize_gnn_structural_cues_compact(ast, node_embs, code)
     else:
-        gnn_summary = "No high-salience structural signals from GNN."
+        gnn_summary = ""
+    # Extract annotation lines from GNN summary that aren't variable declarations or normal annotation expr duplicates
     for line in gnn_summary.strip().split("\n"):
         l = line.strip()
         if not l:
             continue
-        if l.startswith("Variable declaration"):
+        # Skip any variable declaration lines (with or without bullet)
+        if "Variable declaration" in l:
             continue
+        # Skip generic annotation expr lines; we will print annotation lines with method context
+        if "annotation" in l.lower():
+            continue
+        # Print other high-salience structural cues directly
         print("[DEBUG]" + l)
-    for method in sorted(structural_map):
-        for decl in structural_map[method]:
+    # Print annotation declarations grouped by method
+    for method in sorted(annotation_lines_by_method):
+        for ann in annotation_lines_by_method[method]:
             prefix = f"{method}:" if method != "<global>" else ""
-            print(f"[DEBUG]- {prefix}Variable declaration: {decl}")
-    # Print data-flow summary with method context
-    print("[DEBUG] Data-flow summary:")
+            print(f"[DEBUG]- {prefix}{ann}")
+    # Build data-flow summary lines: annotation dependencies and assignments grouped by method
+    data_flow_lines: List[str] = []
     graph_facts_summary = summarize_graph_facts_compact(ast, cfg, dfg)
-    skip_defuse = False
     for line in graph_facts_summary.strip().split("\n"):
         l = line.strip()
         if not l:
             continue
-        if l.startswith("Def-use chains"):
-            skip_defuse = True
+        # Skip def-use chain sections and heading lines
+        if l.startswith("Def-use chains") or l.startswith("Data-flow summary"):
             continue
-        if skip_defuse:
-            if l.startswith("-"):
-                continue
-            else:
-                skip_defuse = False
-        if l.startswith("- ") and '=' in l and '@' not in l:
+        # Skip assignment lines; we'll print them with method context below
+        if l.startswith("- ") and "=" in l:
             continue
-        if l.startswith("Data-flow summary"):
-            continue
-        print("[DEBUG]" + l)
-    for method in sorted(structural_map):
-        for decl in structural_map[method]:
+        data_flow_lines.append("[DEBUG]" + l)
+    # Add assignments with method context
+    for method in sorted(assignment_lines_by_method):
+        for assign in assignment_lines_by_method[method]:
             prefix = f"{method}:" if method != "<global>" else ""
-            print(f"[DEBUG]- {prefix}{decl}")
+            data_flow_lines.append(f"[DEBUG]- {prefix}{assign}")
+    # Print data-flow summary if we have lines to show
+    if data_flow_lines:
+        print("[DEBUG] Data-flow summary:")
+        for line in data_flow_lines:
+            print(line)
     # Print def-use chains with method context
     if var_lines_by_method:
         print("[DEBUG] Def-use chains (from DFG):")
