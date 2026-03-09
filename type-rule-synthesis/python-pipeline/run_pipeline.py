@@ -169,16 +169,41 @@ def run_one(java_file: Path) -> None:
             annotation_lines_by_method[method].append(stripped)
         # Detect insert/remove calls and assignments. We treat insert/remove calls as data-flow
         # regardless of whether they appear in an assignment, and we include simple assignments
-        # (e.g., a = arg) that do not involve insert/remove. Exclude lines in the annotation spec.
-        if ".insert(" in stripped or ".remove(" in stripped or '=' in stripped:
-            # Skip lines that belong to the annotation spec (e.g. ':<==>' or 'for "…"')
-            if "annotation" in stripped or stripped.startswith(":") or stripped.startswith("for "):
-                pass
-            else:
-                method = method_by_line.get(idx)
-                if method is None:
-                    method = "<global>"
-                assignment_lines_by_method[method].append(stripped)
+        # (e.g., a = arg) that do not involve insert/remove. Exclude lines in the annotation spec
+        # or other comment/spec lines.
+        assign_pattern = re.compile(r"^\s*[A-Za-z_]\w*\s*=\s*")
+        # Skip lines that clearly belong to the annotation specification or method signatures.
+        skip_line = False
+        # Exclude annotation spec parts and meta lines
+        if (
+            "annotation" in stripped
+            or stripped.startswith(":")
+            or stripped.startswith("for ")
+            or stripped.startswith("*")
+            or "§" in stripped
+            or "predicate" in stripped
+            or "wellformed" in stripped
+            or "base" in stripped
+            or "params" in stripped
+            or "<==>" in stripped
+            or "->" in stripped
+        ):
+            skip_line = True
+        # Skip annotation declarations in code
+        if "@" in stripped:
+            skip_line = True
+        # Skip method declarations (containing '(' without assignment)
+        if "(" in stripped and "=" not in stripped:
+            skip_line = True
+        if not skip_line and (
+            ".insert(" in stripped
+            or ".remove(" in stripped
+            or assign_pattern.match(stripped)
+        ):
+            method = method_by_line.get(idx)
+            if method is None:
+                method = "<global>"
+            assignment_lines_by_method[method].append(stripped)
     # Print structural signals (annotations and GNN signals) with method context.
     print("[DEBUG] Structural signals (GNN):")
     # Use the GNN summary to print high-salience structural cues, but skip variable declarations
