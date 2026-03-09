@@ -196,15 +196,33 @@ def run_one(java_file: Path) -> None:
         # Skip method declarations (containing '(' without assignment)
         if "(" in stripped and "=" not in stripped:
             skip_line = True
-        if not skip_line and (
-            ".insert(" in stripped
-            or ".remove(" in stripped
-            or assign_pattern.match(stripped)
-        ):
+        if not skip_line:
             method = method_by_line.get(idx)
             if method is None:
                 method = "<global>"
-            assignment_lines_by_method[method].append(stripped)
+            # 1) Lines with insert/remove calls are always included as-is (for call flows)
+            if ".insert(" in stripped or ".remove(" in stripped:
+                assignment_lines_by_method[method].append(stripped)
+                continue
+            # 2) Handle assignments inside annotation declarations
+            if "@" in stripped and "=" in stripped:
+                last_eq = stripped.rfind('=')
+                first_paren_close = stripped.find(')')
+                # Only consider assignment if '=' appears after ')' (annotation parameters end)
+                if last_eq > first_paren_close >= 0:
+                    lhs_part, rhs_part = stripped.rsplit("=", 1)
+                    lhs_var_tokens = lhs_part.strip().split()
+                    lhs_var = lhs_var_tokens[-1] if lhs_var_tokens else lhs_part.strip()
+                    if lhs_var not in {"other", "min", "max", "len", "remainder", "modulus"}:
+                        # Store a processed assignment string rather than the original line
+                        assignment_lines_by_method[method].append(f"{lhs_var} = {rhs_part.strip().rstrip(';')}")
+                        continue
+            # 3) General assignment anywhere in the line (lhs = rhs)
+            assign_match = re.search(r"\b([A-Za-z_]\w*)\s*=\s*", stripped)
+            if assign_match:
+                lhs_var = assign_match.group(1)
+                if lhs_var not in {"other", "min", "max", "len", "remainder", "modulus"}:
+                    assignment_lines_by_method[method].append(stripped)
     # Print structural signals (annotations and GNN signals) with method context.
     print("[DEBUG] Structural signals (GNN):")
     # Use the GNN summary to print high-salience structural cues, but skip variable declarations
